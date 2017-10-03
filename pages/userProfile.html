@@ -57,11 +57,7 @@ License: You must have a valid license purchased only from themeforest(the above
         <link href="../assets/layouts/layout4/css/custom.min.css" rel="stylesheet" type="text/css" />
         <!-- END THEME LAYOUT STYLES -->
         <link rel="shortcut icon" href="favicon.ico" />
-        <!-- BEGIN CUSTOM SCRIPTS-->
-        <script src="../includes/includes.js"></script>
-
-        <!-- END CUSTOM SCRIPTS-->
-        </head>
+    </head>
     <!-- END HEAD -->
 
     <body class="page-container-bg-solid page-header-fixed page-footer-fixed page-sidebar-closed-hide-logo page-md">
@@ -643,7 +639,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <!-- BEGIN FORM-->
                                                 <div class="form-body">
                                                     <div class="form-group">
-                                                        <form class="mt-repeater form-horizontal">
+                                                        <form class="mt-repeater form-horizontal" id="academicDetails">
                                                             <div data-repeater-list="group-a">
                                                                 <div data-repeater-item="" class="mt-repeater-item">
                                                                     <!-- jQuery Repeater Container -->
@@ -652,7 +648,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                             <div class="mt-repeater-input">
                                                                                 <label class="control-label">Level of Education</label>
                                                                                 <br>
-                                                                                <select id="first" name="levelOfEducation" class="form-control">
+                                                                                <select id="first" name="group-a[0][levelOfEducation]"  class="form-control">
                                                                                     <option value="">Select...</option>
                                                                                     <option value="1">PSC\5 Pass</option>
                                                                                     <option value="2">JSC\JDC\8Pass</option>
@@ -668,7 +664,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                             <div class="mt-repeater-input">
                                                                                 <label class="control-label">Exam Degree Title</label>
                                                                                 <br>
-                                                                                <select id="second" name="examDegreeTitle" class="form-control">
+                                                                                <select id="second" name="group-a[0][examDegreeTitle]" class="form-control">
                                                                                     
                                                                                 </select>
                                                                             </div>
@@ -679,23 +675,23 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                             <div class="mt-repeater-input">
                                                                                 <label class="control-label">Concentration/Major/Group</label>
                                                                                 <br>
-                                                                                <input type="text" name="group-a[0][text-input]" class="form-control">
+                                                                                <input type="text" name="group-a[0][concentrationMajorGroup]" class="form-control">
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-md-6 ">
                                                                             <div class="mt-repeater-input">
                                                                                 <label class="control-label">Institute Name</label>
                                                                                 <br>
-                                                                                <input type="text" name="group-a[0][text-input]" class="form-control">
+                                                                                <input type="text" name="group-a[0][instituteName]" class="form-control">
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                     <div class="row">
                                                                         <div class="col-md-6 ">
                                                                             <div class="mt-repeater-input">
-                                                                                <label class="control-label">Level of Education</label>
+                                                                                <label class="control-label">Result</label>
                                                                                 <br>
-                                                                                <select id="first" name="levelOfEducation" class="form-control">
+                                                                                <select id="first" name="group-a[0][result]" class="form-control">
                                                                                     <option value="">Select...</option>
                                                                                     <option value="1">First Division/Class</option>
                                                                                     <option value="2">Second Division/Class</option>
@@ -713,7 +709,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                             <div class="mt-repeater-input">
                                                                                 <label class="control-label">Marks in %</label>
                                                                                 <br>
-                                                                                <input type="text" name="group-a[0][text-input]" class="form-control">
+                                                                                <input type="text" name="group-a[0][marksPercentage]" class="form-control">
                                                                             </div>
                                                                         </div>
                                                                     </div>   
@@ -722,14 +718,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                             <div class="mt-repeater-input">
                                                                                 <label class="control-label">Year of Passing</label>
                                                                                 <br>
-                                                                                <input type="text" name="group-a[0][text-input]" class="form-control">
+                                                                                <input type="text" name="group-a[0][yearofPassing]" class="form-control">
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-md-6 ">
                                                                             <div class="mt-repeater-input">
                                                                                 <label class="control-label">Duration (In Years)</label>
                                                                                 <br>
-                                                                                <input type="text" name="group-a[0][text-input]" class="form-control">
+                                                                                <input type="text" name="group-a[0][duration]" class="form-control">
                                                                             </div>
                                                                         </div>
                                                                     </div>                                                                 
@@ -738,10 +734,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                             <div class="mt-repeater-input">
                                                                                 <label class="control-label">Achievements</label>
                                                                                 <br>
-                                                                                <textarea type="text" name="group-a[0][text-input]" class="form-control"></textarea>
+                                                                                <textarea type="text" name="group-a[0][achievements]" class="form-control"></textarea>
                                                                             </div>
-                                                                        </div>
-                                                                    </div>
+                                                                        </div>                                                                    </div>
                                                                     <div class="mt-repeater-input">
                                                                         <a href="javascript:;" data-repeater-delete="" class="btn btn-danger mt-repeater-delete">
                                                                             <i class="fa fa-close"></i> Delete</a>
@@ -752,7 +747,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <a href="javascript:;" data-repeater-create="" class="btn btn-success mt-repeater-add">
                                                                     <i class="fa fa-plus"></i> Add</a>
                                                                 <!--button type="button" class="btn default">Cancel</button-->
-                                                                <button type="submit" class="btn blue" id="submitAcademic">
+                                                                    <button type="button" class="btn blue" id="submitAcademic">
                                                                     <i class=""></i> Save</button>
                                                             </div>
                                                         </form>
@@ -801,7 +796,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <!-- BEGIN FORM-->
                                                 <div class="form-body">
                                                     <div class="form-group">
-                                                        <form class="mt-repeater form-horizontal">
+                                                        <form class="mt-repeater form-horizontal" id="familyDetails">
                                                             <div data-repeater-list="group-a">
                                                                 <div data-repeater-item="" class="mt-repeater-item">
                                                                     <!-- jQuery Repeater Container -->
@@ -810,14 +805,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                             <div class="mt-repeater-input">
                                                                                 <label class="control-label">Name</label>
                                                                                 <br>
-                                                                                <input type="text" name="group-a[0][text-input]" class="form-control">
+                                                                                <input type="text" name="group-a[0][familyMemberName]" class="form-control">
                                                                             </div>
                                                                         </div>                                                                        
                                                                         <div class="col-md-6 ">
                                                                             <div class="mt-repeater-input">
                                                                                 <label class="control-label">Relation</label>
                                                                                 <br>
-                                                                                <select id="first" name="levelOfEducation" class="form-control">
+                                                                                <select id="first" name="relation" class="form-control">
                                                                                     <option value="">Select...</option>
                                                                                     <option value="Father">Father</option>
                                                                                     <option value="Mother">Mother</option>
@@ -837,7 +832,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                                 <br>
                                                                                 <div class="md-radio-inline">
                                                                                     <div class="md-radio">
-                                                                                        <input type="radio" id="gender1" name="gender" class="md-radiobtn">
+                                                                                        <input type="radio" id="gender1" name="gender"  value="Male" class="md-radiobtn">
                                                                                         <label for="radio14">
                                                                                             <span class="inc"></span>
                                                                                             <span class="check"></span>
@@ -864,7 +859,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                             <div class="mt-repeater-input">
                                                                                 <label class="control-label">Mobile  Number</label>
                                                                                 <br>
-                                                                                <input type="text" name="group-a[0][text-input]" class="form-control">
+                                                                                <input type="text" name="group-a[0][mobileNumber]" class="form-control">
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -886,7 +881,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                             <div class="mt-repeater-input">
                                                                                 <label class="control-label">Age</label>
                                                                                 <br>
-                                                                                <input type="text" name="group-a[0][text-input]" class="form-control">
+                                                                                <input type="text" name="group-a[0][age]" class="form-control">
                                                                             </div>
                                                                         </div>
                                                                     </div>                                                                      
@@ -900,7 +895,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <a href="javascript:;" data-repeater-create="" class="btn btn-success mt-repeater-add">
                                                                     <i class="fa fa-plus"></i> Add</a>
                                                                 <!--button type="button" class="btn default">Cancel</button-->
-                                                                <button type="submit" class="btn blue" id="submitFamily">
+                                                                <button type="button" class="btn blue" id="submitFamily">
                                                                     <i class=""></i> Save</button>
                                                             </div>
                                                         </form>
@@ -984,9 +979,7 @@ License: You must have a valid license purchased only from themeforest(the above
                 });
             })
         </script>
-        <script>
-            w3.includeHTML();
-        </script>
+
         <!-- ADDRESS INFO SCRIPT-->
         <script>
             $(document).ready(function() {
