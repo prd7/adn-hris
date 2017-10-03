@@ -15,13 +15,13 @@ $(document).ready(function(){
 			for( var i = 0; i < data.length; i++ )
 	        {
 	        	var approvalListObject = '<li class="todo-projects-item">'+
-				'    <a href="kra.html">'+
+				'    <a href="kra_approval.html?typeId='+data[i].get('typeId')+'">'+
 				'        <div class="row">'+
 				'            <div class="col-sm-6 col-xs-12">'+
 				'                <img class="img-circle pull-left" style="margin-top: 5px; margin-right: 10px" src="../assets/pages/media/users/avatar1.jpg" width="54px" height="54px">'+
-				'                <h4>KRA</h4>'+
+				'                <h4>'+data[i].get('type')+' Approval</h4>'+
 				'                <p>'+
-				'                    <strong>'+data[i].type+'</strong> - Request form Initiator Name'+
+				'                    <strong>'+data[i].get('type')+'</strong> - Submitted by '+data[i].get('cameFrom')+
 				'                </p>'+
 				'            </div>'+
 				''+

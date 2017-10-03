@@ -41,7 +41,7 @@ $(document).ready(function(){
 		}else{
 			console.log("came with a callback false");
 			//swal("Error!", "No clarifications requests for you", "warning")
-			swal("No clarifications requests for you.")
+			swal("No Clarifications Requests for you.")
 		}
 	});
 }); 

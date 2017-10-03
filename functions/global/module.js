@@ -11,6 +11,18 @@ Date.prototype.subHours = function(h) {
     return this;
 }
 
+function getUrlVars()
+{
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++)
+    {
+        hash = hashes[i].split('=');
+        vars.push(hash[0]);
+        vars[hash[0]] = hash[1];
+    }
+    return vars;
+}
 
 function dateTimeString(eventDate) {
     var monthString = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -162,6 +174,9 @@ function submitPersonal(empId, dataArray, type, callback) {
                 console.log(newEmp);
                 console.log(dataArray);
                 var personalArray = results[0].get("personal"); //to fetch existing array
+                var academicDetailsArray = results[0].get("academicDetails"); //to fetch existing array
+                var familyDetailsArray = results[0].get("familyDetails"); //to fetch existing array
+                var length = dataArray.length;
                 var dummyObj = new Object();
                 if (personalArray[0]) {
                     if (type == "personal") {
@@ -178,12 +193,57 @@ function submitPersonal(empId, dataArray, type, callback) {
                         personalArray[0].maritialStatus = dataArray[12].value;
                         personalArray[0].emergencyContactName = dataArray[14].value;
                         personalArray[0].emergencyContactNumber = dataArray[15].value;
-                    } else {
+                    } else if(type=="address") {
                         personalArray[0].presentAddress = " " + dataArray[0].value + " " + dataArray[1].value + "," + dataArray[2].value + "," + dataArray[3].value + "," + dataArray[4].value + "," + dataArray[5].value;
                         personalArray[0].permanentAddress = " " + dataArray[6].value + " " + dataArray[7].value + "," + dataArray[8].value + "," + dataArray[9].value + "," + dataArray[10].value + "," + dataArray[11].value;
                     }
                 }
+                
+                if (type == "academic") {
+                  for(i=0;i<length;i++){
+                    for(j=0;j<9;j++){
+                      var academicObj = new Object();
+                      academicObj.levelOfEducation = dataArray[(9*i)+j].value;
+                      academicObj.examDegreeTitle = dataArray[(9*i)+j].value;
+                      academicObj.major = dataArray[(9*i)+j].value;
+                      academicObj.instituteName = dataArray[(9*i)+j].value;
+                      academicObj.result = dataArray[(9*i)+j].value;
+                      academicObj.marks = dataArray[(9*i)+j].value;
+                      academicObj.cgpa = dataArray[(9*i)+j].value;
+                      academicObj.scale = dataArray[(9*i)+j].value;
+                      academicObj.yearOfPassing = dataArray[(9*i)+j].value;
+                      academicObj.duration = dataArray[(9*i)+j].value;
+                      academicObj.achievements = dataArray[(9*i)+j].value;
+                      //push this object to the array
+                      academicDetailsArray.push(academicObj);
+                    }  
+                  }
+                }else if(type == "family"){
+                  for(i=0;i<length;i++){
+                    for(j=0;j<9;j++){
+                      var familyObj = new Object();
+                      familyObj.name = dataArray[(9*i)+j].value;
+                      familyObj.relation = dataArray[(9*i)+j].value;
+                      familyObj.gender = dataArray[(9*i)+j].value;
+                      familyObj.contact = dataArray[(9*i)+j].value;
+                      familyObj.dateOfBirth = dataArray[(9*i)+j].value;
+                      familyObj.age = dataArray[(9*i)+j].value;
+                      //push this object to the array
+                      familyDetailsArray.push(familyObj);
+                    }  
+                  }
+
+                }
+                  /* //this fucntion will chek the tabs are completed in th db
+                }
+                checkComplete(results[0],function(status){
+                  //if status 
+                });*/
+
                 newEmp.set('personal', personalArray);
+                newEmp.set('academicDetails', academicDetailsArray);
+                newEmp.set('familyDetails', familyDetailsArray);
+
                 newEmp.save(null, {
                     success: function(Employee) {
                         console.log('New object created with objectId: ' + Employee.id);
@@ -509,7 +569,7 @@ function kraWizardSelect(dept, grade, callback) {
 
 
 //funtion to initiate KRA for some selected array of employees
-function initiateKRA(empArray, initiatorId) {
+function initiateKRA(empArray, initiatorId,callback) {
     //add to kra table
     //add to input table of all employees-being done in addToKraTable
 
@@ -523,6 +583,7 @@ function initiateKRA(empArray, initiatorId) {
                 getKRACount(function(count) { //get count of entries in KRA table
                     for (i = 0; i < results.length; i++) {
                         addToKRATable(results[i], count + i, initiatorId); //to initiate KRA for selection,add values into KRA table
+                        callback(true);
                     }
                 });
             }
@@ -587,19 +648,19 @@ function addToKRATable(empData, kraIndex, initiatorId) {
 }
 
 //function to set kra
-function setKRA(kraArray, callback) {
+function setKRA(kraArray,typeId,callback) {
     console.log("CAme in setKRA");
     //var empId = localStorage.empId;
     //var kraId = localStorage.kraId;
 
     var empId = '';
-    var kraId = 'k_0';
+    var kraId = typeId;
     console.log("The KRA array is:");
     console.log(kraArray);
 
     var Kra = Parse.Object.extend("Kra");
     var query = new Parse.Query(Kra);
-    query.equalTo("kraId", kraId); //match kraId to table
+    query.equalTo("kraId", typeId); //match kraId to table
     query.find({
         success: function(results) {
             if (results.length) {
@@ -627,7 +688,7 @@ function setKRA(kraArray, callback) {
                     success: function(KRA) {
                         // Execute any logic that should take place after the object is saved.
                         console.log('New KRA set with objectId: ' + KRA.id);
-                        addToApprovalTable('KRA', KRA.get('kraId'), KRA.get('supervisorId'), 'live', new Date()); //this will add a copy to input table
+                        addToApprovalTable('KRA', KRA.get('kraId'), KRA.get('supervisorId'),KRA.get('empId'), 'live', new Date()); //this will add a copy to input table
                         callback(true);
                     },
                     error: function(KRA, error) {
@@ -648,13 +709,14 @@ function setKRA(kraArray, callback) {
 }
 
 //function to save as draft KRA
-function setKRADraft(kraArray, callback) {
+function setKRADraft(kraArray,typeId, callback) {
     console.log("Came in setDraft");
     //var empId = localStorage.empId;
     //var kraId = localStorage.kraId;
 
     var empId = '';
-    var kraId = 'k_0';
+    //var kraId = 'k_0';
+    var kraId = typeId;
     console.log(kraArray);
 
     var Kra = Parse.Object.extend("Kra");
@@ -703,6 +765,202 @@ function setKRADraft(kraArray, callback) {
     });
 }
 
+//funtion to initiate Learning for some selected array of employees
+function initiateLearning(empArray, initiatorId,callback) {
+    //add to Learning table
+    //add to input table of all employees-being done in addToLearningTable
+
+    //send notification
+    var Employee = new Parse.Object.extend('Employee');
+    var query = new Parse.Query(Employee);
+    query.containedIn('empId', empArray);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                getLearningCount(function(count) { //get count of entries in Learning table
+                    for (i = 0; i < results.length; i++) {
+                        addToLearningTable(results[i], count + i, initiatorId); //to initiate Learning for selection,add values into Learning table
+                        callback(true);
+                    }
+                });
+            }
+        }
+    })
+}
+
+//function to get count of entries in Learning table
+function getLearningCount(callback) {
+    var Learning = new Parse.Object.extend('Learning');
+    var learningQuery = new Parse.Query(Learning);
+    var learningIndex = 0;
+    learningQuery.count({
+        success: function(count) {
+            console.log(count);
+            callback(count);
+        }
+    });
+}
+
+function addToLearningTable(empData, learningIndex, initiatorId) {
+    console.log(JSON.stringify(empData.get('empId')));
+    //console.log("%s,%d",empId,LearningIndex);
+    var Learning = new Parse.Object.extend('Learning');
+    var newLearning = new Learning();
+    newLearning.set('lrnid', 'lrn_' + learningIndex);
+    newLearning.set('empId', empData.get('empId'));
+    newLearning.set('empRef', empData);
+    var dummyArray = new Array();
+
+    newLearning.set('learningValue', dummyArray); //LearningValue is the name of the array
+    newLearning.set('version', 'live');
+    newLearning.set('startDate', new Date());
+    newLearning.set('endDate', new Date());
+    //set validity date
+    var valDate = new Date();
+    newLearning.set('valDate', valDate.addHours(730));
+
+    var dummyArray = new Array();
+    var dummyObj = new Object(); //create object to push into array
+    dummyObj.supervisorId = empData.get('supervisorId');
+    dummyObj.supervisorInput = "";
+    dummyObj.supervisorReview = false;
+    dummyArray.push(dummyObj); //push object into array
+    newLearning.set('supervisor', dummyArray);
+    newLearning.set('supervisorId', empData.get('supervisorId'));
+
+    newLearning.set('cameFrom', initiatorId);
+    newLearning.set('wentTo', empData.get('empId'));
+    newLearning.set('stage', 'init');
+    console.log("**Adding to Learning Table**");
+    newLearning.save(null, {
+        success: function(Learning) {
+            //console.log('New object created with objectId: ' + Learning.id);
+            console.log(JSON.stringify(Learning));
+            addToInputTable('Learning', Learning.get('lrnid '), Learning.get('empId'), 'live', new Date()); //this will add a copy to input table
+        },
+        error: function(Learning, error) {
+            alert('Failed to create new object, with error code: ' + error.message);
+        }
+    });
+}
+
+//function to set Learning
+function setLearning(learningArray,typeId,callback) {
+    console.log("Came in setLearning");
+    //var empId = localStorage.empId;
+    //var LearningId = localStorage.LearningId;
+
+    var empId = '';
+    //var lrnid = 'lrn_0';
+    console.log("The Learning array is:");
+    console.log(learningArray);
+
+    var Learning = Parse.Object.extend("Learning");
+    var query = new Parse.Query(Learning);
+    query.equalTo("lrnid", typeId); //match LearningId to table
+    query.find({
+        success: function(results) {
+            if (results.length) {
+
+                var newLearning = results[0];
+                var dummyArray = new Array();
+                //push LearningArray into table
+                for (i = 0; i < learningArray.length; i++) {
+                    if (learningArray[i].complete) {
+                        var dummyObj = new Object(); //create object to push into array
+                        dummyObj.developmentArea = learningArray[i].developmentArea;
+                        dummyObj.developmentPlan = learningArray[i].developmentPlan;
+                        dummyObj.learningMos = learningArray[i].learningMos;
+                        dummyObj.timeline = learningArray[i].timeline;
+                        dummyObj.supportRequired = learningArray[i].supportRequired;
+                        dummyArray.push(dummyObj); //push object into array
+                    }
+                }
+                newLearning.set('learningValue', dummyArray); //LearningValue is the name of the array
+                newLearning.set('version', 'live');
+                newLearning.set('stage', 'posted');
+                newLearning.set('endDate', new Date());
+                newLearning.save(null, {
+                    success: function(Learning) {
+                        // Execute any logic that should take place after the object is saved.
+                        console.log('New Learning set with objectId: ' + Learning.id);
+                        addToApprovalTable('Learning', Learning.get('lrnid'), Learning.get('supervisorId'), 'live', new Date()); //this will add a copy to input table
+                        callback(true);
+                    },
+                    error: function(Learning, error) {
+                        // Execute any logic that should take place if the save fails.
+                        // error is a Parse.Error with an error code and message.
+                        callback(false);
+                        console.log('Failed to create new Learning object, with error code: ' + error.message);
+                    }
+                });
+            } else {
+                callback(false);
+            }
+        },
+        error: function(error) {
+            console.log("Error: " + error.code + " " + error.message);
+        }
+    });
+}
+
+//function to save as draft Learning
+function setLearningDraft(learningArray,typeId,callback) {
+    console.log("Came in setDraft");
+    //var empId = localStorage.empId;
+    //var LearningId = localStorage.LearningId;
+
+    var empId = '';
+    //var lrnid = typeId;
+    console.log(typeId);
+    console.log(learningArray);
+
+    var Learning = Parse.Object.extend("Learning");
+    var query = new Parse.Query(Learning);
+    query.equalTo("lrnid", typeId); //match LearningId to table
+    query.find({
+        success: function(results) {
+            if (results.length) {
+                console.log("came in results");
+                var newLearning = results[0];
+                var dummyArray = new Array();
+                //push LearningArray into table using loop
+                for (i = 0; i < learningArray.length; i++) {
+
+                    var dummyObj = new Object(); //create object to push into array
+                    dummyObj.developmentArea = learningArray[i].developmentArea;
+                    dummyObj.developmentPlan = learningArray[i].developmentPlan;
+                    dummyObj.learningMos = learningArray[i].learningMos;
+                    dummyObj.timeline = learningArray[i].timeline;
+                    dummyObj.supportRequired = learningArray[i].supportRequired;
+                    dummyArray.push(dummyObj); //push object into array
+
+                }
+                newLearning.set('learningValue', dummyArray); //LearningValue is the name of the array
+                newLearning.set('version', 'live');
+                newLearning.set('stage', 'draft');
+                newLearning.set('endDate', new Date());
+                newLearning.save(null, {
+                    success: function(Learning) {
+                        console.log('New Learning draft object created with objectId: ' + Learning.id);
+                        addToDraftTable('Learning', Learning.get('lrnid'), Learning.get('empId'), 'live', new Date());
+                        callback(true);
+                    },
+                    error: function(Learning, error) {
+                        callback(false);
+                        console.log('Failed to create new Learning draft object, with error code: ' + error.message);
+                    }
+                });
+            } else {
+                callback(false);
+            }
+        },
+        error: function(error) {
+            console.log("Error: " + error.code + " " + error.message);
+        }
+    });
+}
+
 //Generic Function to add to Input Table
 function addToInputTable(type, typeId, empId, status, startDate) {
     console.log("Adding to Input Table");
@@ -728,7 +986,7 @@ function addToInputTable(type, typeId, empId, status, startDate) {
 }
 
 //Generic Function to add to approval Table
-function addToApprovalTable(type, typeId, empId, status, startDate) {
+function addToApprovalTable(type, typeId, empId,cameFrom, status, startDate) {
     console.log("Adding entry in approval table");
     resetInputTable(typeId, 'inProgress', function() {
         var Approvals = Parse.Object.extend("Approvals");
@@ -738,6 +996,7 @@ function addToApprovalTable(type, typeId, empId, status, startDate) {
         newApprovals.set('typeId', typeId);
         newApprovals.set('empId', empId);
         newApprovals.set('status', status);
+        newApprovals.set('cameFrom', cameFrom);
         newApprovals.set('startDate', startDate);
         //newInputs.set('endDate',new Date());
 
@@ -783,10 +1042,21 @@ function addToDraftTable(type, typeId, empId, status, startDate) {
     resetInputTable(typeId, 'inDraft', function() {
         //setting the draft table entry
         var Drafts = Parse.Object.extend("Drafts");
-        var newDrafts = new Drafts();
+        var query = new Parse.Query(Drafts);
+        query.equalTo("empId",empId);
+        query.equalTo("typeId",typeId);
+        query.find({
+            success: function(results){
+                if(results.length){
+                    var newDrafts = results[0];
+                }else{
+                    var newDrafts = new Drafts();
+                }
+            }
+        });
 
         //newDrafts.set('draftId','draft_0');
-        newDrafts.set('type', 'KRA');
+        newDrafts.set('type', type);
         newDrafts.set('typeId', typeId);
         newDrafts.set('empId', empId);
         newDrafts.set('status', status);
@@ -916,3 +1186,4 @@ function checkClarificationTable(empId,callback) {
         }
     });
 }
+

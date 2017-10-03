@@ -1,8 +1,7 @@
-var empId = localStorage.empId;
 var empObject = JSON.parse(localStorage.empObject);
 var name = empObject.name;
 
-console.log(localStorage.empId);
+//console.log(localStorage.empId);
 console.log(name);
 
 if (location.pathname == "/pages/approvals.html") {
@@ -37,7 +36,7 @@ else if (location.pathname == "/pages/approved.html") {
 else if (location.pathname == "/pages/rejected.html") {
     var rejected = 'start active open';
 }
-else if (location.pathname == "/pages/admin.html") {
+else if (location.pathname == "/pages/controlPanel.html") {
     var admin = 'start active open';
 }
 
@@ -64,7 +63,7 @@ var sidebar = '<div class="page-sidebar-wrapper">'+
 '                                <i class="fa fa-check-square-o"></i>'+
 '                                <span class="title">Approvals</span>'+
 '                                <span class="selected"></span>'+
-'                                <span class="badge badge-danger">5</span>'+
+'                                <span class="badge badge-danger">1</span>'+
 '                            </a>'+
 '                        </li>'+
 '                        <li class="nav-item '+ inputRequests +' ">'+
@@ -123,9 +122,9 @@ var sidebar = '<div class="page-sidebar-wrapper">'+
 '                            <h3 class="uppercase">Admin</h3>'+
 '                        </li>'+
 '                        <li class="nav-item '+ admin +' ">'+
-'                            <a href="admin.html" class="nav-link nav-toggle">'+
+'                            <a href="controlPanel.html" class="nav-link nav-toggle">'+
 '                                <i class="fa fa-gear"></i>'+
-'                                <span class="title">Admin</span>'+
+'                                <span class="title">Control Panel</span>'+
 '                            </a>'+
 '                        </li>                          '+
 '                    </ul>'+

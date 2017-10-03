@@ -4,8 +4,10 @@ $(document).ready(function(){
 	if(!login){
 		window.location.href= "../login.html";
 	}*/
+	var globalTypeId = getUrlVars()["typeId"];
+
 	console.log("Jquery Loaded");
-	checkInitiate();
+	//checkInitiate();
 	
 	$("#submitForm").click(function(){
 		validateKra();
@@ -39,8 +41,9 @@ function checkInitiate(){
 	});
 }
 
-
+//function to save KRA as a draft
 function validateKraDraft(){
+	var globalTypeId = getUrlVars()["typeId"];
 	var empObject = JSON.parse(localStorage.empObject);
 	var grade = empObject.employeeGrade;
 	console.log("This is for draft Grade of Current employee is= "+grade);
@@ -67,16 +70,31 @@ function validateKraDraft(){
 		kraArray.push(obj);
 	}
 	console.log(kraArray);
-	setKRADraft(kraArray,function(status){
+	setKRADraft(kraArray,globalTypeId,function(status){
 		if(status){
-			swal("Success!", "Your KRA was saved as Draft.", "success");//success message after submit
+			swal({
+				  title: "Your KRA was saved as Draft.",
+				  text: "Please access your drafts from the sidemenu.",
+				  type: "success",
+				  showCancelButton: false,
+				  confirmButtonClass: "btn-success",
+				  confirmButtonText: "Ok",
+				  closeOnConfirm: false
+				},
+				function(){
+					console.log("Came in Swal to redirect");
+				  	window.location.href= "../pages/drafts.html";	
+				  	
+				});//success message after submit
 		}else{
 			
 		}
 	});
 }
 
+//function to save KRA with validation
 function validateKra(){
+	var globalTypeId = getUrlVars()["typeId"];
 	var empObject = JSON.parse(localStorage.empObject);
 	var grade = empObject.employeeGrade;
 	console.log("Grade of Current employee is="+grade);
@@ -115,7 +133,7 @@ function validateKra(){
 				proceedWarn(kraArray);
 			}else{
 				console.log("Proceed with clear 5");
-				setKRA(kraArray,function(status){
+				setKRA(kraArray,globalTypeId,function(status){
 				  		if(status){
 				  			console.log("kra submitted success.");
 							swal("Success!", "Your KRA was submitted.", "success"); //success alert
@@ -133,7 +151,7 @@ function validateKra(){
 				proceedWarn(kraArray);
 			}else{
 				console.log("Proceed with clear 3");
-				setKRA(kraArray,function(status){
+				setKRA(kraArray,globalTypeId,function(status){
 				  		if(status){
 				  			console.log("kra submitted success.");
 							swal("Success!", "Your KRA was submitted.", "success");//success alert
@@ -149,7 +167,7 @@ function validateKra(){
 				proceedWarn(kraArray);
 			}else{
 				console.log("Proceed with clear 2");
-				setKRA(kraArray,function(status){
+				setKRA(kraArray,globalTypeId,function(status){
 				  		if(status){
 				  			console.log("kra submitted success.");
 							swal("Success!", "Your KRA was submitted.", "success");//success alert
@@ -213,7 +231,7 @@ function proceedWarn(kraArray){
 				function(){
 					console.log("Came in Swal of proceedWarn");
 				  	//window.location.href= "../pages/kra_wizard.html";	
-				  	setKRA(kraArray,function(status){
+				  	setKRA(kraArray,globalTypeId,function(status){
 				  		if(status){
 				  			console.log("kra submitted success.");
 							swal("Success!", "Your KRA was submitted.", "success");//success message after submit
