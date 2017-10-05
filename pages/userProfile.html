@@ -191,7 +191,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                         <label>Gender</label>
                                                                         <div class="md-radio-inline">
                                                                             <div class="md-radio">
-                                                                                <input type="radio" id="radio14" name="gender" class="md-radiobtn" value="Male">
+                                                                                <input type="radio" id="radio14" name="gender" class="md-radiobtn" value="Male" checked="checked">
                                                                                 <label for="radio14">
                                                                                     <span class="inc"></span>
                                                                                     <span class="check"></span>
@@ -805,7 +805,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                             <div class="mt-repeater-input">
                                                                                 <label class="control-label">Name</label>
                                                                                 <br>
-                                                                                <input type="text" name="group-a[0][familyMemberName]" class="form-control">
+                                                                                <input type="text" name="group-a[0][familyMemberName]" class="form-control" >
                                                                             </div>
                                                                         </div>                                                                        
                                                                         <div class="col-md-6 ">
@@ -827,33 +827,23 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     </div>
                                                                     <div class="row">                                                                  
                                                                         <div class="col-md-6 ">
-                                                                            <div class="mt-repeater-input">
+                                                                            <div class="mt-repeater-input mt-radio-inline">
                                                                                 <label class="control-label">Gender</label>
                                                                                 <br>
-                                                                                <div class="md-radio-inline">
-                                                                                    <div class="md-radio">
-                                                                                        <input type="radio" id="gender1" name="gender"  value="Male" class="md-radiobtn">
-                                                                                        <label for="radio14">
-                                                                                            <span class="inc"></span>
-                                                                                            <span class="check"></span>
-                                                                                            <span class="box"></span> Male </label>
-                                                                                    </div>
-                                                                                    <div class="md-radio">
-                                                                                        <input type="radio" id="gender2" name="gender" class="md-radiobtn">
-                                                                                        <label for="radio15">
-                                                                                            <span class="inc"></span>
-                                                                                            <span class="check"></span>
-                                                                                            <span class="box"></span> Female </label>
-                                                                                    </div>
-                                                                                    <div class="md-radio">
-                                                                                        <input type="radio" id="gender3" name="gender" class="md-radiobtn">
-                                                                                        <label for="radio16">
-                                                                                            <span class="inc"></span>
-                                                                                            <span class="check"></span>
-                                                                                            <span class="box"></span> Other </label>
-                                                                                    </div>
-                                                                                </div>
+                                                                                <label class="mt-radio">
+                                                                                    <input type="radio" name="group-a[0][familyMemberGender]" id="familyMale" value="male" checked="checked"> Male
+                                                                                    <span></span>
+                                                                                </label>
+                                                                                <label class="mt-radio">
+                                                                                    <input type="radio" name="group-a[0][familyMemberGender]" id="familyFemale" value="female"> Female
+                                                                                    <span></span>
+                                                                                </label>
+                                                                                <label class="mt-radio">
+                                                                                    <input type="radio" name="group-a[0][familyMemberGender]" id="familyOther" value="other"> Other
+                                                                                    <span></span>
+                                                                                </label>
                                                                             </div>
+                                                                            
                                                                         </div>
                                                                         <div class="col-md-6 ">
                                                                             <div class="mt-repeater-input">

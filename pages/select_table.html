@@ -92,7 +92,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         <div class="page-toolbar">
                             <!-- BEGIN THEME PANEL -->
                             
-							<!-- END THEME PANEL -->
+                            <!-- END THEME PANEL -->
                         </div>
                         <!-- END PAGE TOOLBAR -->
                     </div>
@@ -119,8 +119,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <thead>
                                             <tr>
                                                 <th class="table-checkbox">
-                                                    <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
-                                                        <input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes" />
+                                                    <input onchange="checkAll(this)" name="chk[]" type="checkbox">
                                                         <span></span>
                                                     </label>
                                                 </th>
@@ -135,16 +134,32 @@ License: You must have a valid license purchased only from themeforest(the above
                                         </tbody>
                                     </table>
                                     <div class="form-actions left">
-                                        <button type="button" class="btn default">Cancel</button>
-                                        <button type="submit" class="btn blue" id="submitKraSelect">
+                                        <button type="button" class="btn default">Go Back</button>
+                                        <button type="submit" class="btn blue hidden" id="submitKraSelect">
                                             <i class=""></i> Save</button>
+                                             <div class="btn-group">
+                                                    <button class="btn green  btn-outline dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Initiate
+                                                        <i class="fa fa-angle-down"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu pull-right">
+                                                        <li>
+                                                            <a class="initKra" href="javascript:;">
+                                                                <i class=""></i> KRA </a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="initLearning" href="javascript:;">
+                                                                <i class=""></i> Learning Agenda </a>
+                                                        </li>
+                                                       
+                                                    </ul>
+                                                </div>
                                     </div>
                                 </div>
                             </div>
                             <!-- END EXAMPLE TABLE PORTLET-->
                         </div>
                        
-					</div>
+                    </div>
                     <!-- END PAGE BASE CONTENT -->
                 </div>
                 <!-- END CONTENT BODY -->
@@ -152,7 +167,7 @@ License: You must have a valid license purchased only from themeforest(the above
             <!-- END CONTENT -->
             <!-- BEGIN QUICK SIDEBAR -->
            
-		   <!-- END QUICK SIDEBAR -->
+           <!-- END QUICK SIDEBAR -->
         </div>
         <!-- END CONTAINER -->
         <!-- BEGIN FOOTER -->
@@ -203,6 +218,26 @@ License: You must have a valid license purchased only from themeforest(the above
                 });
             })
         </script>
+        <script type="text/javascript">
+        function checkAll(ele) {
+            var checkboxes = document.getElementsByTagName('input');
+            if (ele.checked) {
+                for (var i = 0; i < checkboxes.length; i++) {
+                    if (checkboxes[i].type == 'checkbox') {
+                        checkboxes[i].checked = true;
+                    }
+                }
+            } else {
+                for (var i = 0; i < checkboxes.length; i++) {
+                    console.log(i)
+                    if (checkboxes[i].type == 'checkbox') {
+                        checkboxes[i].checked = false;
+                    }
+                }
+            }
+        }
+        </script>
+
         <script src="../functions/apps/selectTable.js"></script>
     </body>
 
