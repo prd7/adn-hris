@@ -21,7 +21,7 @@ $(document).ready(function(){
 				},
 				function(){
 					console.log("Came in Swal");
-				  	//window.location.href= "../login.html";	
+				  	checkStatus(empId,"office"); //used to update input table of HR	
 			});
 			$("#officeInfo :input").attr("disabled", true);
 		});
@@ -46,7 +46,7 @@ $(document).ready(function(){
 				},
 				function(){
 					console.log("Came in Swal");
-				  	//window.location.href= "../login.html";	
+				  	checkStatus(empId,"office"); //used to update input table of HR	
 			});
 			$("#joiningDetails :input").attr("disabled", true);
 		});
@@ -72,7 +72,7 @@ $(document).ready(function(){
 				},
 				function(){
 					console.log("Came in Swal");
-				  	//window.location.href= "../login.html";	
+				  	checkStatus(empId,"office"); //used to update input table of HR	
 			});
 			$("#positionDetails :input").attr("disabled", true);
 		});
@@ -97,7 +97,7 @@ $(document).ready(function(){
 				},
 				function(){
 					console.log("Came in Swal");
-				  	//window.location.href= "../login.html";	
+				  	checkStatus(empId,"office"); //used to update input table of HR	
 			});
 			$("#performanceDetails :input").attr("disabled", true);
 		});
@@ -130,7 +130,7 @@ $(document).ready(function(){
 					},
 					function(){
 						console.log("Came in Swal");
-					  	//window.location.href= "../login.html";	
+					  	checkStatus(empId,"office"); //used to update input table of HR	
 				});
 				$("#previousEmploymentDetail :input").attr("disabled", true);
 			});
@@ -288,7 +288,7 @@ $(document).ready(function(){
 				},
 				function(){
 					console.log("Came in Swal");
-				  	//window.location.href= "../login.html";	
+				  	checkStatus(empId,"office"); //used to update input table of HR	
 			});
 			$("#separationDetails :input").attr("disabled", true);
 		});

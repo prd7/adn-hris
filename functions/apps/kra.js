@@ -6,17 +6,35 @@ $(document).ready(function(){
 	}*/
 	var globalTypeId = getUrlVars()["typeId"];
 	var empId=localStorage.empId;
-
 	console.log("Jquery Loaded");
+
 	//function to check and fetch values for a KRA
 	fetchKra(empId,globalTypeId,function(status,data){
 		if(status){
-			console.log("valid kra");
-			//var stage = data.get("stage");
+			console.log("Valid entry in kra table");
+
 			//var version = data.get("version");
-			//this part will have the if loops to check what part the kra is in
-			
-			console.log(data.get("kraValue"));
+			var stage = data.get("stage");
+			var kraValue = data.get("kraValue");
+			var kraValuelength = (data.get("kraValue")).length;
+			console.log(stage);
+			console.log(kraValue);
+
+			if(stage=="posted"){
+				$("#sample_3 :input").attr("disabled", true);//disables the table after submitting KRA
+				$("#submits").hide()
+				$("#status").html('Your KRA was submitted for review.');
+//experiment starts
+				for(i=0;i<kraValuelength;i++){
+					var index = i+1;
+					$('#txtkra'+index).text(kraValue[i].kra);
+					$("#selkracat"+index).val(kraValue[i].kraCat);
+					$("#selkrawght"+index).val(kraValue[i].kraWeight);
+					$('#txtuos'+index).text(kraValue[i].kraUos);
+					$('#txtmos'+index).text(kraValue[i].kraMos);
+				}
+//experiment ends
+			}
 		}else{
 			swal({
 				  title: "No KRA was Initiated for you!",

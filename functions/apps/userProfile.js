@@ -17,13 +17,9 @@ $(document).ready(function(){
 				  closeOnConfirm: true
 				},
 				function(){
-					console.log("Came in Swal now updating status flag");/*
-					//function to update status flag in the statusPersonal Array
-					updateStatusPersonal(empId,'personal',function(status,data){
-						if(status){
-							console.log(data);
-						}
-					});*/
+					console.log("Came in Swal now updating status flag");
+					checkStatus(empId,"personal"); //used to update input table of HR
+					
 			});
 		});
 		$("#form_sample_1 :input").attr("disabled", true);
@@ -47,12 +43,9 @@ $(document).ready(function(){
 				},
 				function(){
 					console.log("Came in Swal");
+					checkStatus(empId,"personal"); //used to update input table of HR
 				  	//function to update status flag in the statusPersonal Array
-					updateStatusPersonal(empId,'address',function(status,data){
-						if(status){
-							console.log(data);
-						}
-					});	
+						
 			});
 		});
 		$("#form_sample_2 :input").attr("disabled", true);
@@ -64,7 +57,7 @@ $(document).ready(function(){
 		var academicArray = $("#academicDetails").serializeArray();
 		console.log(academicArray);
 		var type= "academic";
-		/*submitPersonal(empId,academicArray,type,function(status){
+		/submitPersonal(empId,academicArray,type,function(status){
 			console.log("Updated address valuess");
 			swal({
 				  title: "Employee academic details updated successfully!",
@@ -78,14 +71,10 @@ $(document).ready(function(){
 				function(){
 					console.log("Came in Swal");
 				  	//function to update status flag in the statusPersonal Array
-					updateStatusPersonal(empId,'academic',function(status,data){
-						if(status){
-							console.log(data);
-						}
-					});
+					checkStatus(empId,"personal"); //used to update input table of HR
 			});
 		});
-		$("#academicDetails :input").attr("disabled", true);*/
+		$("#academicDetails :input").attr("disabled", true);
 	});
 
 	$("#submitFamily").click(function(){
@@ -94,7 +83,7 @@ $(document).ready(function(){
 		var familyArray = $("#familyDetails").serializeArray();
 		console.log(familyArray);
 		var type= "family";
-		/*submitPersonal(empId,familyArray,type,function(status){
+		submitPersonal(empId,familyArray,type,function(status){
 			console.log("Updated address valuess");
 			swal({
 				  title: "Employee family details updated successfully!",
@@ -108,14 +97,10 @@ $(document).ready(function(){
 				function(){
 					console.log("Came in Swal");
 				  	//function to update status flag in the statusPersonal Array
-					updateStatusPersonal(empId,'famnily',function(status,data){
-						if(status){
-							console.log(data);
-						}
-					});	
+					checkStatus(empId,"personal"); //used to update input table of HR	
 			});
 		});
-		$("#familyDetails :input").attr("disabled", true);*/
+		$("#familyDetails :input").attr("disabled", true);
 	});
 
 

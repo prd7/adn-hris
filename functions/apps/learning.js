@@ -11,25 +11,42 @@ $(document).ready(function(){
 	fetchLearning(empId,globalTypeId,function(status,data){
 		if(status){
 			console.log("Valid Learning");
-			//var stage = data.get("stage");
 			//var version = data.get("version");
 			//this part will consist of if condition to check what stage and status the learning is in
+			var stage = data.get("stage");
+			var learningValue = data.get("learningValue");
+			var learningValuelength = (data.get("learningValue")).length;
+			console.log(stage);
 
+			if(stage=="posted"){
+				$("#sample_3 :input").attr("disabled", true);//disables the table after submitting KRA
+				$("#submits").hide()
+
+				for(i=0;i<learningValuelength;i++){
+					var index = i+1;
+					$("#selDevArea"+index).val(learningValue[i].developmentArea);
+					$('#txtDevPlan'+index).text(learningValue[i].developmentPlan);
+					$('#txtMos'+index).text(learningValue[i].learningMos);
+					$('#txtTimeline'+index).text(learningValue[i].supportRequired);
+					$('#txtSupportReq'+index).text(learningValue[i].timeline);
+				}
+				//populate the table from here
 
 			console.log(data.get("learningValue"));
-		}else{
-			swal({
-				  title: "No Learning Agenda was Initiated for you!",
-				  text: "If expected,contact your HR or Supervisor.",
-				  type: "warning",
-				  showCancelButton: false,
-				  confirmButtonClass: "btn-warning",
-				  confirmButtonText: "Ok",
-				  closeOnConfirm: true
-				},
-				function(){
-				  	//window.location.href= "../index.html";	
-			});
+			}else{
+				swal({
+					  title: "No Learning Agenda was Initiated for you!",
+					  text: "If expected,contact your HR or Supervisor.",
+					  type: "warning",
+					  showCancelButton: false,
+					  confirmButtonClass: "btn-warning",
+					  confirmButtonText: "Ok",
+					  closeOnConfirm: true
+					},
+					function(){
+					  	//window.location.href= "../index.html";	
+				});
+			}
 		}
 	});
 

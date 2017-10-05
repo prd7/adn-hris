@@ -174,8 +174,10 @@ function submitPersonal(empId, dataArray, type, callback) {
                 console.log("This is the employee");
                 console.log(newEmp);
                 console.log(dataArray);
+                //access the status array to update status of each accordion
+                var statusArray = results[0].get("statusPersonal");
+                
                 var personalArray = results[0].get("personal"); //to fetch existing array
-                console.log(personalArray);
                 var academicDetailsArray = results[0].get("academicDetails"); //to fetch existing array
                 var familyDetailsArray = results[0].get("familyDetails"); //to fetch existing array
                 var length = dataArray.length;
@@ -196,10 +198,12 @@ function submitPersonal(empId, dataArray, type, callback) {
                     personalArray[0].maritialStatus = dataArray[12].value;
                     personalArray[0].emergencyContactName = dataArray[14].value;
                     personalArray[0].emergencyContactNumber = dataArray[15].value;
+                    statusArray[0].personalStatus = "1";
                     console.log("came till the end");
                 } else if(type=="address") {
                     personalArray[0].presentAddress = " " + dataArray[0].value + " " + dataArray[1].value + "," + dataArray[2].value + "," + dataArray[3].value + "," + dataArray[4].value + "," + dataArray[5].value;
                     personalArray[0].permanentAddress = " " + dataArray[6].value + " " + dataArray[7].value + "," + dataArray[8].value + "," + dataArray[9].value + "," + dataArray[10].value + "," + dataArray[11].value;
+                    statusArray[0].addressStatus = "1";
                 }
                 newEmp.set('personal', personalArray);
                 
@@ -222,6 +226,7 @@ function submitPersonal(empId, dataArray, type, callback) {
                           academicDetailsArray.push(academicObj);
                         }  
                     }
+                    statusArray[0].academicStatus = "1";
                     newEmp.set('academicDetails', academicDetailsArray);
                 }else if(type == "family"){
                   for(i=0;i<length;i++){
@@ -238,27 +243,20 @@ function submitPersonal(empId, dataArray, type, callback) {
                       familyDetailsArray.push(familyObj);
                     }  
                   }
+                  statusArray[0].familyStatus = "1";
                   newEmp.set('familyDetails', familyDetailsArray);
                 }
-                  /* //this fucntion will check the tabs are completed in th db
-                }
-                checkComplete(results[0],function(status){
-                  //if status 
-                });*/
-                //newEmp.set('personal', personalArray);
                 
-
+                newEmp.set('statusPersonal', statusArray);
                 newEmp.save(null, {
                     success: function(Employee) {
                         console.log('New object created with objectId: ' + Employee.id);
                         callback(true);
                     },
                     error: function(Employee, error) {
-                        // error is a Parse.Error with an error code and message.
                         alert('Failed to create new object, with error code: ' + error.message);
                     }
                 });
-                callback(true);
             } else {
                 callback(false);
             }
@@ -268,113 +266,9 @@ function submitPersonal(empId, dataArray, type, callback) {
         }
     });
 }
-/*
-//function to update status of personal profile completion
-function updateStatusPersonal(empId,type,callback){
-    console.log("Came in  to udpate personal array status.");
-    var Employee = Parse.Object.extend("Employee");
-    var query = new Parse.Query(Employee);
-    query.equalTo("empId", empId);
-    query.find({
-        success: function(results){
-            if(results.length){
-                console.log("came into results for empId :"+empId);
-                var newEmp = results[0];
-                var statusArray =results[0].get("statusPersonal");
-                //var dummyObj = new Object();
-                if(type=="personal"){
-                    //update staus in the array here
-                    statusArray[0].personalStatus= "1";
-                }else if(type=="address"){ 
-                    statusArray[0].addressStatus= "1";
-                }else if(type=="academic"){
-                    statusArray[0].academicStatus= "1";
-                }else if(type=="family"){
-                    statusArray[0].familyStatus= "1";
-                }else if(type=="documents"){
-                    statusArray[0].documentStatus= "1";
-                }
 
-                newEmp.set("statusPersonal",statusArray);
-                newEmp.save(null, {
-                    success: function(Employee) {
-                        console.log('New object created with objectId: ' + Employee.id);
-                        callback(true,statusArray[0]);
-                    },
-                    error: function(Employee, error) {
-                        // error is a Parse.Error with an error code and message.
-                        alert('Failed to create new object, with error code: ' + error.message);
-                    }
-                });
-                callback(true,statusArray[0]);
-            }
-        },
-        error: function(error) {
-            console.log("Error: " + error.code + " " + error.message);
-            callback(false,null);
-        }
-    });
-}
-
-//function to update status of personal profile completion
-function updateStatusOffice(empId,type,callback){
-    console.log("Came in  to udpate personal array status.");
-    var Employee = Parse.Object.extend("Employee");
-    var query = new Parse.Query(Employee);
-    query.equalTo("empId", empId);
-    query.find({
-        success: function(results){
-            if(results.length){
-                console.log("came into results for empId :"+empId);
-                var newEmp = results[0];
-                var statusArray =results[0].get("statusOffice");
-                //var dummyObj = new Object();
-                if(type=="officeInfo"){
-                    //update staus in the array here
-                    statusArray[0].officeInfoStatus= "1";
-                }else if(type=="joiningDetails"){ 
-                    statusArray[0].joiningDetailStatus= "1";
-                }else if(type=="positionDetails"){
-                    statusArray[0].positionHistoryStatus= "1";
-                }else if(type=="previousEmployment"){
-                    statusArray[0].perviousEmploymentStatus= "1";
-                }else if(type=="bankDetails"){
-                    statusArray[0].bankStatus= "1";
-                }else if(type=="salaryDetails"){
-                    statusArray[0].salaryStatus= "1";
-                }else if(type=="otherBenefitDetails"){
-                    statusArray[0].otherBenefitStatus= "1";
-                }else if(type=="companyCarDetails"){
-                    statusArray[0].companyCarStatus= "1";
-                }else if(type=="personalCarDetails"){
-                    statusArray[0].personalCarStatus= "1";
-                }else if(type=="separationDetails"){
-                    statusArray[0].separationInfoStatus= "1";
-                }
-
-                newEmp.set("statusOffice",statusArray);
-                newEmp.save(null, {
-                    success: function(Employee) {
-                        console.log('New object created with objectId: ' + Employee.id);
-                        callback(true);
-                    },
-                    error: function(Employee, error) {
-                        // error is a Parse.Error with an error code and message.
-                        alert('Failed to create new object, with error code: ' + error.message);
-                    }
-                });
-                callback(true,statusArray[0]);
-            }
-        },
-        error: function(error) {
-            alert("Error: " + error.code + " " + error.message);
-            callback(false,null);
-        }
-    });
-}
-/*
-//function to check the values of personal array form
-function checkPersonal(empId,callback){
+//function to check the values of status array in database
+function checkStatus(empId,type){
     console.log("Came inside function to check if the values are persent in the array");
 
     var Employee = Parse.Object.extend("Employee");
@@ -384,13 +278,25 @@ function checkPersonal(empId,callback){
         success: function(results) {
             if(results.length){
                 var newEmp = results[0];
-                var statusArray =results[0].get("statusPersonal");
-                console.log(statusArray);
-                var length=statusArray.length;
-                console.log(length);
-                //traverse the loop and check if all the values are set
-                for(i=0;i<length;i++){
-                   if()                     
+                if(type=="personal"){
+                    var statusArray =results[0].get("statusPersonal");
+                    console.log(statusArray);
+                    var length=statusArray.length;
+                    console.log(length);
+                    //traverse the loop and check if all the values are set
+                    if(statusArray[0].personalStatus=="1" && statusArray[0].addressStatus=="1" && statusArray[0].academicStatus=="1" && statusArray[0].familyStatus=="1" && statusArray[0].documentStatus=="1"){
+                        //addToApprovalTable('employeeProfile', 'p_'+Employee.get('empId'), Employee.get('supervisorId'),Employee.get('empId'), 'live', new Date()); //this will add a copy to input table
+                        console.log("all values are true");
+                    }else{
+                        console.log("all values not true");
+                    }       
+                }else if(type=="office"){
+                    var statusArray =results[0].get("statusOffice");
+                    console.log("statusArray");
+                    console.log("Came inside office array");
+                    /*
+                    //addToApprovalTable('employeeProfile', 'p_'+Employee.get('empId'), Employee.get('supervisorId'),Employee.get('empId'), 'live', new Date()); //this will add a copy to input table
+                    */
                 }
             }
         },
@@ -399,13 +305,12 @@ function checkPersonal(empId,callback){
         }
     });
 }
-*/
+
 
 //submit office info
 function submitOfficeInfo(empId, dataArray, type, callback) {
     console.log("Came inside submitOfficeInfo in module.js " + empId);
 
-//functino to 
     var Employee = Parse.Object.extend("Employee");
     var query = new Parse.Query(Employee);
     query.equalTo("empId", empId);
@@ -416,6 +321,9 @@ function submitOfficeInfo(empId, dataArray, type, callback) {
                 var newEmp = results[0];
                 console.log(newEmp); //result found in search
                 console.log(dataArray); //array passed to this function
+
+                //access the status array to update status of each accordion
+                var statusArray = results[0].get("statusOffice");
 
                 var officeArray = results[0].get("officeDetails");
                 var dummyObj = new Object();
@@ -434,6 +342,7 @@ function submitOfficeInfo(empId, dataArray, type, callback) {
                     officeArray[0].city = dataArray[8].value;
                     officeArray[0].country = dataArray[9].value;
                     officeArray[0].costCenter = dataArray[10].value;
+                    statusArray[0].officeInfoStatus = "1"; //status flag for basic office info
                 } else if (type == "joiningDetails") {
                     console.log("came in joiningDetails");
                     officeArray[0].dateOfJoining = dataArray[0].value;
@@ -442,20 +351,23 @@ function submitOfficeInfo(empId, dataArray, type, callback) {
                     officeArray[0].workPermitNumber = dataArray[3].value;
                     officeArray[0].effectiveDate = dataArray[4].value;
                     officeArray[0].expiryDate = dataArray[5].value;
+                    statusArray[0].joiningDetailStatus = "1"; //status flag for joining details info
                 } else if (type == "performanceRating") {
                     console.log("came in performanceRatingr");
                     officeArray[0].pfRating1516 = dataArray[0].value;
                     officeArray[0].pfRating1617 = dataArray[1].value;
+                    statusArray[0].performanceStatus = "1"; //status flag for performance rating
                 } else if (type == "separationDetails") {
                     console.log("came in separationDetails");
                     officeArray[0].dateOfResignation = dataArray[23].value;
                     officeArray[0].dateOfSeparation = dataArray[5].value;
                     officeArray[0].separationEffectiveDate = dataArray[9].value;
                     officeArray[0].separationType = dataArray[24].value;
+                    statusArray[0].separationInfoStatus = "1"; //status flag for separation details
                 }
                 //}
-                console.log("DFmksdmlk");
 
+                newEmp.set('statusOffice', statusArray);
                 newEmp.set('officeDetails', officeArray);
                 newEmp.save(null, {
                     success: function(Employee) {
@@ -463,11 +375,10 @@ function submitOfficeInfo(empId, dataArray, type, callback) {
                         callback(true);
                     },
                     error: function(Employee, error) {
-                        // error is a Parse.Error with an error code and message.
                         alert('Failed to create new object, with error code: ' + error.message);
                     }
                 });
-                callback(true);
+                //callback(true);
             } else {
                 callback(false);
             }
@@ -500,6 +411,7 @@ function submitPositionDetails(empId, dataArray, callback) {
                 newEmp.set('vertical', empArray[5].value);
                 newEmp.set('subVertical', empArray[6].value);
 
+                var statusArray = results[0].get("statusOffice");//array to set the flags of completion
                 var officePosArray = results[0].get("officePositionDetails");
 
                 if (officePosArray) {
@@ -515,8 +427,10 @@ function submitPositionDetails(empId, dataArray, callback) {
                     officePosArray[0].buisnessHrSpocId = dataArray[9].value;
                     officePosArray[0].buisnessHrHeadId = dataArray[10].value;
                     officePosArray[0].groupHrHeadId = dataArray[11].value;
+                    statusArray[0].positionHistoryStatus = "1";
                 }
 
+                newEmp.set('statusOffice', statusArray);
                 newEmp.set('officePositionDetails', officePosArray);
                 newEmp.save(null, {
                     success: function(Employee) {
@@ -552,6 +466,9 @@ function submitpreviousEmployment(empId, dataArray, callback) {
                 var newEmp = results[0];
                 console.log(newEmp);
                 console.log(dataArray);
+                
+                var statusArray = results[0].get("statusOffice");//array to set the flags of completion
+                
                 var dummyArray = new Array();
                 var dummyObj = new Object();
 
@@ -565,7 +482,9 @@ function submitpreviousEmployment(empId, dataArray, callback) {
                 dummyObj.areaOfExperience = dataArray[7].value;
 
                 dummyArray.push(dummyObj); //push object into previosWorkDetails array
+                statusArray[0].perviousEmploymentStatus = "1";
                 newEmp.set('previousWorkDetails', dummyArray);
+                newEmp.set('statusOffice', statusArray); //set the status array
                 newEmp.save(null, {
                     success: function(Employee) {
                         console.log('New previousEmployment object created with objectId: ' + Employee.id);
@@ -573,7 +492,7 @@ function submitpreviousEmployment(empId, dataArray, callback) {
                     },
                     error: function(Employee, error) {
                         alert('Failed to create new object, with error code: ' + error.message);
-                    } // error is a Parse.Error with an error code and message.
+                    } 
                 });
                 callback(true);
             } else {
@@ -599,6 +518,7 @@ function submitPayrollInformation(empId, dataArray, type, callback) {
                 var newEmp = results[0];
             }
             console.log(newEmp);
+            var statusArray = results[0].get("statusOffice");//array to set the flags of completion
 
             if (type == "bankDetails") {
                 var dummyArray = new Array();
@@ -608,6 +528,7 @@ function submitPayrollInformation(empId, dataArray, type, callback) {
                 dummyObj.accountNumber = dataArray[2].value;
                 dummyObj.currency = dataArray[3].value;
                 dummyArray.push(dummyObj);
+                statusArray[0].bankStatus = "1";
                 newEmp.set('bankDetails', dummyArray);
             } else if (type == "salaryDetails") { //salaryDetails
                 var dummyArray = new Array();
@@ -624,6 +545,7 @@ function submitPayrollInformation(empId, dataArray, type, callback) {
                 dummyObj.otherAllowance = dataArray[9].value;
                 dummyObj.totalEarnings = dataArray[10].value;
                 dummyArray.push(dummyObj); //push object into array
+                statusArray[0].salaryStatus = "1";
                 newEmp.set('salaryDetails', dummyArray); //push into salary details array
             } else if (type == "otherBenefitDetails") {
                 var dummyArray = new Array();
@@ -633,6 +555,7 @@ function submitPayrollInformation(empId, dataArray, type, callback) {
                 dummyObj.groupLifeInsurance = dataArray[2].value;
                 dummyObj.hospitalizationScheme = dataArray[3].value;
                 dummyArray.push(dummyObj); //push object into array
+                statusArray[0].otherBenefitStatus = "1";
                 newEmp.set('otherBenefitDetails', dummyArray);
             } else if (type = 'companyCarDetails') {
                 var dummyArray = new Array();
@@ -645,6 +568,7 @@ function submitPayrollInformation(empId, dataArray, type, callback) {
                 dummyObj.driverAllowance = dataArray[5].value;
                 dummyObj.grossPay = dataArray[6].value;
                 dummyArray.push(dummyObj); //push object into array
+                statusArray[0].companyCarStatus = "1";
                 newEmp.set('companyCarDetails', dummyArray);
             } else if (type == "personalCarDetails") {
                 var dummyArray = new Array();
@@ -655,9 +579,10 @@ function submitPayrollInformation(empId, dataArray, type, callback) {
                 dummyObj.expiryDate = dataArray[2].value;
                 dummyObj.ownCarUsageAllowance = dataArray[3].value;
                 dummyArray.push(dummyObj); //push object into array
+                statusArray[0].personalCarStatus = "1";
                 newEmp.set('personalCarDetails', dummyArray);
             }
-
+            newEmp.set('statusOffice', statusArray); //set the status array
             newEmp.save(null, {
                 success: function(Employee) {
                     console.log('New payroll Info object created with objectId: ' + Employee.id);
@@ -1012,12 +937,11 @@ function setLearning(learningArray,typeId,callback) {
                     console.log("got inside for loop");
                     if (learningArray[i].complete) {
                         var dummyObj = new Object(); //create object to push into array
-                        dummyObj.developmentArea = learningArray[i].developmentArea;
-                        dummyObj.developmentPlan = learningArray[i].developmentPlan;
-                        dummyObj.learningMos = learningArray[i].learningMos;
-                        dummyObj.timeline = learningArray[i].timeline;
-                        dummyObj.supportRequired = learningArray[i].supportRequired;
-                        //newLearning.push(dummyObj); //push object into array
+                        dummyObj.developmentArea = learningArray[i].learningDevArea;
+                        dummyObj.developmentPlan = learningArray[i].learningDevPlan;
+                        dummyObj.learningMos = learningArray[i].learningMeasureofSuccess;
+                        dummyObj.timeline = learningArray[i].learningTimeline;
+                        dummyObj.supportRequired = learningArray[i].learningSupportRequired;
                         dummyArray.push(dummyObj); //push object into array
                     }
                 }
@@ -1031,7 +955,7 @@ function setLearning(learningArray,typeId,callback) {
                     success: function(Learning) {
                         // Execute any logic that should take place after the object is saved.
                         console.log('New Learning set with objectId: ' + Learning.id);
-                        //addToApprovalTable('Learning', Learning.get('lrnid'), Learning.get('supervisorId'),Learning.get('empId'), 'live', new Date()); //this will add a copy to input table
+                        addToApprovalTable('Learning', Learning.get('lrnid'), Learning.get('supervisorId'),Learning.get('empId'), 'live', new Date()); //this will add a copy to input table
                         callback(true);
                     },
                     error: function(Learning, error) {
@@ -1147,8 +1071,9 @@ function addToInputTable(type, typeId, empId, status, startDate) {
 function addToApprovalTable(type, typeId, empId, cameFrom, status, startDate) {
     console.log("Adding entry in approval table");
     resetInputTable(typeId, 'inProgress', function() {
+        console.log("INput table reset succes,came back to add to approval");
         var Approvals = Parse.Object.extend("Approvals");
-
+        var query = new Parse.Query(Approvals);
         query.equalTo("empId",empId);
         query.equalTo("typeId",typeId);
         query.find({
@@ -1226,10 +1151,11 @@ function resetInputTable(typeId, status, callback) {
     query.find({
         success: function(results) {
             if (results.length) {
-                results[0].set('status', status);
-                results[0].save(null, {
+                console.log("got values in input table");
+                var newInputs=results[0];
+                newInputs.set('status', status);
+                newInputs.save(null, {
                     success: function(Inputs) {
-                        //resetDraftTable(typeId,'dead',function(){ callback(); //});
                         callback();
                     },
                     error: function(Inputs, error) {
@@ -1237,6 +1163,7 @@ function resetInputTable(typeId, status, callback) {
                     }
                 });
             } else {
+                console.log("failed in input table");
                 callback();
             }
         }
@@ -1252,8 +1179,9 @@ function resetDraftTable(typeId, status, callback) {
     query.find({
         success: function(results) {
             if (results.length) {
-                results[0].set('status', status);
-                results[0].save(null, {
+                var newDraft = results[0];
+                newDraft.set('status', status);
+                newDraft.save(null, {
                     success: function(Drafts) {
                         callback();
                     },
