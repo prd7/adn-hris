@@ -12,17 +12,21 @@ $(document).ready(function(){
 				  text: " Your Information has been saved.",
 				  type: "success",
 				  showCancelButton: false,
-				  confirmButtonClass: "btn-success",
+				  confirmButtoynClass: "btn-success",
 				  confirmButtonText: "Ok",
 				  closeOnConfirm: true
 				},
 				function(){
-					console.log("Came in Swal");
-				  	//window.location.href= "../login.html";	
+					console.log("Came in Swal now updating status flag");/*
+					//function to update status flag in the statusPersonal Array
+					updateStatusPersonal(empId,'personal',function(status,data){
+						if(status){
+							console.log(data);
+						}
+					});*/
 			});
 		});
 		$("#form_sample_1 :input").attr("disabled", true);
-		//$('#form_sample_1 :input').attr('readonly', 'readonly');
 	});
 
 	$("#submitAddress").click(function(){
@@ -43,7 +47,12 @@ $(document).ready(function(){
 				},
 				function(){
 					console.log("Came in Swal");
-				  	//window.location.href= "../login.html";	
+				  	//function to update status flag in the statusPersonal Array
+					updateStatusPersonal(empId,'address',function(status,data){
+						if(status){
+							console.log(data);
+						}
+					});	
 			});
 		});
 		$("#form_sample_2 :input").attr("disabled", true);
@@ -68,7 +77,12 @@ $(document).ready(function(){
 				},
 				function(){
 					console.log("Came in Swal");
-				  	//window.location.href= "../login.html";	
+				  	//function to update status flag in the statusPersonal Array
+					updateStatusPersonal(empId,'academic',function(status,data){
+						if(status){
+							console.log(data);
+						}
+					});
 			});
 		});
 		$("#academicDetails :input").attr("disabled", true);*/
@@ -93,7 +107,12 @@ $(document).ready(function(){
 				},
 				function(){
 					console.log("Came in Swal");
-				  	//window.location.href= "../login.html";	
+				  	//function to update status flag in the statusPersonal Array
+					updateStatusPersonal(empId,'famnily',function(status,data){
+						if(status){
+							console.log(data);
+						}
+					});	
 			});
 		});
 		$("#familyDetails :input").attr("disabled", true);*/

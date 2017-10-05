@@ -4,11 +4,34 @@ $(document).ready(function(){
 	if(!login){
 		window.location.href= "../login.html";
 	}*/
-	//thsi will get the typeId from URL
 	var globalTypeId = getUrlVars()["typeId"];
-	console.log("the type ID is: "+globalTypeId);
+	var empId=localStorage.empId;
 	console.log("Jquery Loaded");
-	//checkInitiate();
+
+	fetchLearning(empId,globalTypeId,function(status,data){
+		if(status){
+			console.log("Valid Learning");
+			//var stage = data.get("stage");
+			//var version = data.get("version");
+			//this part will consist of if condition to check what stage and status the learning is in
+
+
+			console.log(data.get("learningValue"));
+		}else{
+			swal({
+				  title: "No Learning Agenda was Initiated for you!",
+				  text: "If expected,contact your HR or Supervisor.",
+				  type: "warning",
+				  showCancelButton: false,
+				  confirmButtonClass: "btn-warning",
+				  confirmButtonText: "Ok",
+				  closeOnConfirm: true
+				},
+				function(){
+				  	//window.location.href= "../index.html";	
+			});
+		}
+	});
 
 	$("#submitFormLearning").click(function(){
 		validateLearning();
@@ -35,7 +58,6 @@ function validateLearningDraft(){
 		var learningMeasureofSuccess = "#txtMos"+index;
 		var learningTimeline = "#txtTimeline"+index;
 		var learningSupportRequired = "#txtSupportReq"+index;
-		/***********************************************/
 		obj.learningDevArea = $(learningDevArea).find(":selected").val();
 		obj.learningDevPlan =$(learningDevPlan).val();
 		obj.learningMeasureofSuccess =$(learningMeasureofSuccess).val();
@@ -63,8 +85,7 @@ function validateLearningDraft(){
 				function(){
 					console.log("Came in Swal to redirect");
 				  	window.location.href= "../pages/drafts.html";	
-				  	
-				});//success message after submit
+				});
 		}else{
 			
 		}
@@ -72,12 +93,13 @@ function validateLearningDraft(){
 }
 
 
-//function to save KRA with validation
+//function to save Learning with validation
 function validateLearning(){
+	var globalTypeId = getUrlVars()["typeId"];
 	var empObject = JSON.parse(localStorage.empObject);
 	var empId = localStorage.empId;
 
-	console.log("This is for draft Learning of "+empId);
+	console.log("This is for Learning of "+empId);
 	var rowLength = 7;
 	var learningArray = new Array();
 	for(i=0;i<rowLength;i++){
@@ -88,7 +110,6 @@ function validateLearning(){
 		var learningMeasureofSuccess = "#txtMos"+index;
 		var learningTimeline = "#txtTimeline"+index;
 		var learningSupportRequired = "#txtSupportReq"+index;
-		/***********************************************/
 		obj.learningDevArea = $(learningDevArea).find(":selected").val();
 		obj.learningDevPlan =$(learningDevPlan).val();
 		obj.learningMeasureofSuccess =$(learningMeasureofSuccess).val();
@@ -103,20 +124,15 @@ function validateLearning(){
 	}
 	console.log(learningArray);
 
-	/*
-	setLearning(learningArray,function(status){
+	setLearning(learningArray,globalTypeId,function(status){
   		if(status){
-  			console.log("Learning submitted success.");
-			swal("Success!", "Your Learning was submitted.", "success");//success message after submit
-			$("#sample_3 :input").attr("disabled", true);//disables the table after submitting KRA
+  			console.log("Learning submitted successfull.");
+			$("#sample_3 :input").attr("disabled", true);//disables the table after submitting LEarning
 			$("#submits").hide();
-			//$("#status").html('KRAs submitted sucessfully on  Pending for your Supervisor review');
+			//$("#status").html('Learning submitted sucessfully on  Pending for your Supervisor review');
   		}else{
-
+  			swal("Error!", "Your Learning was not submitted.", "wawrning");
   		}
   	});
-	*/
-	
 	//Condition to check
-	
 }

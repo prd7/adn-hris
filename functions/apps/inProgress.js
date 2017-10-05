@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	console.log("Jquery inProgress requests Loaded");
 	var empId = localStorage.empId;
-	/*
+	
 	checkInProgress(empId,function(status,data){
 		if(status){
 			var awaitingResponses = data.length;
@@ -15,15 +15,13 @@ $(document).ready(function(){
 			for( var i = 0; i < data.length; i++ )
 	        {
 	        	var inProgressListObject = '<li class="todo-projects-item">'+
-				'    <a href="kra.html">'+
+				'    <!--a href="'+data[i].get('type')+'.html?typeId='+data[i].get('typeId')+'"-->'+
 				'        <div class="row">'+
 				'            <div class="col-sm-6 col-xs-12">'+
 				'                <img class="img-circle pull-left" style="margin-top: 5px; margin-right: 10px" src="../assets/pages/media/users/avatar1.jpg" width="54px" height="54px">'+
-				'                <h4>KRA</h4>'+
+				'                <h4>'+data[i].get('type')+'</h4>'+
 				'                <p>'+
-				'                    <strong>'+data[i].type+'</strong> - Requ
-
-				est form Initiator Name'+
+				'                    <strong>'+data[i].get('type')+'</strong> - Pending for review at Supervisor Name'+
 				'                </p>'+
 				'            </div>'+
 				''+
@@ -45,5 +43,5 @@ $(document).ready(function(){
 			//swal("Error!", "No inProgress requests for you", "warning")
 			swal("No inProgress requests for you");
 		}
-	});*/
+	});
 }); 

@@ -1,27 +1,27 @@
 $(document).ready(function(){
-	console.log("Jquery approval requests Loaded");
+	console.log("Jquery approved requests Loaded");
 	var empId = localStorage.empId;
 	
-	checkApprovalTable(empId,function(status,data){
+	checkApproved(empId,function(status,data){
 		if(status){
 			var awaitingResponses = data.length;
 			if(awaitingResponses==0){
-				$("#awaitingResponses").html('No Awaiting Responses.');	
+				$("#awaitingResponses").html('No Approved Responses.');	
 			}else if(awaitingResponses==1){
-				$("#awaitingResponses").html(awaitingResponses+' Awaiting Response');
+				$("#awaitingResponses").html(awaitingResponses+' Approved Response');
 			}else{
-				$("#awaitingResponses").html(awaitingResponses+' Awaiting Responses');
+				$("#awaitingResponses").html(awaitingResponses+' Approved Responses');
 			}
 			for( var i = 0; i < data.length; i++ )
 	        {
-	        	var approvalListObject = '<li class="todo-projects-item">'+
-				'    <a href="'+data[i].get('type')+'_approval.html?typeId='+data[i].get('typeId')+'">'+
+	        	var approvedListObject = '<li class="todo-projects-item">'+
+				'    <!--a href="'+data[i].get('type')+'.html?typeId='+data[i].get('typeId')+'"-->'+
 				'        <div class="row">'+
 				'            <div class="col-sm-6 col-xs-12">'+
 				'                <img class="img-circle pull-left" style="margin-top: 5px; margin-right: 10px" src="../assets/pages/media/users/avatar1.jpg" width="54px" height="54px">'+
-				'                <h4>'+data[i].get('type')+' Approval</h4>'+
+				'                <h4>'+data[i].get('type')+'</h4>'+
 				'                <p>'+
-				'                    <strong>'+data[i].get('type')+'</strong> - Submitted by '+data[i].get('cameFrom')+
+				'                    <strong>'+data[i].get('type')+'</strong> - Request form Initiator Name'+
 				'                </p>'+
 				'            </div>'+
 				''+
@@ -36,12 +36,13 @@ $(document).ready(function(){
 				'</li>';
 					
 				//the parent div where the div should be appended
-				$("#approvalReq ul").append(approvalListObject);
+				$("#approved ul").append(approvedListObject);
 			}
 		}else{
+			$("#awaitingResponses").html('No Approved Responses.');
 			console.log("came with a callback false");
-			//swal("Error!", "No Approval requests for you", "warning")
-			swal("No Approval requests for you");
+			//swal("Error!", "No approved requests for you", "warning")
+			swal("You do not have any approved entries yet.");
 		}
 	});
 }); 

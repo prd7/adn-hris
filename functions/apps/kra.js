@@ -5,24 +5,18 @@ $(document).ready(function(){
 		window.location.href= "../login.html";
 	}*/
 	var globalTypeId = getUrlVars()["typeId"];
+	var empId=localStorage.empId;
 
 	console.log("Jquery Loaded");
-	//checkInitiate();
-	
-	$("#submitForm").click(function(){
-		validateKra();
-	});
-	$("#saveDraft").click(function(){
-		validateKraDraft();
-	});
-});
-
-function checkInitiate(){
-	console.log("Checking wether KRA was initaite");
-	var empId=localStorage.empId;
-	checkKra(empId,function(status){
+	//function to check and fetch values for a KRA
+	fetchKra(empId,globalTypeId,function(status,data){
 		if(status){
 			console.log("valid kra");
+			//var stage = data.get("stage");
+			//var version = data.get("version");
+			//this part will have the if loops to check what part the kra is in
+			
+			console.log(data.get("kraValue"));
 		}else{
 			swal({
 				  title: "No KRA was Initiated for you!",
@@ -34,12 +28,19 @@ function checkInitiate(){
 				  closeOnConfirm: true
 				},
 				function(){
-					//console.log("");
-				  	window.location.href= "../index.html";	
+				  	//window.location.href= "../index.html";	
 			});
 		}
 	});
-}
+
+	
+	$("#submitForm").click(function(){
+		validateKra();
+	});
+	$("#saveDraft").click(function(){
+		validateKraDraft();
+	});
+});
 
 //function to save KRA as a draft
 function validateKraDraft(){

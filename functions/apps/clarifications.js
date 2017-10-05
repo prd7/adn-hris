@@ -15,7 +15,7 @@ $(document).ready(function(){
 			for( var i = 0; i < data.length; i++ )
 	        {
 	        	var clarificationsListObject = '<li class="todo-projects-item">'+
-				'    <a href="kra.html">'+
+				'    <a href="'+data[i].get('type')+'.html?typeId='+data[i].get('typeId')+'">'+
 				'        <div class="row">'+
 				'            <div class="col-sm-6 col-xs-12">'+
 				'                <img class="img-circle pull-left" style="margin-top: 5px; margin-right: 10px" src="../assets/pages/media/users/avatar1.jpg" width="54px" height="54px">'+
@@ -40,6 +40,7 @@ $(document).ready(function(){
 			}
 		}else{
 			console.log("came with a callback false");
+			$("#awaitingResponses").html('No Awaiting Responses.');	
 			//swal("Error!", "No clarifications requests for you", "warning")
 			swal("No Clarifications Requests for you.")
 		}

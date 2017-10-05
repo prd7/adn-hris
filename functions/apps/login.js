@@ -37,7 +37,6 @@ $('.forget-password').click(function(){
 					else{
 						window.location.href= "pages/password_change.html"; //redirect to change password for new user
 					}
-					
 				}
 				else{
 					alert("Wrong username or password.");

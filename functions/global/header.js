@@ -318,14 +318,14 @@ var header = '<div class="page-header navbar navbar-fixed-top">'+
 '                                            <i class="icon-user"></i> My Profile </a>'+
 '                                    </li>'+
 '                                    <li>'+
-'                                        <a href="app_todo_2.html">'+
+'                                        <a href="controlPanel.html">'+
 '                                            <i class="icon-rocket"></i> My Tasks'+
 '                                            <span class="badge badge-success"> 7 </span>'+
 '                                        </a>'+
 '                                    </li>'+
 '                                    <li class="divider"> </li>'+
 '                                    <li>'+
-'                                        <a href="page_user_lock_1.html">'+
+'                                        <a href="../lockscreen.html">'+
 '                                            <i class="icon-lock"></i> Lock Screen </a>'+
 '                                    </li>'+
 '                                    <li>'+

@@ -1,12 +1,13 @@
 $(document).ready(function(){
 	console.log("Jquery officeProfile Loaded");
+	var globalEmpId = getUrlVars()["empId"];
 
 	$("#submitOfficeInfo").click(function(){
 		var officeInfo = $("#officeInfo").serializeArray();
 		console.log(officeInfo);
-		//event.preventDefault(); //to prevent form from auto submitting
-		//var empId=localStorage.empId; //gives empid needed to search a perticular employee
-		var empId= 'E10010';
+		//var globalEmpId = getUrlVars()["empId"]; //gives empid needed to search a perticular employee
+		//var empId = globalEmpId; //this is the empId from URL
+		var empId= 'E1001';
 
 		submitOfficeInfo(empId,officeInfo,'basicOffice',function(status){
 			swal({
@@ -29,9 +30,9 @@ $(document).ready(function(){
 	$("#submitJoiningDetails").click(function(){
 		var joiningDetails = $("#joiningDetails").serializeArray();
 		console.log(joiningDetails);
-		//event.preventDefault(); //to prevent form from auto submitting
-		//var empId=localStorage.empId; //gives empid needed to search a perticular employee
-		var empId= 'E10010';
+		//var globalEmpId = getUrlVars()["empId"]; //gives empid needed to search a perticular employee
+		//var empId = globalEmpId; //this is the empId from URL
+		var empId= 'E1001';
 
 		submitOfficeInfo(empId,joiningDetails,'joiningDetails',function(status){
 			swal({
@@ -55,9 +56,9 @@ $(document).ready(function(){
 	$("#submitPositionDetails").click(function(){
 		var positionDetails = $("#positionDetails").serializeArray();
 		console.log(positionDetails);
-		//event.preventDefault(); //to prevent form from auto submitting
-		//var empId=localStorage.empId; //gives empid needed to search a perticular employee
-		var empId= 'E10010';
+		//var globalEmpId = getUrlVars()["empId"]; //gives empid needed to search a perticular employee
+		//var empId = globalEmpId; //this is the empId from URL
+		var empId= 'E1001';
 
 		submitPositionDetails(empId,positionDetails,function(status){
 			swal({
@@ -80,9 +81,9 @@ $(document).ready(function(){
 	$("#submitPerformanceDetails").click(function(){
 		var performanceDetails = $("#performanceDetails").serializeArray();
 		console.log(performanceDetails);
-		//event.preventDefault(); //to prevent form from auto submitting
-		//var empId=localStorage.empId; //gives empid needed to search a perticular employee
- 		var empId= 'E10010';
+		//var globalEmpId = getUrlVars()["empId"]; //gives empid needed to search a perticular employee
+		//var empId = globalEmpId; //this is the empId from URL
+ 		var empId= 'E1001';
 
 		submitOfficeInfo(empId,performanceDetails,'performanceRating',function(status){
 			swal({
@@ -103,7 +104,8 @@ $(document).ready(function(){
 	});	
 
 	$("#submitpreviousEmployment").click(function(){
-		var empId= 'E10010';
+		//here we will use the empId for the file
+		var empId= 'E1001';
 		var companyName = $("#companyName1").val();
 		if(companyName=""){
 			console.log("Not filled the mandatory  fields");
@@ -112,8 +114,9 @@ $(document).ready(function(){
 			var previousEmploymentDetail = $("#previousEmploymentDetail").serializeArray();
 			console.log(previousEmploymentDetail);
 			event.preventDefault(); //to prevent form from auto submitting
-			//var empId=localStorage.empId; //gives empid needed to search a perticular employee
-			var empId= 'E10010';
+			//var globalEmpId = getUrlVars()["empId"]; //gives empid needed to search a perticular employee
+			//var empId = globalEmpId; //this is the empId from URL
+			var empId= 'E1001';
 			
 			submitpreviousEmployment(empId,previousEmploymentDetail,function(status){
 				swal({
@@ -140,8 +143,9 @@ $(document).ready(function(){
 		var bankDetails = $("#bankDetails").serializeArray();
 		console.log(bankDetails);
 		event.preventDefault(); //to prevent form from auto submitting
-		//var empId=localStorage.empId; //gives empid needed to search a perticular employee
-		var empId= 'E10010';
+		//var globalEmpId = getUrlVars()["empId"]; //gives empid needed to search a perticular employee
+		//var empId = globalEmpId; //this is the empId from URL
+		var empId= 'E1001';
 		
 		submitPayrollInformation(empId,bankDetails,'bankDetails',function(status){
 			swal({
@@ -167,8 +171,9 @@ $(document).ready(function(){
 		var salaryDetails = $("#salaryDetails").serializeArray();
 		console.log(salaryDetails);
 		event.preventDefault(); //to prevent form from auto submitting
-		//var empId=localStorage.empId; //gives empid needed to search a perticular employee
-		var empId= 'E10010';
+		//var globalEmpId = getUrlVars()["empId"]; //gives empid needed to search a perticular employee
+		//var empId = globalEmpId; //this is the empId from URL
+		var empId= 'E1001';
 		
 		submitPayrollInformation(empId,salaryDetails,'salaryDetails',function(status){
 			swal({
@@ -192,8 +197,9 @@ $(document).ready(function(){
 		var otherBenefitDetails = $("#otherBenefitDetails").serializeArray();
 		console.log(otherBenefitDetails);
 		event.preventDefault(); //to prevent form from auto submitting
-		//var empId=localStorage.empId; //gives empid needed to search a perticular employee
-		var empId= 'E10010';
+		//var globalEmpId = getUrlVars()["empId"]; //gives empid needed to search a perticular employee
+		//var empId = globalEmpId; //this is the empId from URL
+		var empId= 'E1001';
 		
 		submitPayrollInformation(empId,otherBenefitDetails,'otherBenefitDetails',function(status){
 			swal({
@@ -217,8 +223,9 @@ $(document).ready(function(){
 		var companyCarDetails = $("#companyCarDetails").serializeArray();
 		console.log(companyCarDetails);
 		event.preventDefault(); //to prevent form from auto submitting
-		//var empId=localStorage.empId; //gives empid needed to search a perticular employee
-		var empId= 'E10010';
+		//var globalEmpId = getUrlVars()["empId"]; //gives empid needed to search a perticular employee
+		//var empId = globalEmpId; //this is the empId from URL
+		var empId= 'E1001';
 				
 		submitPayrollInformation(empId,companyCarDetails,'companyCarDetails',function(status){
 			swal({
@@ -241,8 +248,9 @@ $(document).ready(function(){
 		var personalCarDetails = $("#personalCarDetails").serializeArray();
 		console.log(personalCarDetails);
 		event.preventDefault(); //to prevent form from auto submitting
-		//var empId=localStorage.empId; //gives empid needed to search a perticular employee
-		var empId= 'E10010';
+		//var globalEmpId = getUrlVars()["empId"]; //gives empid needed to search a perticular employee
+		//var empId = globalEmpId; //this is the empId from URL
+		var empId= 'E1001';
 				
 		submitPayrollInformation(empId,personalCarDetails,'personalCarDetails',function(status){
 			swal({
@@ -264,9 +272,9 @@ $(document).ready(function(){
 	$("#submitSeparationDetails").click(function(){
 		var separationDetails = $("#separationDetails").serializeArray();
 		console.log(separationDetails);
-		//event.preventDefault(); //to prevent form from auto submitting
-		//var empId=localStorage.empId; //gives empid needed to search a perticular employee
- 		var empId= 'E10010';
+		//var globalEmpId = getUrlVars()["empId"]; //gives empid needed to search a perticular employee
+		//var empId = globalEmpId; //this is the empId from URL
+ 		var empId= 'E1001';
 
 		submitOfficeInfo(empId,separationDetails,'separationDetails',function(status){
 			swal({
