@@ -50,6 +50,33 @@ function dateTimeString(eventDate) {
     return finalTime;
 }
 
+//a generic function to send notifications
+function sendNoti(senderId,type,title,body,recipientId){
+    var Notification = Parse.Object.extend("Notification");
+    var newNoti = new Notification();
+
+    //newNoti.set('notiId','noti_0');
+    newNoti.set('senderId',senderId);
+    newNoti.set('type',type);
+    newNoti.set('title',title);
+    newNoti.set('body',body);
+    newNoti.set('recipientId',recipientId); 
+    newNoti.set('isUnread',true);
+    //newNoti.set('isHidden',false);
+    newNoti.set('startDate',new Date());
+    //newNoti.set('readDate',new Date());
+
+    newNoti.save(null, {
+      success: function(Notification) {
+        console.log("notifications sent");
+        console.log('New object created with objectId: ' + Notification.id);
+      },
+      error: function(Notification, error) {
+        console.log('Failed to create new object, with error code: ' + error.message);
+      }
+    });
+} 
+
 //function to add new employee
 function addEmployee(empArray, callback) {
     var Emp = new Parse.Object.extend('Employee');
@@ -198,12 +225,13 @@ function submitPersonal(empId, dataArray, type, callback) {
                     personalArray[0].maritialStatus = dataArray[12].value;
                     personalArray[0].emergencyContactName = dataArray[14].value;
                     personalArray[0].emergencyContactNumber = dataArray[15].value;
-                    statusArray[0].personalStatus = "1";
+                    statusArray[0].personalStatus = true;
                     console.log("came till the end");
+                    console.log(statusArray[0].personalStatus);
                 } else if(type=="address") {
                     personalArray[0].presentAddress = " " + dataArray[0].value + " " + dataArray[1].value + "," + dataArray[2].value + "," + dataArray[3].value + "," + dataArray[4].value + "," + dataArray[5].value;
                     personalArray[0].permanentAddress = " " + dataArray[6].value + " " + dataArray[7].value + "," + dataArray[8].value + "," + dataArray[9].value + "," + dataArray[10].value + "," + dataArray[11].value;
-                    statusArray[0].addressStatus = "1";
+                    statusArray[0].addressStatus = true
                 }
                 newEmp.set('personal', personalArray);
                 
@@ -226,7 +254,7 @@ function submitPersonal(empId, dataArray, type, callback) {
                           academicDetailsArray.push(academicObj);
                         }  
                     }
-                    statusArray[0].academicStatus = "1";
+                    statusArray[0].academicStatus = true
                     newEmp.set('academicDetails', academicDetailsArray);
                 }else if(type == "family"){
                   for(i=0;i<length;i++){
@@ -243,7 +271,7 @@ function submitPersonal(empId, dataArray, type, callback) {
                       familyDetailsArray.push(familyObj);
                     }  
                   }
-                  statusArray[0].familyStatus = "1";
+                  statusArray[0].familyStatus = true
                   newEmp.set('familyDetails', familyDetailsArray);
                 }
                 
@@ -268,7 +296,7 @@ function submitPersonal(empId, dataArray, type, callback) {
 }
 
 //function to check the values of status array in database
-function checkStatus(empId,type){
+function checkStatus(empId,type,callback){
     console.log("Came inside function to check if the values are persent in the array");
 
     var Employee = Parse.Object.extend("Employee");
@@ -280,23 +308,25 @@ function checkStatus(empId,type){
                 var newEmp = results[0];
                 if(type=="personal"){
                     var statusArray =results[0].get("statusPersonal");
-                    console.log(statusArray);
+                    //console.log(statusArray);
                     var length=statusArray.length;
-                    console.log(length);
-                    //traverse the loop and check if all the values are set
-                    if(statusArray[0].personalStatus=="1" && statusArray[0].addressStatus=="1" && statusArray[0].academicStatus=="1" && statusArray[0].familyStatus=="1" && statusArray[0].documentStatus=="1"){
+                    if(statusArray[0].personalStatus && statusArray[0].addressStatus && statusArray[0].academicStatus && statusArray[0].familyStatus && statusArray[0].documentStatus){
                         //addToApprovalTable('employeeProfile', 'p_'+Employee.get('empId'), Employee.get('supervisorId'),Employee.get('empId'), 'live', new Date()); //this will add a copy to input table
-                        console.log("all values are true");
+                        console.log("all values are true in personal status");
                     }else{
-                        console.log("all values not true");
-                    }       
+                        console.log("All status flags are not true yet");
+                    } 
+                    //console.log(results[0].get("personal"));
+                    callback(results[0]);      
                 }else if(type=="office"){
                     var statusArray =results[0].get("statusOffice");
-                    console.log("statusArray");
+                    console.log(statusArray);
                     console.log("Came inside office array");
-                    /*
-                    //addToApprovalTable('employeeProfile', 'p_'+Employee.get('empId'), Employee.get('supervisorId'),Employee.get('empId'), 'live', new Date()); //this will add a copy to input table
-                    */
+                    if(statusArray[0].officeInfoStatus && statusArray[0].joiningDetailStatus && statusArray[0].performanceStatus && statusArray[0].separationInfoStatus && statusArray[0].positionHistoryStatus && statusArray[0].perviousEmploymentStatus && statusArray[0].bankStatus && statusArray[0].salaryStatus && statusArray[0].otherBenefitStatus && statusArray[0].companyCarStatus && statusArray[0].personalCarStatus){
+                        console.log("all vlaues are true in office status");
+                        //addToApprovalTable('employeeProfile', 'ofc_'+Employee.get('empId'), Employee.get('supervisorId'),Employee.get('empId'), 'live', new Date()); //this will add a copy to input table
+                    }
+                    callback(results[0]);
                 }
             }
         },
@@ -342,7 +372,7 @@ function submitOfficeInfo(empId, dataArray, type, callback) {
                     officeArray[0].city = dataArray[8].value;
                     officeArray[0].country = dataArray[9].value;
                     officeArray[0].costCenter = dataArray[10].value;
-                    statusArray[0].officeInfoStatus = "1"; //status flag for basic office info
+                    statusArray[0].officeInfoStatus = true //status flag for basic office info
                 } else if (type == "joiningDetails") {
                     console.log("came in joiningDetails");
                     officeArray[0].dateOfJoining = dataArray[0].value;
@@ -351,19 +381,19 @@ function submitOfficeInfo(empId, dataArray, type, callback) {
                     officeArray[0].workPermitNumber = dataArray[3].value;
                     officeArray[0].effectiveDate = dataArray[4].value;
                     officeArray[0].expiryDate = dataArray[5].value;
-                    statusArray[0].joiningDetailStatus = "1"; //status flag for joining details info
+                    statusArray[0].joiningDetailStatus = true //status flag for joining details info
                 } else if (type == "performanceRating") {
                     console.log("came in performanceRatingr");
                     officeArray[0].pfRating1516 = dataArray[0].value;
                     officeArray[0].pfRating1617 = dataArray[1].value;
-                    statusArray[0].performanceStatus = "1"; //status flag for performance rating
+                    statusArray[0].performanceStatus = true //status flag for performance rating
                 } else if (type == "separationDetails") {
                     console.log("came in separationDetails");
                     officeArray[0].dateOfResignation = dataArray[23].value;
                     officeArray[0].dateOfSeparation = dataArray[5].value;
                     officeArray[0].separationEffectiveDate = dataArray[9].value;
                     officeArray[0].separationType = dataArray[24].value;
-                    statusArray[0].separationInfoStatus = "1"; //status flag for separation details
+                    statusArray[0].separationInfoStatus = true //status flag for separation details
                 }
                 //}
 
@@ -427,7 +457,7 @@ function submitPositionDetails(empId, dataArray, callback) {
                     officePosArray[0].buisnessHrSpocId = dataArray[9].value;
                     officePosArray[0].buisnessHrHeadId = dataArray[10].value;
                     officePosArray[0].groupHrHeadId = dataArray[11].value;
-                    statusArray[0].positionHistoryStatus = "1";
+                    statusArray[0].positionHistoryStatus = true
                 }
 
                 newEmp.set('statusOffice', statusArray);
@@ -482,7 +512,7 @@ function submitpreviousEmployment(empId, dataArray, callback) {
                 dummyObj.areaOfExperience = dataArray[7].value;
 
                 dummyArray.push(dummyObj); //push object into previosWorkDetails array
-                statusArray[0].perviousEmploymentStatus = "1";
+                statusArray[0].perviousEmploymentStatus = true
                 newEmp.set('previousWorkDetails', dummyArray);
                 newEmp.set('statusOffice', statusArray); //set the status array
                 newEmp.save(null, {
@@ -528,7 +558,7 @@ function submitPayrollInformation(empId, dataArray, type, callback) {
                 dummyObj.accountNumber = dataArray[2].value;
                 dummyObj.currency = dataArray[3].value;
                 dummyArray.push(dummyObj);
-                statusArray[0].bankStatus = "1";
+                statusArray[0].bankStatus = true
                 newEmp.set('bankDetails', dummyArray);
             } else if (type == "salaryDetails") { //salaryDetails
                 var dummyArray = new Array();
@@ -545,7 +575,7 @@ function submitPayrollInformation(empId, dataArray, type, callback) {
                 dummyObj.otherAllowance = dataArray[9].value;
                 dummyObj.totalEarnings = dataArray[10].value;
                 dummyArray.push(dummyObj); //push object into array
-                statusArray[0].salaryStatus = "1";
+                statusArray[0].salaryStatus = true
                 newEmp.set('salaryDetails', dummyArray); //push into salary details array
             } else if (type == "otherBenefitDetails") {
                 var dummyArray = new Array();
@@ -555,7 +585,7 @@ function submitPayrollInformation(empId, dataArray, type, callback) {
                 dummyObj.groupLifeInsurance = dataArray[2].value;
                 dummyObj.hospitalizationScheme = dataArray[3].value;
                 dummyArray.push(dummyObj); //push object into array
-                statusArray[0].otherBenefitStatus = "1";
+                statusArray[0].otherBenefitStatus = true
                 newEmp.set('otherBenefitDetails', dummyArray);
             } else if (type = 'companyCarDetails') {
                 var dummyArray = new Array();
@@ -568,7 +598,7 @@ function submitPayrollInformation(empId, dataArray, type, callback) {
                 dummyObj.driverAllowance = dataArray[5].value;
                 dummyObj.grossPay = dataArray[6].value;
                 dummyArray.push(dummyObj); //push object into array
-                statusArray[0].companyCarStatus = "1";
+                statusArray[0].companyCarStatus = true
                 newEmp.set('companyCarDetails', dummyArray);
             } else if (type == "personalCarDetails") {
                 var dummyArray = new Array();
@@ -579,7 +609,7 @@ function submitPayrollInformation(empId, dataArray, type, callback) {
                 dummyObj.expiryDate = dataArray[2].value;
                 dummyObj.ownCarUsageAllowance = dataArray[3].value;
                 dummyArray.push(dummyObj); //push object into array
-                statusArray[0].personalCarStatus = "1";
+                statusArray[0].personalCarStatus = true
                 newEmp.set('personalCarDetails', dummyArray);
             }
             newEmp.set('statusOffice', statusArray); //set the status array

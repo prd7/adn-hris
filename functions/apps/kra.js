@@ -33,7 +33,6 @@ $(document).ready(function(){
 					$('#txtuos'+index).text(kraValue[i].kraUos);
 					$('#txtmos'+index).text(kraValue[i].kraMos);
 				}
-//experiment ends
 			}
 		}else{
 			swal({
@@ -115,7 +114,9 @@ function validateKraDraft(){
 function validateKra(){
 	var globalTypeId = getUrlVars()["typeId"];
 	var empObject = JSON.parse(localStorage.empObject);
+	var empId = localStorage.empId;
 	var grade = empObject.employeeGrade;
+	
 	console.log("Grade of Current employee is="+grade);
 	var rowLength = 7;
 	var kraArray = new Array();
@@ -137,12 +138,10 @@ function validateKra(){
 		}else{
 			obj.complete = false;
 		}
-		
 		kraArray.push(obj);
 	}
 	console.log(kraArray);
 	console.log("Categories being covered in this submission are: "+ numberOfCategories(kraArray));
-	console.log("Weight sum in this submission is: "+ checkWeight(kraArray));
 	
 	//Condition to check
 	if(checkWeight(kraArray) == 100){
@@ -158,7 +157,7 @@ function validateKra(){
 							swal("Success!", "Your KRA was submitted.", "success"); //success alert
 							$("#sample_3 :input").attr("disabled", true);//disables the table after submitting KRA
 							$("#submits").hide()//disables the table after submitting KRA
-							//$("#status").html('KRAs submitted sucessfully on  Pending for your Supervisor review');
+							$("#status").html('Your KRA was submitted for review.');
 				  		}else{
 				  			
 				  		}
@@ -175,6 +174,7 @@ function validateKra(){
 				  			console.log("kra submitted success.");
 							swal("Success!", "Your KRA was submitted.", "success");//success alert
 							$("#sample_3 :input").attr("disabled", true);//disables the table after submitting KRA
+							$("#status").html('Your KRA was submitted for review.');
 				  		}else{
 				  			
 				  		}
@@ -191,6 +191,7 @@ function validateKra(){
 				  			console.log("kra submitted success.");
 							swal("Success!", "Your KRA was submitted.", "success");//success alert
 							$("#sample_3 :input").attr("disabled", true);//disables the table after submitting KRA
+							$("#status").html('Your KRA was submitted for review.');
 				  		}else{
 				  			
 				  		}
@@ -256,7 +257,7 @@ function proceedWarn(kraArray){
 							swal("Success!", "Your KRA was submitted.", "success");//success message after submit
 							$("#sample_3 :input").attr("disabled", true);//disables the table after submitting KRA
 							$("#submits").hide();
-							//$("#status").html('KRAs submitted sucessfully on  Pending for your Supervisor review');
+							$("#status").html('Your KRA was submitted for review.');
 				  		}else{
 
 				  		}

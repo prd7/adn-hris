@@ -10,7 +10,7 @@ $(document).ready(function(){
 
 	fetchLearning(empId,globalTypeId,function(status,data){
 		if(status){
-			console.log("Valid Learning");
+			console.log("Valid entry in Learning Table for "+empId+" and typeId is "+globalTypeId);
 			//var version = data.get("version");
 			//this part will consist of if condition to check what stage and status the learning is in
 			var stage = data.get("stage");
@@ -30,10 +30,9 @@ $(document).ready(function(){
 					$('#txtTimeline'+index).text(learningValue[i].supportRequired);
 					$('#txtSupportReq'+index).text(learningValue[i].timeline);
 				}
-				//populate the table from here
-
-			console.log(data.get("learningValue"));
+				console.log(data.get("learningValue"));
 			}else{
+				/*
 				swal({
 					  title: "No Learning Agenda was Initiated for you!",
 					  text: "If expected,contact your HR or Supervisor.",
@@ -45,7 +44,7 @@ $(document).ready(function(){
 					},
 					function(){
 					  	//window.location.href= "../index.html";	
-				});
+				});*/
 			}
 		}
 	});
@@ -144,9 +143,29 @@ function validateLearning(){
 	setLearning(learningArray,globalTypeId,function(status){
   		if(status){
   			console.log("Learning submitted successfull.");
+  			//this is where we wil send notifications
+  			var notiType= "Learning";
+			var notiTitle= "Learning Agenda submitted by "+empObject.name;
+			var notiBody= "Please review the learning agenda.";
+			var notiReceipent= empObject.supervisorId;
+			sendNoti(empId,notiType,notiTitle,notiBody,notiReceipent);
+			//alert with custom message
+  			swal({
+				  title: "Your Learning Agenda was posted for review.",
+				  text: "Please wait for your Supervisor approval.",
+				  type: "success",
+				  showCancelButton: false,
+				  confirmButtonClass: "btn-success",
+				  confirmButtonText: "Ok",
+				  closeOnConfirm: false
+				},
+				function(){
+					console.log("Came in Swal to redirect");
+				});
 			$("#sample_3 :input").attr("disabled", true);//disables the table after submitting LEarning
 			$("#submits").hide();
 			//$("#status").html('Learning submitted sucessfully on  Pending for your Supervisor review');
+
   		}else{
   			swal("Error!", "Your Learning was not submitted.", "wawrning");
   		}
