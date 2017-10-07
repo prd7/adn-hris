@@ -1408,3 +1408,15 @@ function checkApproved(empId,callback) {
     });
 }
 
+
+function sendEmail(to,cc,subject,body,callback){
+    //to is an Array, cc is an Array
+
+    $.post( "http://adn-hris.herokuapp.com/api/mail", { to: to, cc: cc, subject:subject,body:body })
+      .done(function( data ) {
+        callback(true);
+    });
+
+
+}
+

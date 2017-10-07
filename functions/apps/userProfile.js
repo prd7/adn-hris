@@ -18,6 +18,7 @@ $(document).ready(function(){
 		console.log("fetch stuff here");
 		console.log(statusArray);
 		console.log(statusArray[0].personalStatus);
+		
 		if(statusArray[0].personalStatus){
 			var personalArray= result.get("personal");
 			console.log("came in values setting");

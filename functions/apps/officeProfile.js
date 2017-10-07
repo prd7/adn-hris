@@ -15,6 +15,7 @@ $(document).ready(function(){
 	
 	checkStatus(globalEmpId,"office",function(result){
 		var statusArray =results[0].get("statusOffice");
+
 		var officeArray =results[0].get("officeDetails");
 		var officePositionArray =results[0].get("officePositionDetails");
 		var previousWorkArray =results[0].get("previousWorkDetails");
@@ -27,10 +28,11 @@ $(document).ready(function(){
 		//fetch and populate stuff here
 
 		if(statusArray.officeInfoStatus){
+			$("#officeInfo :input").attr("disabled", true);
 			//$('#employeeId').text(officeArray.employeeId);
 			$('#idcardNo').text(officeArray.idCardNo);
 			$('#companyName').val(officeArray.companyName);
-			$('#officePhoneNumber ').text(officeArray.officePhone);
+			$('#officePhoneNumber').text(officeArray.officePhone);
 			$('#officeMobileNumber').text(officeArray.officeMobile);
 			$('#officeEmailID ').text(officeArray.officeEmailId);
 			$('#facility').text(officeArray.facility);
@@ -38,7 +40,6 @@ $(document).ready(function(){
 			$('#country').val(officeArray.country);
 			$('#costCenter ').text(officeArray.costCenter);
 
-			$("#officeInfo :input").attr("disabled", true);
 		}
 		if(statusArray.joiningDetailStatus){
 			$('#dateOfJoining').text(officeArray.dateOfJoining);
@@ -58,7 +59,7 @@ $(document).ready(function(){
 			$('#department').val(officePositionArray.department);
 			$('#verticalUnit').val(officePositionArray.vertical);
 			$('#subVerticalUnit').val(officePositionArray.subVertical);
-			$('#reportingManagerSupervisor').val(officePositionArray.Group HR Head);
+			//$('#reportingManagerSupervisor').val(officePositionArray.Group HR Head);
 			$('#reviewer').val(officePositionArray.reviewer);
 			$('#hrSpoc').val(officePositionArray.buisnessHrSpoc);
 			$('#businessHrHead').val(officePositionArray.buisnessHrHead);

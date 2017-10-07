@@ -1,5 +1,9 @@
-var empObject = JSON.parse(localStorage.empObject);
-var name = empObject.name;
+if(localStorage.empObject){
+    var empObject = JSON.parse(localStorage.empObject);
+    var name = empObject.name;
+}else{
+    var name ="unknown";
+}
 
 //console.log(localStorage.empId);
 console.log(name);
