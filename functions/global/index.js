@@ -330,7 +330,7 @@ var header = '<div class="page-header navbar navbar-fixed-top">'+
 '                                            <i class="icon-lock"></i> Lock Screen </a>'+
 '                                    </li>'+
 '                                    <li>'+
-'                                        <a href="login.html" onclick="clearLocalStorage()">'+
+'                                        <a href="index.html" onclick="clearLocalStorage()">'+
 '                                            <i class="icon-key"></i> Log Out </a>'+
 '                                    </li>'+
 '                                </ul>'+

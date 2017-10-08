@@ -2,7 +2,7 @@ $(document).ready(function(){
 	/* //function to check wether the user is logged in
 	var login = localStorage.loggedIn;
 	if(!login){
-		window.location.href= "../login.html";
+		window.location.href= "../index.html";
 	}*/
 	var globalTypeId = getUrlVars()["typeId"];
 	var empId=localStorage.empId;
@@ -21,6 +21,7 @@ $(document).ready(function(){
 			if(stage=="posted"){
 				$("#sample_3 :input").attr("disabled", true);//disables the table after submitting KRA
 				$("#submits").hide()
+				$("#status").html('Learning agenda submitted sucessfully for your Supervisor\'s review');
 
 				for(i=0;i<learningValuelength;i++){
 					var index = i+1;
@@ -31,8 +32,32 @@ $(document).ready(function(){
 					$('#txtSupportReq'+index).text(learningValue[i].timeline);
 				}
 				console.log(data.get("learningValue"));
+			}else if(stage=="rejected"){
+				swal('Learning agenda was sent back by your Supervisor.');
+				$("#status").html('Learning agenda was sent back by your Supervisor.');
+
+				for(i=0;i<learningValuelength;i++){
+					var index = i+1;
+					$("#selDevArea"+index).val(learningValue[i].developmentArea);
+					$('#txtDevPlan'+index).text(learningValue[i].developmentPlan);
+					$('#txtMos'+index).text(learningValue[i].learningMos);
+					$('#txtTimeline'+index).text(learningValue[i].supportRequired);
+					$('#txtSupportReq'+index).text(learningValue[i].timeline);
+				}
+			}else if(stage=="accepted"){
+				$("#sample_3 :input").attr("disabled", true);//disables the table after submitting KRA
+				$("#submits").hide()
+				$("#status").html('Your Learning agenda was approved by your Supervisor.');
+
+				for(i=0;i<learningValuelength;i++){
+					var index = i+1;
+					$("#selDevArea"+index).val(learningValue[i].developmentArea);
+					$('#txtDevPlan'+index).text(learningValue[i].developmentPlan);
+					$('#txtMos'+index).text(learningValue[i].learningMos);
+					$('#txtTimeline'+index).text(learningValue[i].supportRequired);
+					$('#txtSupportReq'+index).text(learningValue[i].timeline);
+				}
 			}else{
-				/*
 				swal({
 					  title: "No Learning Agenda was Initiated for you!",
 					  text: "If expected,contact your HR or Supervisor.",
@@ -43,8 +68,8 @@ $(document).ready(function(){
 					  closeOnConfirm: true
 					},
 					function(){
-					  	//window.location.href= "../index.html";	
-				});*/
+					  	window.location.href= "inputRequests.html";	
+				});
 			}
 		}
 	});
@@ -161,13 +186,14 @@ function validateLearning(){
 				},
 				function(){
 					console.log("Came in Swal to redirect");
+					window.location.href= "pages/Learning.html?typeId="+globalTypeId;
 				});
 			$("#sample_3 :input").attr("disabled", true);//disables the table after submitting LEarning
 			$("#submits").hide();
-			//$("#status").html('Learning submitted sucessfully on  Pending for your Supervisor review');
+			$("#status").html('Learning submitted sucessfully for your Supervisor\'s review');
 
   		}else{
-  			swal("Error!", "Your Learning was not submitted.", "wawrning");
+  			swal("Error!", "Your Learning was not submitted.", "warning");
   		}
   	});
 	//Condition to check

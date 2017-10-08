@@ -32,6 +32,7 @@ $('.forget-password').click(function(){
 							window.location.href= "pages/controlPanel.html";
 						}else{
 							window.location.href= "pages/userProfile.html"; //redirect to index page if password is changed once
+							//window.location.href= "home.html";
 						}
 					}
 					else{

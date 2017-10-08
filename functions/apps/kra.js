@@ -2,7 +2,7 @@ $(document).ready(function(){
 	/* //function to check wether the user is logged in
 	var login = localStorage.loggedIn;
 	if(!login){
-		window.location.href= "../login.html";
+		window.location.href= "../index.html";
 	}*/
 	var globalTypeId = getUrlVars()["typeId"];
 	var empId=localStorage.empId;
@@ -24,7 +24,7 @@ $(document).ready(function(){
 				$("#sample_3 :input").attr("disabled", true);//disables the table after submitting KRA
 				$("#submits").hide()
 				$("#status").html('Your KRA was submitted for review.');
-//experiment starts
+
 				for(i=0;i<kraValuelength;i++){
 					var index = i+1;
 					$('#txtkra'+index).text(kraValue[i].kra);
@@ -33,20 +33,45 @@ $(document).ready(function(){
 					$('#txtuos'+index).text(kraValue[i].kraUos);
 					$('#txtmos'+index).text(kraValue[i].kraMos);
 				}
+			}else if(stage=="rejected"){
+				swal('Learning agenda was sent back by your Supervisor.');
+				$("#status").html('KRA was sent back by your Supervisor.');
+
+				for(i=0;i<kraValuelength;i++){
+					var index = i+1;
+					$('#txtkra'+index).text(kraValue[i].kra);
+					$("#selkracat"+index).val(kraValue[i].kraCat);
+					$("#selkrawght"+index).val(kraValue[i].kraWeight);
+					$('#txtuos'+index).text(kraValue[i].kraUos);
+					$('#txtmos'+index).text(kraValue[i].kraMos);
+				}
+			}else if(stage=="accepted"){
+				$("#sample_3 :input").attr("disabled", true);//disables the table after submitting KRA
+				$("#submits").hide()
+				$("#status").html('Your KRAs were approved by your Supervisor.');
+
+				for(i=0;i<kraValuelength;i++){
+					var index = i+1;
+					$("#selDevArea"+index).val(learningValue[i].developmentArea);
+					$('#txtDevPlan'+index).text(learningValue[i].developmentPlan);
+					$('#txtMos'+index).text(learningValue[i].learningMos);
+					$('#txtTimeline'+index).text(learningValue[i].supportRequired);
+					$('#txtSupportReq'+index).text(learningValue[i].timeline);
+				}
+			}else{
+				swal({
+					  title: "No KRA was Initiated for you!",
+					  text: "If expected,contact your HR or Supervisor.",
+					  type: "warning",
+					  showCancelButton: false,
+					  confirmButtonClass: "btn-warning",
+					  confirmButtonText: "Ok",
+					  closeOnConfirm: true
+					},
+					function(){
+					  	window.location.href= "inputRequests.html";	
+				});
 			}
-		}else{
-			swal({
-				  title: "No KRA was Initiated for you!",
-				  text: "If expected,contact your HR or Supervisor.",
-				  type: "warning",
-				  showCancelButton: false,
-				  confirmButtonClass: "btn-warning",
-				  confirmButtonText: "Ok",
-				  closeOnConfirm: true
-				},
-				function(){
-				  	//window.location.href= "../index.html";	
-			});
 		}
 	});
 

@@ -1,60 +1,45 @@
-//function to set kra
-function setKRA(kraArray,typeId,callback) {
-    console.log("CAme in setKRA");
-    //var empId = localStorage.empId;
-    //var kraId = localStorage.kraId;
-
-    var empId = '';
-    var kraId = typeId;
-    console.log("The KRA array is:");
-    console.log(kraArray);
-
-    var Kra = Parse.Object.extend("Kra");
-    var query = new Parse.Query(Kra);
+function reviewKRA(empId,supervisorId,supervisorInput,typeId,supervisorReview,callback){
+    var KRA = new Parse.Object.extend('Kra');
+    var kraQuery = new Parse.Query(KRA);
     query.equalTo("kraId", typeId); //match kraId to table
+    query.equalTo("empId", empId);
     query.find({
         success: function(results) {
             if (results.length) {
-
                 var newKRA = results[0];
-                var dummyArray = new Array();
-                //push kraArray into table
-                for (i = 0; i < kraArray.length; i++) {
-                    if (kraArray[i].complete) {
-                        var dummyObj = new Object(); //create object to push into array
-                        dummyObj.kra = kraArray[i].kra;
-                        dummyObj.kraCat = kraArray[i].kraCategory;
-                        dummyObj.kraWeight = kraArray[i].kraWeight;
-                        dummyObj.kraUos = kraArray[i].kraUnitSuccess;
-                        dummyObj.kraMos = kraArray[i].kraMeasureSuccess;
-                        dummyArray.push(dummyObj); //push object into array
-                    }
+                
+                var dummyArray = results[0].get("supervisorData");
+                var dummyObj = new Object(); //create object to push into array
+                //dummyObj.supervisor = new Employee();
+                dummyObj.supervisorId = supervisorId;
+                dummyObj.supervisorInput = supervisorInput;
+                dummyObj.supervisorInputDate = new Date();
+                dummyObj.supervisorReview = supervisorReview;
+                dummyArray.push(dummyObj);//push object into array
+                newKRA.set('supervisorData',dummyArray);
+                if(supervisorReview){
+                    newKRA.set('stage','accepted');
+                }else{
+                    newKRA.set('stage','rejected');
                 }
 
-                newKRA.set('kraValue', dummyArray); //kraValue is the name of the array
-                newKRA.set('version', 'live');
-                newKRA.set('stage', 'posted');
-                newKRA.set('endDate', new Date());
                 newKRA.save(null, {
                     success: function(KRA) {
-                        // Execute any logic that should take place after the object is saved.
-                        console.log('New KRA set with objectId: ' + KRA.id);
-                        addToApprovalTable('KRA', KRA.get('kraId'), KRA.get('supervisorId'),KRA.get('empId'), 'live', new Date()); //this will add a copy to input table
+                        console.log('KRA updated with objectId: ' + KRA.id);
+                        addToInputTable('KRA', KRA.get('lrnid'), KRA.get('empId'), 'live', new Date());
                         callback(true);
                     },
                     error: function(KRA, error) {
-                        // Execute any logic that should take place if the save fails.
-                        // error is a Parse.Error with an error code and message.
                         callback(false);
-                        console.log('Failed to create new KRA object, with error code: ' + error.message);
+                        console.log('Failed to update KRA object, with error code: ' + error.message);
                     }
                 });
-            } else {
-                callback(false);
-            }
+            } 
         },
         error: function(error) {
             console.log("Error: " + error.code + " " + error.message);
         }
     });
 }
+
+

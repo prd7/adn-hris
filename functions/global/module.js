@@ -236,7 +236,7 @@ function submitPersonal(empId, dataArray, type, callback) {
                 newEmp.set('personal', personalArray);
                 
                 if (type == "academic") {
-                    for(i=0;i<length;i++){
+                    for(i=0;i<(length/9);i++){
                         for(j=0;j<9;j++){
                           var academicObj = new Object();
                           academicObj.levelOfEducation = dataArray[(9*i)+j].value;
@@ -250,14 +250,14 @@ function submitPersonal(empId, dataArray, type, callback) {
                           academicObj.yearOfPassing = dataArray[(9*i)+j].value;
                           academicObj.duration = dataArray[(9*i)+j].value;
                           academicObj.achievements = dataArray[(9*i)+j].value;
+                        }  
                           //push this object to the array
                           academicDetailsArray.push(academicObj);
-                        }  
                     }
                     statusArray[0].academicStatus = true
                     newEmp.set('academicDetails', academicDetailsArray);
                 }else if(type == "family"){
-                  for(i=0;i<length;i++){
+                  for(i=0;i<(length/9);i++){
 
                     for(j=0;j<9;j++){
                       var familyObj = new Object();
@@ -267,9 +267,9 @@ function submitPersonal(empId, dataArray, type, callback) {
                       familyObj.contact = dataArray[(9*i)+j].value;
                       familyObj.dateOfBirth = dataArray[(9*i)+j].value;
                       familyObj.age = dataArray[(9*i)+j].value;
+                    }  
                       //push this object to the array
                       familyDetailsArray.push(familyObj);
-                    }  
                   }
                   statusArray[0].familyStatus = true
                   newEmp.set('familyDetails', familyDetailsArray);
@@ -937,7 +937,7 @@ function addToLearningTable(empData, learningIndex, initiatorId) {
         success: function(Learning) {
             console.log('New object created with objectId: ' + Learning.id);
             console.log(JSON.stringify(Learning));
-            addToInputTable('Learning', Learning.get('lrnid'), Learning.get('empId'), 'live', new Date()); //this will add a copy to input table
+            addToInputTable('learning', Learning.get('lrnid'), Learning.get('empId'), 'live', new Date()); //this will add a copy to input table
         },
         error: function(Learning, error) {
             alert('Failed to create new object, with error code: ' + error.message);
@@ -983,14 +983,11 @@ function setLearning(learningArray,typeId,callback) {
                 console.log("came til the end");
                 newLearning.save(null, {
                     success: function(Learning) {
-                        // Execute any logic that should take place after the object is saved.
                         console.log('New Learning set with objectId: ' + Learning.id);
-                        addToApprovalTable('Learning', Learning.get('lrnid'), Learning.get('supervisorId'),Learning.get('empId'), 'live', new Date()); //this will add a copy to input table
+                        addToApprovalTable('learning', Learning.get('lrnid'), Learning.get('supervisorId'),Learning.get('empId'), 'live', new Date()); //this will add a copy to input table
                         callback(true);
                     },
                     error: function(Learning, error) {
-                        // Execute any logic that should take place if the save fails.
-                        // error is a Parse.Error with an error code and message.
                         callback(false);
                         console.log('Failed to create new Learning object, with error code: ' + error.message);
                     }
@@ -1043,7 +1040,7 @@ function setLearningDraft(learningArray,typeId,callback) {
                 newLearning.save(null, {
                     success: function(Learning) {
                         console.log('New Learning draft object created with objectId: ' + Learning.id);
-                        addToDraftTable('Learning', Learning.get('lrnid'), Learning.get('empId'), 'live', new Date());
+                        addToDraftTable('learning', Learning.get('lrnid'), Learning.get('empId'), 'live', new Date());
                         callback(true);
                     },
                     error: function(Learning, error) {
@@ -1073,8 +1070,10 @@ function addToInputTable(type, typeId, empId, status, startDate) {
         success: function(results){
             if(results.length){
                 var newInputs = results[0];
+                //newInputs.set('status', 'sentBack');
             }else{
                 var newInputs = new Inputs();
+                //newInputs.set('status', status);
             }
             newInputs.set('type', type);
             newInputs.set('typeId', typeId);
@@ -1194,6 +1193,34 @@ function resetInputTable(typeId, status, callback) {
                 });
             } else {
                 console.log("failed in input table");
+                callback();
+            }
+        }
+    });
+}
+
+//clear entry from Approvals table
+function resetApprovalTable(typeId, status, callback) {
+    console.log("Clearing entry in Approvals table");
+    var Approvals = Parse.Object.extend("Approvals");
+    var query = new Parse.Query(Approvals);
+    query.equalTo("typeId", typeId);
+    query.find({
+        success: function(results) {
+            if (results.length) {
+                console.log("got values in Approval table");
+                var newApprovals=results[0];
+                newApprovals.set('status', status);
+                newApprovals.save(null, {
+                    success: function(Approvals) {
+                        callback();
+                    },
+                    error: function(Approvals, error) {
+                        alert('Failed to create new object, with error code: ' + error.message);
+                    }
+                });
+            } else {
+                console.log("failed in Approval table");
                 callback();
             }
         }
@@ -1346,7 +1373,7 @@ function checkClarificationTable(empId,callback) {
     query.find({
         success: function(results) {
             if (results.length) { //try in future for more results
-              var clarificationNumber=results.length;
+              var clarificationNumber = results.length;
               console.log("these many results were found in Clarification table: "+clarificationNumber);
               console.log(results);
               callback(true,results);
@@ -1408,7 +1435,7 @@ function checkApproved(empId,callback) {
     });
 }
 
-
+//functino calling the mail API
 function sendEmail(to,cc,subject,body,callback){
     //to is an Array, cc is an Array
 
@@ -1416,7 +1443,96 @@ function sendEmail(to,cc,subject,body,callback){
       .done(function( data ) {
         callback(true);
     });
-
-
 }
+
+//function to reject Learning
+function reviewLearning(empId,supervisorId,supervisorInput,typeId,supervisorReview,callback){
+    var Learning = Parse.Object.extend("Learning");
+    var query = new Parse.Query(Learning);
+    query.equalTo("lrnid", typeId); //match LearningId to table
+    query.equalTo("empId", empId);
+    query.find({
+        success: function(results) {
+            if (results.length) {
+                var newLearning = results[0];
+                
+                var dummyArray = results[0].get("supervisorData");
+                var dummyObj = new Object(); //create object to push into array
+                //dummyObj.supervisor = new Employee();
+                dummyObj.supervisorId = supervisorId;
+                dummyObj.supervisorInput = supervisorInput;
+                dummyObj.supervisorInputDate = new Date();
+                dummyObj.supervisorReview = supervisorReview;
+                dummyArray.push(dummyObj);//push object into array
+                newLearning.set('supervisorData',dummyArray);
+                if(supervisorReview){
+                    newLearning.set('stage','accepted');
+                }else{
+                    newLearning.set('stage','rejected');
+                }
+
+                newLearning.save(null, {
+                    success: function(Learning) {
+                        console.log('Learning updated with objectId: ' + Learning.id);
+                        //addToInputTable('learning', Learning.get('lrnid'), Learning.get('empId'), 'live', new Date());
+                        callback(true);
+                    },
+                    error: function(Learning, error) {
+                        callback(false);
+                        console.log('Failed to update Learning object, with error code: ' + error.message);
+                    }
+                });
+            } 
+        },
+        error: function(error) {
+            console.log("Error: " + error.code + " " + error.message);
+        }
+    });
+}
+
+//function to review KRA
+function reviewKRA(empId,supervisorId,supervisorInput,typeId,supervisorReview,callback){
+    var KRA = new Parse.Object.extend('Kra');
+    var query = new Parse.Query(KRA);
+    query.equalTo("kraId", typeId); //match kraId to table
+    query.equalTo("empId", empId);
+    query.find({
+        success: function(results) {
+            if (results.length) {
+                var newKRA = results[0];
+                
+                var dummyArray = results[0].get("supervisorData");
+                var dummyObj = new Object(); //create object to push into array
+                //dummyObj.supervisor = new Employee();
+                dummyObj.supervisorId = supervisorId;
+                dummyObj.supervisorInput = supervisorInput;
+                dummyObj.supervisorInputDate = new Date();
+                dummyObj.supervisorReview = supervisorReview;
+                dummyArray.push(dummyObj);//push object into array
+                console.log(dummyArray);
+                newKRA.set('supervisorData',dummyArray);
+                if(supervisorReview){
+                    newKRA.set('stage','accepted');
+                }else{
+                    newKRA.set('stage','rejected');
+                }
+
+                newKRA.save(null, {
+                    success: function(KRA) {
+                        console.log('KRA updated with objectId: ' + KRA.id);
+                        callback(true);
+                    },
+                    error: function(KRA, error) {
+                        callback(false);
+                        console.log('Failed to update KRA object, with error code: ' + error.message);
+                    }
+                });
+            } 
+        },
+        error: function(error) {
+            console.log("Error: " + error.code + " " + error.message);
+        }
+    });
+}
+
 

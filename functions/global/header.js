@@ -144,7 +144,7 @@ var header = '<div class="page-header navbar navbar-fixed-top">'+
 '            <div class="page-header-inner ">'+
 '                <!-- BEGIN LOGO -->'+
 '                <div class="page-logo">'+
-'                    <a href="../index.html">'+
+'                    <a href="../home.html">'+
 '                        <img src="../assets/layouts/layout4/img/logo-light.png" alt="logo" class="logo-default" /> </a>'+
 '                    <div class="menu-toggler sidebar-toggler">'+
 '                        <!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->'+
@@ -215,7 +215,7 @@ var header = '<div class="page-header navbar navbar-fixed-top">'+
 '                                    <li class="external">'+
 '                                        <h3>'+
 '                                            <span class="bold">12 pending</span> notifications</h3>'+
-'                                        <a href="page_user_profile_1.html">view all</a>'+
+'                                        <a href="controlPanel.html">view all</a>'+
 '                                    </li>'+
 '                                    <li>'+
 '                                        <ul class="dropdown-menu-list scroller" style="height: 250px;" data-handle-color="#637283">'+
@@ -333,7 +333,7 @@ var header = '<div class="page-header navbar navbar-fixed-top">'+
 '                                            <i class="icon-lock"></i> Lock Screen </a>'+
 '                                    </li>'+
 '                                    <li>'+
-'                                        <a href="../login.html" onclick="clearLocalStorage()">'+
+'                                        <a href="../index.html" onclick="clearLocalStorage()">'+
 '                                            <i class="icon-key"></i> Log Out </a>'+
 '                                    </li>'+
 '                                </ul>'+

@@ -39,9 +39,9 @@ $(document).ready(function(){
 				function(){
 					console.log("Came in Swal");
 					clearLocalStorage();
-				  	window.location.href= "../login.html";	
+				  	window.location.href= "../index.html";	
 				});
-				//window.location.href= "../login.html";
+				//window.location.href= "../index.html";
 			});
 		}		
 	});
