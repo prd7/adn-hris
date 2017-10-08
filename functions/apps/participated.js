@@ -42,12 +42,13 @@ $(document).ready(function(){
 					$("#approvalReq ul").append(approvalListObject);
 				}
 			}else{
+				swal("Complete appoval requests for you.");
 				console.log("no entry with status accepted/rejected then entry must be live");
 			}
 		}else{
 			console.log("came with a callback false");
 			//swal("Error!", "No Approval requests for you", "warning")
-			swal("Complete appoval requests for you");
+			swal("You have not completed participation in any action yet.");
 		}
 	});
 }); 

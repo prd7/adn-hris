@@ -324,7 +324,7 @@ var header = '<div class="page-header navbar navbar-fixed-top">'+
 '                                    <li>'+
 '                                        <a href="controlPanel.html">'+
 '                                            <i class="icon-rocket"></i> My Tasks'+
-'                                            <span class="badge badge-success"> 7 </span>'+
+'                                            <!--span class="badge badge-success"></span-->'+
 '                                        </a>'+
 '                                    </li>'+
 '                                    <li class="divider"> </li>'+

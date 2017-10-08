@@ -21,7 +21,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
     <head>
         <meta charset="utf-8" />
-        <title>ADN HRIS | Home</title>
+        <title>ADN HRIS | Participated</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <meta content="Preview page of Metronic Admin Theme #4 for " name="description" />
@@ -38,6 +38,7 @@ License: You must have a valid license purchased only from themeforest(the above
         <link href="../assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
         <!-- END GLOBAL MANDATORY STYLES -->
         <!-- BEGIN PAGE LEVEL PLUGINS -->
+        <link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
         <link href="../assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
         <link href="../assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
         <link href="../assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -101,7 +102,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </div>
                             </div>                        
                         </div>
-                    <div class="todo-container">
+                    <div class="todo-container" id="approvalReq">
                         
                         <div class="row">
                             <div class="col-md-12">
@@ -113,98 +114,26 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <p id="awaitingResponses"></p>
                                         </div>
                                     </li>
-                                    <li class="todo-projects-item" href="#todo-members-modal" data-toggle="modal">
+                                    <!--li class="todo-projects-item">
+                                        <a href="kra.html">
                                         <div class="row">
-                                                    <div class="col-sm-6 col-xs-12">
-                                                        <img class="img-circle pull-left" style="margin-top: 5px; margin-right: 10px" src="../assets/pages/media/users/avatar1.jpg" width="54px" height="54px">
-                                                        <h4>Tousif Shaikh</h4>
-                                                        <p>
-                                                            <strong>Employee Form</strong> - Request form tousif@adn.com
-                                                        </p>
-                                                    </div>
-                                                    <div class="col-sm-2 col-xs-4" style="padding-top: 32px">
-                                                        <div class="progress" >
-                                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:40%">
-                                                        </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-2 col-xs-4">
-                                                        <p class="search-counter-label" style="padding-top: 27px">HR Information</p>
-                                                    </div>
-                                                    <div class="col-sm-2 col-xs-4">
-                                                        <p class="search-counter-label" style="padding-top: 27px">28 Nov 5.30 pm</p>
-                                                    </div>
-                                                </div>
-                                    </li> 
-                                    <li class="todo-projects-item" href="#todo-members-modal" data-toggle="modal">
-                                        <div class="row">
-                                                    <div class="col-sm-6 col-xs-12">
-                                                        <img class="img-circle pull-left" style="margin-top: 5px; margin-right: 10px" src="../assets/pages/media/users/avatar2.jpg" width="54px" height="54px">
-                                                        <h4>Momina Hasan</h4>
-                                                        <p>
-                                                            <strong>Employee Form</strong> - Request form momina@adn.com
-                                                        </p>
-                                                    </div>
-                                                    <div class="col-sm-2 col-xs-4" style="padding-top: 32px">
-                                                        <div class="progress" >
-                                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:40%">
-                                                        </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-2 col-xs-4">
-                                                        <p class="search-counter-label" style="padding-top: 27px">HR Information</p>
-                                                    </div>
-                                                    <div class="col-sm-2 col-xs-4">
-                                                        <p class="search-counter-label" style="padding-top: 27px">28 Nov 5.30 pm</p>
-                                                    </div>
-                                                </div>
-                                    </li> 
-                                    <li class="todo-projects-item" href="#todo-members-modal" data-toggle="modal">
-                                        <div class="row">
-                                                    <div class="col-sm-6 col-xs-12">
-                                                        <img class="img-circle pull-left" style="margin-top: 5px; margin-right: 10px" src="../assets/pages/media/users/avatar3.jpg" width="54px" height="54px">
-                                                        <h4>Aamir Khan</h4>
-                                                        <p>
-                                                            <strong>Employee Form</strong> - Request form aamir@adn.com
-                                                        </p>
-                                                    </div>
-                                                    <div class="col-sm-2 col-xs-4" style="padding-top: 32px">
-                                                        <div class="progress" >
-                                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:40%">
-                                                        </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-2 col-xs-4">
-                                                        <p class="search-counter-label" style="padding-top: 27px">HR Information</p>
-                                                    </div>
-                                                    <div class="col-sm-2 col-xs-4">
-                                                        <p class="search-counter-label" style="padding-top: 27px">28 Nov 5.30 pm</p>
-                                                    </div>
-                                                </div>
-                                    </li> 
-                                    <li class="todo-projects-item" href="#todo-members-modal" data-toggle="modal">
-                                        <div class="row">
-                                                    <div class="col-sm-6 col-xs-12">
-                                                        <img class="img-circle pull-left" style="margin-top: 5px; margin-right: 10px" src="../assets/pages/media/users/avatar4.jpg" width="54px" height="54px">
-                                                        <h4>Khalid Patel</h4>
-                                                        <p>
-                                                            <strong>Employee Form</strong> - Request form khalid@adn.com
-                                                        </p>
-                                                    </div>
-                                                    <div class="col-sm-2 col-xs-4" style="padding-top: 32px">
-                                                        <div class="progress" >
-                                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:40%">
-                                                        </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-2 col-xs-4">
-                                                        <p class="search-counter-label" style="padding-top: 27px">HR Information</p>
-                                                    </div>
-                                                    <div class="col-sm-2 col-xs-4">
-                                                        <p class="search-counter-label" style="padding-top: 27px">28 Nov 5.30 pm</p>
-                                                    </div>
-                                                </div>
-                                    </li>                                    
+                                            <div class="col-sm-6 col-xs-12">
+                                                <img class="img-circle pull-left" style="margin-top: 5px; margin-right: 10px" src="../assets/pages/media/users/avatar1.jpg" width="54px" height="54px">
+                                                <h4>KRA</h4>
+                                                <p>
+                                                    <strong>KRA Form</strong> - Request form Initiator Name
+                                                </p>
+                                            </div>
+                                            
+                                            <div class="col-sm-3 col-xs-6">
+                                                <p class="search-counter-label" style="padding-top: 27px">Supervisor Name</p>
+                                            </div>
+                                            <div class="col-sm-3 col-xs-6">
+                                                <p class="search-counter-label" style="padding-top: 27px">28 Nov 5.30 pm</p>
+                                            </div>
+                                        </div>
+                                        </a>
+                                    </li-->                                                                       
                                 </ul>
                             </div>
                         </div>
@@ -419,6 +348,7 @@ License: You must have a valid license purchased only from themeforest(the above
         <script src="../assets/global/scripts/app.min.js" type="text/javascript"></script>
         <!-- END THEME GLOBAL SCRIPTS -->
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
+        <script src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js" type="text/javascript"></script>
         <script src="../assets/apps/scripts/todo.min.js" type="text/javascript"></script>
         <script src="../assets/pages/scripts/components-date-time-pickers.min.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL SCRIPTS -->
@@ -437,6 +367,7 @@ License: You must have a valid license purchased only from themeforest(the above
                 });
 			})
 	   </script>
+       <script src="../functions/apps/participated.js"></script>
     </body>
 
 </html>

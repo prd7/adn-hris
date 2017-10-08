@@ -268,7 +268,6 @@ function submitPersonal(empId, dataArray, type, callback) {
                       familyObj.dateOfBirth = dataArray[(9*i)+j].value;
                       familyObj.age = dataArray[(9*i)+j].value;
                     }  
-                      //push this object to the array
                       familyDetailsArray.push(familyObj);
                   }
                   statusArray[0].familyStatus = true
@@ -1364,6 +1363,30 @@ function checkApprovalTable(empId,callback) {
     });
 }
 
+//function to check participated in approvals table
+function checkParticipated(empId,callback) {
+    var Approvals = Parse.Object.extend("Approvals");
+    var query = new Parse.Query(Approvals);
+    query.equalTo("empId", empId);
+    query.equalTo("status", "accepted"); 
+    query.equalTo("status", "rejected"); 
+    query.find({
+        success: function(results) {
+            if (results.length) { 
+              var approvalsNumber=results.length;
+              console.log("these many results were found in approvals table: "+approvalsNumber);
+              console.log(results);
+              callback(true,results);
+            } else {
+                callback(false,null);
+            }
+        },
+        error: function(error) {
+            console.log("Error: " + error.code + " " + error.message);
+        }
+    });
+}
+
 //function to check Clarification table
 function checkClarificationTable(empId,callback) {
     var Clarification = Parse.Object.extend("Clarification");
@@ -1416,7 +1439,7 @@ function checkApproved(empId,callback) {
     var Inputs = Parse.Object.extend("Inputs");
     var query = new Parse.Query(Inputs);
     query.equalTo("empId", empId); //match kraId to table
-    query.equalTo("status", "approved"); //only the live entries of the table
+    query.equalTo("status", "accepted"); //only the live entries of the table
     query.find({
         success: function(results) {
             if (results.length) { //try in future for more results
@@ -1434,6 +1457,31 @@ function checkApproved(empId,callback) {
         }
     });
 }
+
+//function to check rejected table
+function checkRejected(empId,callback) {
+    var Inputs = Parse.Object.extend("Inputs");
+    var query = new Parse.Query(Inputs);
+    query.equalTo("empId", empId); //match kraId to table
+    query.equalTo("status", "rejected"); //only the live entries of the table
+    query.find({
+        success: function(results) {
+            if (results.length) { //try in future for more results
+              var inputNumber=results.length;
+              console.log("these many results were found in input table: "+inputNumber);
+              //var inputObject = JSON.stringify(results[0]);
+              console.log(results);
+              callback(true,results);
+            } else {
+                callback(false,null);
+            }
+        },
+        error: function(error) {
+            console.log("Error: " + error.code + " " + error.message);
+        }
+    });
+}
+
 
 //functino calling the mail API
 function sendEmail(to,cc,subject,body,callback){
@@ -1474,7 +1522,6 @@ function reviewLearning(empId,supervisorId,supervisorInput,typeId,supervisorRevi
                 newLearning.save(null, {
                     success: function(Learning) {
                         console.log('Learning updated with objectId: ' + Learning.id);
-                        //addToInputTable('learning', Learning.get('lrnid'), Learning.get('empId'), 'live', new Date());
                         callback(true);
                     },
                     error: function(Learning, error) {
