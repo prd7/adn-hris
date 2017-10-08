@@ -100,6 +100,13 @@ $(document).ready(function(){
 		  		//window.location.href= "controlPanel.html";
 		  		console.log("Approval table reset for "+globalEmpId);
 			});*/
+			/*
+			var notiType= "KRA";
+			var notiTitle= "KRA agenda approved.";
+			var notiBody= "KRA approved by "+empObject.name;
+			var notiReceipent= globalEmpId;
+			sendNoti(localStorage.empId,notiType,notiTitle,notiBody,notiReceipent);
+			*/
 			swal({
 					  title: "Kra Approved!",
 					  text: " You successfully approved the KRA.",
@@ -128,6 +135,13 @@ $(document).ready(function(){
 		  		//window.location.href= "controlPanel.html";
 		  		console.log("Approval table reset for "+globalEmpId);
 			});
+			*/
+			/*
+			var notiType= "KRA";
+			var notiTitle= "KRA agenda sent back.";
+			var notiBody= "KRA sent back by "+empObject.name;
+			var notiReceipent= globalEmpId;
+			sendNoti(localStorage.empId,notiType,notiTitle,notiBody,notiReceipent);
 			*/
 			swal({
 					  title: "Kra Rejcted!",

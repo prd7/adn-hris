@@ -56,7 +56,7 @@ $(document).ready(function(){
 				$("#managerCommentLearning").val(supervisorData[0].supervisorInput);
 			}else{
 				swal({
-					  title: "No Learning Agenda was Initiated for this employee!",
+					  title: "No record of Learning for this employee.",
 					  text: "If expected,contact HR or Supervisor.",
 					  type: "warning",
 					  showCancelButton: false,
@@ -87,7 +87,13 @@ $(document).ready(function(){
 		  		//window.location.href= "controlPanel.html";
 		  		console.log("Approval table reset for "+globalEmpId);
 			});
-
+/*
+			var notiType= "Learning";
+			var notiTitle= "Learning agenda approved.";
+			var notiBody= "Learning agenda approved by "+empObject.name;
+			var notiReceipent= globalEmpId;
+			sendNoti(localStorage.empId,notiType,notiTitle,notiBody,notiReceipent);
+*/
 			swal({
 					  title: "Learning Approved!",
 					  text: " You successfully approved the Learning.",
@@ -116,10 +122,16 @@ $(document).ready(function(){
 		  		//window.location.href= "controlPanel.html";
 		  		console.log("Approval table reset for "+globalEmpId);
 			});
-
+/*
+			var notiType= "Learning";
+			var notiTitle= "Learning agenda sent back.";
+			var notiBody= "Learning agenda sent back by "+empObject.name;
+			var notiReceipent= globalEmpId;
+			sendNoti(localStorage.empId,notiType,notiTitle,notiBody,notiReceipent);
+*/
 			swal({
 					  title: "Learning Rejected!",
-					  text: " You successfully rejected the Learning Agenda.",
+					  text: "You successfully rejected the Learning Agenda.",
 					  type: "danger",
 					  showCancelButton: false,
 					  confirmButtonClass: "btn-danger",
