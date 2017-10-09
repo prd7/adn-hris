@@ -126,11 +126,12 @@ $(document).ready(function(){
 		var supervisorInput = $("#managerComment").val();
 		reviewKRA(globalEmpId,localStorage.empId,supervisorInput,globalTypeId,false,function(status){
 			console.log("sent back");
-			/*
+			
 			resetInputTable(globalTypeId, 'rejected', function(){
 		  		//window.location.href= "controlPanel.html";
 		  		console.log("Inpupts table reset for "+globalEmpId);
 			});
+			/*
 			resetApprovalTable(globalTypeId, 'rejected', function(){
 		  		//window.location.href= "controlPanel.html";
 		  		console.log("Approval table reset for "+globalEmpId);

@@ -35,6 +35,7 @@ $(document).ready(function(){
 			}else if(stage=="rejected"){
 				swal('Learning agenda was sent back by your Supervisor.');
 				$("#status").html('Learning agenda was sent back by your Supervisor.');
+				$("#timeline").attr("hidden",false);
 
 				for(i=0;i<learningValuelength;i++){
 					var index = i+1;
@@ -44,6 +45,37 @@ $(document).ready(function(){
 					$('#txtTimeline'+index).text(learningValue[i].supportRequired);
 					$('#txtSupportReq'+index).text(learningValue[i].timeline);
 				}
+
+				//show the timeline here
+				var supervisorData = data.get("supervisorData");
+				console.log(supervisorData);
+				for( var i = 0; i < supervisorData.length; i++ )
+	        	{
+					//console.log(supervisorData[i].supervisorInputDate);
+					var timelineItem = '<div class="timeline-item">'+
+					'	<div class="timeline-badge">'+
+					'		<img class="timeline-badge-userpic" src="../assets/pages/media/users/avatar80_2.jpg">'+
+					'	</div>'+
+					'	<div class="timeline-body">'+
+					'		<div class="timeline-body-arrow"></div>'+
+					'		<div class="timeline-body-head">'+
+					'			<div class="timeline-body-head-caption"> <a href="javascript:;" class="timeline-body-title font-blue-madison">Supervisor Imran '+supervisorData[i].supervisorId+'</a>'+
+					'				<span class="timeline-body-time font-grey-cascade">Sent Back KRA at '+supervisorData[i].supervisorInputDate+'</span>'+
+					'			</div>'+
+					'			<div class="timeline-body-head-actions">'+
+					'				<div class="btn-group dropup">'+
+					'					<button class="btn red btn-sm" type="button">Sent Back</button>'+
+					'				</div>'+
+					'			</div>'+
+					'		</div>'+
+					'		<div class="timeline-body-content"> <span class="font-grey-cascade"> '+supervisorData[i].supervisorInput+' </span>'+
+					'		</div>'+
+					'	</div>'+
+					'</div>';
+				
+					$("#timeline").append(timelineItem);	
+				}
+
 			}else if(stage=="accepted"){
 				$("#sample_3 :input").attr("disabled", true);//disables the table after submitting KRA
 				$("#submits").hide()
