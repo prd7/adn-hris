@@ -60,7 +60,7 @@ $(document).ready(function(){
 					'		<div class="timeline-body-arrow"></div>'+
 					'		<div class="timeline-body-head">'+
 					'			<div class="timeline-body-head-caption"> <a href="javascript:;" class="timeline-body-title font-blue-madison">Supervisor Imran '+supervisorData[i].supervisorId+'</a>'+
-					'				<span class="timeline-body-time font-grey-cascade">Sent Back KRA at '+supervisorData[i].supervisorInputDate+'</span>'+
+					'				<span class="timeline-body-time font-grey-cascade">Sent Back KRA at '+dateTimeString(new Date(supervisorData[i].supervisorInputDate))+'</span>'+
 					'			</div>'+
 					'			<div class="timeline-body-head-actions">'+
 					'				<div class="btn-group dropup">'+

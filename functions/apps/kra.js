@@ -47,13 +47,14 @@ $(document).ready(function(){
 					$('#txtuos'+index).text(kraValue[i].kraUos);
 					$('#txtmos'+index).text(kraValue[i].kraMos);
 				}
-				
+
 				//show the timeline here
 				var supervisorData = data.get("supervisorData");
 				console.log(supervisorData);
 				for( var i = 0; i < supervisorData.length; i++ )
 	        	{
-					//console.log(supervisorData[i].supervisorInputDate);
+					console.log(supervisorData[i].supervisorInputDate);
+					console.log(dateTimeString(new Date(supervisorData[i].supervisorInputDate)));
 					var timelineItem = '<div class="timeline-item">'+
 					'	<div class="timeline-badge">'+
 					'		<img class="timeline-badge-userpic" src="../assets/pages/media/users/avatar80_2.jpg">'+
@@ -62,7 +63,7 @@ $(document).ready(function(){
 					'		<div class="timeline-body-arrow"></div>'+
 					'		<div class="timeline-body-head">'+
 					'			<div class="timeline-body-head-caption"> <a href="javascript:;" class="timeline-body-title font-blue-madison">Supervisor Imran '+supervisorData[i].supervisorId+'</a>'+
-					'				<span class="timeline-body-time font-grey-cascade">Sent Back KRA at '+supervisorData[i].supervisorInputDate+'</span>'+
+					'				<span class="timeline-body-time font-grey-cascade">Sent Back KRA at '+dateTimeString(new Date(supervisorData[i].supervisorInputDate))+'</span>'+
 					'			</div>'+
 					'			<div class="timeline-body-head-actions">'+
 					'				<div class="btn-group dropup">'+

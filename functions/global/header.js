@@ -67,21 +67,21 @@ var sidebar = '<div class="page-sidebar-wrapper">'+
 '                                <i class="fa fa-check-square-o"></i>'+
 '                                <span class="title">Approvals</span>'+
 '                                <span class="selected"></span>'+
-'                                <span class="badge badge-danger">1</span>'+
+'                                <span class="badge badge-danger" id="approvalsCount" style="display:none">0</span>'+
 '                            </a>'+
 '                        </li>'+
 '                        <li class="nav-item '+ inputRequests +' ">'+
 '                            <a href="inputRequests.html" class="nav-link nav-toggle">'+
 '                                <i class="fa fa-sticky-note"></i>'+
 '                                <span class="title">Input Requests</span>'+
-'                                <span class="badge badge-danger">1</span>'+
+'                                <span class="badge badge-danger" id="inputsCount" style="display:none">1</span>'+
 '                            </a>'+
 '                        </li>'+
 '                        <li class="nav-item '+ clarifications +' ">'+
 '                            <a href="clarifications.html" class="nav-link nav-toggle">'+
 '                                <i class="fa fa-comments"></i>'+
 '                                <span class="title">Clarifications</span>'+
-'                                <span class="badge badge-danger">3</span>'+
+'                                <span class="badge badge-danger" id="clarificationsCount" style="display:none">3</span>'+
 '                            </a>'+
 '                        </li>'+
 '                        <li class="heading">'+
@@ -91,35 +91,35 @@ var sidebar = '<div class="page-sidebar-wrapper">'+
 '                            <a href="drafts.html" class="nav-link nav-toggle">'+
 '                                <i class="fa fa-pencil-square-o"></i>'+
 '                                <span class="title">Drafts</span>'+
-'                                <span class="badge badge-danger">5</span>'+
+'                                <span class="badge badge-danger" id="draftsCount" style="display:none">5</span>'+
 '                            </a>'+
 '                        </li>'+
 '                        <li class="nav-item '+ inProgress +' ">'+
 '                            <a href="inProgress.html" class="nav-link nav-toggle">'+
 '                                <i class="fa fa-hourglass-1"></i>'+
 '                                <span class="title">In Progress</span>'+
-'                                <span class="badge badge-danger">4</span>'+
+'                                <span class="badge badge-danger" id="inProgressCount" style="display:none">4</span>'+
 '                            </a>'+
 '                        </li>'+
 '                        <li class="nav-item '+ participated +' ">'+
 '                            <a href="participated.html" class="nav-link nav-toggle">'+
 '                                <i class="fa fa-group"></i>'+
 '                                <span class="title">Participated</span>'+
-'                                <span class="badge badge-danger">3</span>'+
+'                                <span class="badge badge-danger" id="participatedCount" style="display:none">3</span>'+
 '                            </a>'+
 '                        </li>'+
 '                        <li class="nav-item '+ approved +' ">'+
 '                            <a href="approved.html" class="nav-link nav-toggle">'+
 '                                <i class="fa fa-check"></i>'+
 '                                <span class="title">Approved</span>'+
-'                                <span class="badge badge-danger">3</span>'+
+'                                <span class="badge badge-danger" id="approvedCount" style="display:none">3</span>'+
 '                            </a>'+
 '                        </li>  '+
 '                        <li class="nav-item '+ rejected +' ">'+
 '                            <a href="rejected.html" class="nav-link nav-toggle">'+
 '                                <i class="fa fa-remove"></i>'+
 '                                <span class="title">Rejected</span>'+
-'                                <span class="badge badge-danger">3</span>'+
+'                                <span class="badge badge-danger" id="rejectedCount" style="display:none">0</span>'+
 '                            </a>'+
 '                        </li>  '+
 '                        <li class="heading">'+
@@ -237,69 +237,7 @@ var header = '<div class="page-header navbar navbar-fixed-top">'+
 '                                                        </span> Server #12 overloaded. </span>'+
 '                                                </a>'+
 '                                            </li>'+
-'                                            <li>'+
-'                                                <a href="javascript:;">'+
-'                                                    <span class="time">10 mins</span>'+
-'                                                    <span class="details">'+
-'                                                        <span class="label label-sm label-icon label-warning">'+
-'                                                            <i class="fa fa-bell-o"></i>'+
-'                                                        </span> Server #2 not responding. </span>'+
-'                                                </a>'+
-'                                            </li>'+
-'                                            <li>'+
-'                                                <a href="javascript:;">'+
-'                                                    <span class="time">14 hrs</span>'+
-'                                                    <span class="details">'+
-'                                                        <span class="label label-sm label-icon label-info">'+
-'                                                            <i class="fa fa-bullhorn"></i>'+
-'                                                        </span> Application error. </span>'+
-'                                                </a>'+
-'                                            </li>'+
-'                                            <li>'+
-'                                                <a href="javascript:;">'+
-'                                                    <span class="time">2 days</span>'+
-'                                                    <span class="details">'+
-'                                                        <span class="label label-sm label-icon label-danger">'+
-'                                                            <i class="fa fa-bolt"></i>'+
-'                                                        </span> Database overloaded 68%. </span>'+
-'                                                </a>'+
-'                                            </li>'+
-'                                            <li>'+
-'                                                <a href="javascript:;">'+
-'                                                    <span class="time">3 days</span>'+
-'                                                    <span class="details">'+
-'                                                        <span class="label label-sm label-icon label-danger">'+
-'                                                            <i class="fa fa-bolt"></i>'+
-'                                                        </span> A user IP blocked. </span>'+
-'                                                </a>'+
-'                                            </li>'+
-'                                            <li>'+
-'                                                <a href="javascript:;">'+
-'                                                    <span class="time">4 days</span>'+
-'                                                    <span class="details">'+
-'                                                        <span class="label label-sm label-icon label-warning">'+
-'                                                            <i class="fa fa-bell-o"></i>'+
-'                                                        </span> Storage Server #4 not responding dfdfdfd. </span>'+
-'                                                </a>'+
-'                                            </li>'+
-'                                            <li>'+
-'                                                <a href="javascript:;">'+
-'                                                    <span class="time">5 days</span>'+
-'                                                    <span class="details">'+
-'                                                        <span class="label label-sm label-icon label-info">'+
-'                                                            <i class="fa fa-bullhorn"></i>'+
-'                                                        </span> System Error. </span>'+
-'                                                </a>'+
-'                                            </li>'+
-'                                            <li>'+
-'                                                <a href="javascript:;">'+
-'                                                    <span class="time">9 days</span>'+
-'                                                    <span class="details">'+
-'                                                        <span class="label label-sm label-icon label-danger">'+
-'                                                            <i class="fa fa-bolt"></i>'+
-'                                                        </span> Storage server failed. </span>'+
-'                                                </a>'+
-'                                            </li>'+
+
 '                                        </ul>'+
 '                                    </li>'+
 '                                </ul>'+
@@ -371,13 +309,58 @@ function clearLocalStorage() {
    localStorage.clear();
    console.log("Cleared Local Storage");
 };
-/*
-checkInputTable(empId,function(status,data){
-        if(status){
-            var awaitingResponses = data.length;            
-        }else{
-            //swal("Error!", "No input requests for you", "info")
-        }
-});
-*/
 
+setCounters();
+
+function setCounters(){
+    console.log();
+    var empId = localStorage.empId;
+    checkApprovalTable(empId,function(status,data){
+        if(status){
+            $("#approvalsCount").show();
+            $("#approvalsCount").html(data.length);
+        }
+    });
+    checkInputTable(empId,function(status,data){
+        if(status){
+            $("#inputsCount").show(); 
+            $("#inputsCount").html(data.length);          
+        }
+    }); 
+    checkDraftsTable(empId,function(status,data){
+        if(status){
+            $("#draftsCount").show();            
+            $("#draftsCount").html(data.length);
+        }
+    });  
+    checkParticipated(empId,function(status,data){
+        if(status){
+            $("#participatedCount").show();        
+            $("#participatedCount").html(data.length);  
+        }
+    });   
+    checkClarificationTable(empId,function(status,data){
+        if(status){
+            $("#clarificationsCount").show();      
+            $("#clarificationsCount").html(data.length);     
+        }
+    });   
+    checkInProgress(empId,function(status,data){
+        if(status){
+            $("#inProgressCount").show();          
+            $("#inProgressCount").html(data.length);
+        }
+    });    
+    checkApproved(empId,function(status,data){
+        if(status){
+            $("#approvedCount").show();         
+            $("#approvedCount").html(data.length);
+        }
+    });       
+    checkRejected(empId,function(status,data){
+        if(status){
+            $("#rejectedCount").show();          
+            $("#rejectedCount").html(data.length);
+        }
+    });    
+}

@@ -1582,4 +1582,79 @@ function reviewKRA(empId,supervisorId,supervisorInput,typeId,supervisorReview,ca
     });
 }
 
+function uploadDocument(empId,id,type,callback){
+    // What to do here?
+    var x = document.getElementById(id);
+    var txt = "";
+    if ('files' in x) {
+        if (x.files.length == 0) {
+            alert("No File Selected");
+        } else {
+
+            var file = x.files[0];
+            if ('name' in file) {
+                txt += "name: " + file.name + "<br>";
+            }
+            if ('size' in file) {
+                txt += "size: " + file.size + " bytes <br>";
+            }
+            var reader  = new FileReader();
+            reader.addEventListener("load", function () {
+                console.log(reader.result);
+                var Employee = Parse.Object.extend("Employee");
+                var query = new Parse.Query(Employee);
+                query.equalTo("empId", empId);
+                query.find({
+                    success: function(results) {
+                        if (results.length) {
+                            //to get info in local storage upon first login
+                            var emp = results[0];
+                            var parseFile = new Parse.File(empId+'_profile.jpg', { base64: reader.result },'image/jpg');
+                            //ifconditions
+                            emp.set('profileImage',parseFile);
+                            emp.save(null,{
+                                success:function(emp){
+                                    callback(true);
+                                }
+                            });
+                                
+                        }
+                    },
+                    error: function(error) {
+                        alert("Error: " + error.code + " " + error.message);
+                    }
+                });                   
+                /*var parseFile = new Parse.File('image.png', { base64: reader.result },'image/png');
+                showLoading();
+                parseFile.save().then(function(result) {
+                // The file has been saved to Parse.
+                console.log("File Save Successfully")
+                photoArray.push(result.url());
+                console.log(photoArray);
+                $("#new-venue-photos-section").append(file.name);
+                $("#new-venue-photos-section").append('<hr/>');
+                hideLoading();
+                }, function(error) {
+                // The file either could not be read, or could not be saved to Parse.
+                hideLoading();
+                console.log("File Save Failed");
+                console.log(error)
+                });*/
+                
+            }, false);
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+
+        }
+    } 
+    else {
+        alert("No File Selected");
+    }
+    console.log(txt);
+
+}
+
+
 

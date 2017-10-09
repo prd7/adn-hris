@@ -155,6 +155,11 @@ $(document).ready(function(){
 		});
 		$("#familyDetails :input").attr("disabled", true);
 	});
+	$("#uploadSmart").click(function(){
+		console.log("Uploading Document");
+		var id = "nationalId";
+		uploadDocument(localStorage.empId,id,'nationalId');
+	});
 
 
 	//End of Jquery
