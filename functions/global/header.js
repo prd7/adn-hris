@@ -74,14 +74,14 @@ var sidebar = '<div class="page-sidebar-wrapper">'+
 '                            <a href="inputRequests.html" class="nav-link nav-toggle">'+
 '                                <i class="fa fa-sticky-note"></i>'+
 '                                <span class="title">Input Requests</span>'+
-'                                <span class="badge badge-danger" id="inputsCount" style="display:none">1</span>'+
+'                                <span class="badge badge-danger" id="inputsCount" style="display:none"></span>'+
 '                            </a>'+
 '                        </li>'+
 '                        <li class="nav-item '+ clarifications +' ">'+
 '                            <a href="clarifications.html" class="nav-link nav-toggle">'+
 '                                <i class="fa fa-comments"></i>'+
 '                                <span class="title">Clarifications</span>'+
-'                                <span class="badge badge-danger" id="clarificationsCount" style="display:none">3</span>'+
+'                                <span class="badge badge-danger" id="clarificationsCount" style="display:none"></span>'+
 '                            </a>'+
 '                        </li>'+
 '                        <li class="heading">'+
@@ -91,14 +91,14 @@ var sidebar = '<div class="page-sidebar-wrapper">'+
 '                            <a href="drafts.html" class="nav-link nav-toggle">'+
 '                                <i class="fa fa-pencil-square-o"></i>'+
 '                                <span class="title">Drafts</span>'+
-'                                <span class="badge badge-danger" id="draftsCount" style="display:none">5</span>'+
+'                                <span class="badge badge-danger" id="draftsCount" style="display:none"></span>'+
 '                            </a>'+
 '                        </li>'+
 '                        <li class="nav-item '+ inProgress +' ">'+
 '                            <a href="inProgress.html" class="nav-link nav-toggle">'+
 '                                <i class="fa fa-hourglass-1"></i>'+
 '                                <span class="title">In Progress</span>'+
-'                                <span class="badge badge-danger" id="inProgressCount" style="display:none">4</span>'+
+'                                <span class="badge badge-danger" id="inProgressCount" style="display:none"></span>'+
 '                            </a>'+
 '                        </li>'+
 '                        <li class="nav-item '+ participated +' ">'+
@@ -209,18 +209,18 @@ var header = '<div class="page-header navbar navbar-fixed-top">'+
 '                            <li class="dropdown dropdown-extended dropdown-notification dropdown-dark" id="header_notification_bar">'+
 '                                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">'+
 '                                    <i class="icon-bell"></i>'+
-'                                    <span class="badge badge-success"> 7 </span>'+
+'                                    <span class="badge badge-success" id="overallNotification" style="display:none"></span>'+
 '                                </a>'+
-'                                <ul class="dropdown-menu">'+
+'                                <ul class="dropdown-menu" id="notificationDropDown">'+
 '                                    <li class="external">'+
 '                                        <h3>'+
-'                                            <span class="bold">12 pending</span> notifications</h3>'+
-'                                        <a href="controlPanel.html">view all</a>'+
+'                                            <span class="bold" id="pedningNoti"></span> new notifications</h3>'+
+'                                        <a href="notifications.html">view all</a>'+
 '                                    </li>'+
 '                                    <li>'+
 '                                        <ul class="dropdown-menu-list scroller" style="height: 250px;" data-handle-color="#637283">'+
 '                                            <li>'+
-'                                                <a href="javascript:;">'+
+'                                                <a href="controlPanel.html">'+
 '                                                    <span class="time">just now</span>'+
 '                                                    <span class="details">'+
 '                                                        <span class="label label-sm label-icon label-success">'+
@@ -228,16 +228,6 @@ var header = '<div class="page-header navbar navbar-fixed-top">'+
 '                                                        </span> New user registered. </span>'+
 '                                                </a>'+
 '                                            </li>'+
-'                                            <li>'+
-'                                                <a href="javascript:;">'+
-'                                                    <span class="time">3 mins</span>'+
-'                                                    <span class="details">'+
-'                                                        <span class="label label-sm label-icon label-danger">'+
-'                                                            <i class="fa fa-bolt"></i>'+
-'                                                        </span> Server #12 overloaded. </span>'+
-'                                                </a>'+
-'                                            </li>'+
-
 '                                        </ul>'+
 '                                    </li>'+
 '                                </ul>'+
@@ -311,6 +301,7 @@ function clearLocalStorage() {
 };
 
 setCounters();
+populateNoti();
 
 function setCounters(){
     console.log();
@@ -363,4 +354,42 @@ function setCounters(){
             $("#rejectedCount").html(data.length);
         }
     });    
+}
+
+function populateNoti(){
+    var empId = localStorage.empId;
+    fetchNotifications(empId,'inUnread',function(status,data){
+        if(status){
+            $("#pedningNoti").html(data.length); 
+            $("#overallNotification").show();
+            $("#overallNotification").html(data.length); 
+
+            for( var i = 0; i < data.length; i++ )
+            {
+                //console.log(data[i].objectId);
+                var notificationListObject = '<li>'+
+                '                                     <a href="'+data[i].get('link')+'.html" onclick="checkRead('+data[i].get('notiId')+')">'+
+                '                                        <span class="time">3 mins</span>'+
+                '                                          <span class="details">'+
+                '                                            <span class="label label-sm label-icon label-danger">'+
+                '                                              <i class="fa fa-bolt"></i>'+
+                '                                        </span> '+data[i].get('title')+' </span>'+
+                '                                      </a>'+
+                '                                 </li>';
+
+                //add this to the drop down ul tag
+                $("#notificationDropDown ul").prepend(notificationListObject);
+            }
+        }
+    })
+}
+
+function checkRead(notiId){
+    alert("high"+notiId);
+    console.log();
+    alert(data[0].objectId);
+
+    /*markRead(objectId,function(status){
+        console.log("notification markRead");
+    })*/
 }

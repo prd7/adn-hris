@@ -55,6 +55,7 @@ $(document).ready(function(){
 				$("#managerComment").attr("disabled", true);
 				$("#managerComment").val(supervisorData[0].supervisorInput);
 			}else if(stage=="rejected"){
+				console.log(stage);
 				$("#sample_3 :input").attr("disabled", true);//disables the table after submitting KRA
 				$("#submits").hide()
 				var supervisorData = data.get("supervisorData");

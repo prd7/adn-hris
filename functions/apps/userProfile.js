@@ -17,7 +17,7 @@ $(document).ready(function(){
 		var statusArray =result.get("statusPersonal");
 		console.log("fetch stuff here");
 		console.log(statusArray);
-		console.log(statusArray[0].personalStatus);
+		//console.log(statusArray[0].personalStatus);
 		
 		if(statusArray[0].personalStatus){
 			var personalArray= result.get("personal");
@@ -52,8 +52,18 @@ $(document).ready(function(){
 			var personalArray =result.get("familyDetails");
 			$("#familyDetails :input").attr("disabled", true);
 		}
+		if(result.get("nIdSmartCard")){
+			console.log(result.get("nIdSmartCard"));
+			var file = result.get("nIdSmartCard");
+			$("#txtnationalIdSmartCard").val(file._name);
+			//here add the href to the button
+			$("#downloadSmart").attr("href",file._url);
+		}
 	});
 
+	$("#downloadSmart").click(function(){
+		//download the saved url
+	});
 
 	$("#submitPersonal").click(function(){
 		var empId=localStorage.empId;
@@ -155,10 +165,28 @@ $(document).ready(function(){
 		});
 		$("#familyDetails :input").attr("disabled", true);
 	});
+	
 	$("#uploadSmart").click(function(){
 		console.log("Uploading Document");
-		var id = "nationalId";
-		uploadDocument(localStorage.empId,id,'nationalId');
+		var id = "nationalIdSmartCard";
+		uploadDocument(localStorage.empId,id,'smartCard');
+	});
+
+	$("#uploadOldFormat").click(function(){
+		console.log("Uploading Document");
+		var id = "oldFormat";
+		uploadDocument(localStorage.empId,id,'oldFormat');
+	});
+
+	$("#uploadPassport").click(function(){
+		console.log("Uploading Document");
+		var id = "passport";
+		uploadDocument(localStorage.empId,id,'passport');
+	});
+	$("#uploadBirthRegistration").click(function(){
+		console.log("Uploading Document");
+		var id = "birthRegistration";
+		uploadDocument(localStorage.empId,id,'birthRegistration');
 	});
 
 

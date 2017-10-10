@@ -89,7 +89,8 @@ $(document).ready(function(){
 					$('#txtTimeline'+index).text(learningValue[i].supportRequired);
 					$('#txtSupportReq'+index).text(learningValue[i].timeline);
 				}
-			}else{
+			}
+		}else{
 				swal({
 					  title: "No Learning Agenda was Initiated for you!",
 					  text: "If expected,contact your HR or Supervisor.",
@@ -102,7 +103,6 @@ $(document).ready(function(){
 					function(){
 					  	window.location.href= "inputRequests.html";	
 				});
-			}
 		}
 	});
 
@@ -204,8 +204,9 @@ function validateLearning(){
   			var notiType= "Learning";
 			var notiTitle= "Learning Agenda submitted by "+empObject.name;
 			var notiBody= "Please review the learning agenda.";
+			var notiLink= "approvals";
 			var notiReceipent= empObject.supervisorId;
-			sendNoti(empId,notiType,notiTitle,notiBody,notiReceipent);
+			sendNoti(empId,notiType,notiTitle,notiBody,notiLink,notiReceipent);
 			//alert with custom message
   			swal({
 				  title: "Your Learning Agenda was posted for review.",
@@ -218,7 +219,7 @@ function validateLearning(){
 				},
 				function(){
 					console.log("Came in Swal to redirect");
-					window.location.href= "pages/Learning.html?typeId="+globalTypeId;
+					window.location.href= "learning.html?typeId="+globalTypeId;
 				});
 			$("#sample_3 :input").attr("disabled", true);//disables the table after submitting LEarning
 			$("#submits").hide();

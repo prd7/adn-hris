@@ -11,12 +11,11 @@ Date.prototype.subHours = function(h) {
     return this;
 }
 
-function getUrlVars()
-{
-    var vars = [], hash;
+function getUrlVars() {
+    var vars = [],
+        hash;
     var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-    for(var i = 0; i < hashes.length; i++)
-    {
+    for (var i = 0; i < hashes.length; i++) {
         hash = hashes[i].split('=');
         vars.push(hash[0]);
         vars[hash[0]] = hash[1];
@@ -51,31 +50,118 @@ function dateTimeString(eventDate) {
 }
 
 //a generic function to send notifications
-function sendNoti(senderId,type,title,body,recipientId){
-    var Notification = Parse.Object.extend("Notification");
-    var newNoti = new Notification();
+function sendNoti(senderId, type, title, body, link, recipientId) {
+    console.log("came in to set notifications");
+    getNotificationCount(function(count) { //get count of entries in Learning table
+        var Notification = Parse.Object.extend("Notification");
+        var newNoti = new Notification();
 
-    //newNoti.set('notiId','noti_0');
-    newNoti.set('senderId',senderId);
-    newNoti.set('type',type);
-    newNoti.set('title',title);
-    newNoti.set('body',body);
-    newNoti.set('recipientId',recipientId); 
-    newNoti.set('isUnread',true);
-    //newNoti.set('isHidden',false);
-    newNoti.set('startDate',new Date());
-    //newNoti.set('readDate',new Date());
+        newNoti.set('notiId', 'noti_' + (count + 1));
+        newNoti.set('senderId', senderId);
+        newNoti.set('type', type);
+        newNoti.set('title', title);
+        newNoti.set('body', body);
+        newNoti.set('link', link);
+        newNoti.set('recipientId', recipientId);
+        newNoti.set('isUnread', true);
+        //newNoti.set('isHidden',false);
+        newNoti.set('startDate', new Date());
+        //newNoti.set('readDate',new Date());
 
-    newNoti.save(null, {
-      success: function(Notification) {
-        console.log("notifications sent");
-        console.log('New object created with objectId: ' + Notification.id);
-      },
-      error: function(Notification, error) {
-        console.log('Failed to create new object, with error code: ' + error.message);
-      }
+        newNoti.save(null, {
+            success: function(Notification) {
+                console.log("notifications sent");
+                console.log('New object created with objectId: ' + Notification.id);
+            },
+            error: function(Notification, error) {
+                console.log('Failed to create new object, with error code: ' + error.message);
+            }
+        });
     });
-} 
+
+}
+
+//function to get notifications count in the header.js
+function getNotificationCount(callback) {
+    var Notification = new Parse.Object.extend('Notification');
+    var query = new Parse.Query(Notification);
+    var notificationIndex = 0;
+    query.count({
+        success: function(count) {
+            console.log(count);
+            callback(count);
+        }
+    });
+}
+
+//function to fetch notifications
+function fetchNotifications(empId,type, callback) {
+    var Notification = Parse.Object.extend("Notification");
+    var query = new Parse.Query(Notification);
+    query.equalTo("recipientId", empId);
+    if(type=="isUnread"){
+        query.equalTo("isUnread", true);
+    }
+    query.find({
+        success: function(results) {
+            if (results.length) {
+                callback(true, results);
+            } else {
+                callback(false, null);
+            }
+        },
+        error: function(error) {
+            console.log("Error : " + error.code + " " + error.message);
+        }
+    });
+}
+
+//function to mark notification status as read
+function markRead(objectId, callback) {
+    var Notification = Parse.Object.extend("Notification");
+    var query = new Parse.Query(Notification);
+    query.equalTo("objectId", objectId);
+    query.find({
+        success: function(results) {
+            var newNoti = results[0];
+            newNoti.set('isUnread', false);
+            newNoti.save(null, {
+                success: function(Notification) {
+                    console.log("notifications marked read");
+                    //console.log('New object created with objectId: ' + Notification.id);
+                },
+                error: function(Notification, error) {
+                    console.log('Failed to create new object, with error code: ' + error.message);
+                }
+            });
+        }
+    });
+}
+
+//login function
+function checklogin(username, password, callback) {
+    console.log("came in checkLOgin in the module.");
+    var Employee = Parse.Object.extend("Employee");
+    var query = new Parse.Query(Employee);
+    query.equalTo("userName", username);
+    query.equalTo("password", password);
+    query.find({
+        success: function(results) {
+            if (results.length) {
+                //to get info in local storage upon first login
+                localStorage.empId = results[0].get('empId');
+                localStorage.empObject = JSON.stringify(results[0]);
+                localStorage.loggedIn = "true";
+                callback(true, results[0]);
+            } else {
+                callback(false, null);
+            }
+        },
+        error: function(error) {
+            alert("Error: " + error.code + " " + error.message);
+        }
+    });
+}
 
 //function to add new employee
 function addEmployee(empArray, callback) {
@@ -105,30 +191,6 @@ function addEmployee(empArray, callback) {
     });
 }
 
-//login function
-function checklogin(username, password, callback) {
-    console.log("came in checkLOgin in the module.");
-    var Employee = Parse.Object.extend("Employee");
-    var query = new Parse.Query(Employee);
-    query.equalTo("userName", username);
-    query.equalTo("password", password);
-    query.find({
-        success: function(results) {
-            if (results.length) {
-                //to get info in local storage upon first login
-                localStorage.empId = results[0].get('empId');
-                localStorage.empObject = JSON.stringify(results[0]);
-                localStorage.loggedIn = "true";
-                callback(true, results[0]);
-            } else {
-                callback(false, null);
-            }
-        },
-        error: function(error) {
-            alert("Error: " + error.code + " " + error.message);
-        }
-    });
-}
 
 //empId validation function
 function validateEmpId(empId, callback) {
@@ -203,7 +265,7 @@ function submitPersonal(empId, dataArray, type, callback) {
                 console.log(dataArray);
                 //access the status array to update status of each accordion
                 var statusArray = results[0].get("statusPersonal");
-                
+
                 var personalArray = results[0].get("personal"); //to fetch existing array
                 var academicDetailsArray = results[0].get("academicDetails"); //to fetch existing array
                 var familyDetailsArray = results[0].get("familyDetails"); //to fetch existing array
@@ -228,52 +290,52 @@ function submitPersonal(empId, dataArray, type, callback) {
                     statusArray[0].personalStatus = true;
                     console.log("came till the end");
                     console.log(statusArray[0].personalStatus);
-                } else if(type=="address") {
+                } else if (type == "address") {
                     personalArray[0].presentAddress = " " + dataArray[0].value + " " + dataArray[1].value + "," + dataArray[2].value + "," + dataArray[3].value + "," + dataArray[4].value + "," + dataArray[5].value;
                     personalArray[0].permanentAddress = " " + dataArray[6].value + " " + dataArray[7].value + "," + dataArray[8].value + "," + dataArray[9].value + "," + dataArray[10].value + "," + dataArray[11].value;
                     statusArray[0].addressStatus = true
                 }
                 newEmp.set('personal', personalArray);
-                
+
                 if (type == "academic") {
-                    for(i=0;i<(length/9);i++){
-                        for(j=0;j<9;j++){
-                          var academicObj = new Object();
-                          academicObj.levelOfEducation = dataArray[(9*i)+j].value;
-                          academicObj.examDegreeTitle = dataArray[(9*i)+j].value;
-                          academicObj.major = dataArray[(9*i)+j].value;
-                          academicObj.instituteName = dataArray[(9*i)+j].value;
-                          academicObj.result = dataArray[(9*i)+j].value;
-                          academicObj.marks = dataArray[(9*i)+j].value;
-                          academicObj.cgpa = dataArray[(9*i)+j].value;
-                          academicObj.scale = dataArray[(9*i)+j].value;
-                          academicObj.yearOfPassing = dataArray[(9*i)+j].value;
-                          academicObj.duration = dataArray[(9*i)+j].value;
-                          academicObj.achievements = dataArray[(9*i)+j].value;
-                        }  
-                          //push this object to the array
-                          academicDetailsArray.push(academicObj);
+                    for (i = 0; i < (length / 9); i++) {
+                        for (j = 0; j < 9; j++) {
+                            var academicObj = new Object();
+                            academicObj.levelOfEducation = dataArray[(9 * i) + j].value;
+                            academicObj.examDegreeTitle = dataArray[(9 * i) + j].value;
+                            academicObj.major = dataArray[(9 * i) + j].value;
+                            academicObj.instituteName = dataArray[(9 * i) + j].value;
+                            academicObj.result = dataArray[(9 * i) + j].value;
+                            academicObj.marks = dataArray[(9 * i) + j].value;
+                            academicObj.cgpa = dataArray[(9 * i) + j].value;
+                            academicObj.scale = dataArray[(9 * i) + j].value;
+                            academicObj.yearOfPassing = dataArray[(9 * i) + j].value;
+                            academicObj.duration = dataArray[(9 * i) + j].value;
+                            academicObj.achievements = dataArray[(9 * i) + j].value;
+                        }
+                        //push this object to the array
+                        academicDetailsArray.push(academicObj);
                     }
                     statusArray[0].academicStatus = true
                     newEmp.set('academicDetails', academicDetailsArray);
-                }else if(type == "family"){
-                  for(i=0;i<(length/9);i++){
+                } else if (type == "family") {
+                    for (i = 0; i < (length / 9); i++) {
 
-                    for(j=0;j<9;j++){
-                      var familyObj = new Object();
-                      familyObj.name = dataArray[(9*i)+j].value;
-                      familyObj.relation = dataArray[(9*i)+j].value;
-                      familyObj.gender = dataArray[(9*i)+j].value;
-                      familyObj.contact = dataArray[(9*i)+j].value;
-                      familyObj.dateOfBirth = dataArray[(9*i)+j].value;
-                      familyObj.age = dataArray[(9*i)+j].value;
-                    }  
-                      familyDetailsArray.push(familyObj);
-                  }
-                  statusArray[0].familyStatus = true
-                  newEmp.set('familyDetails', familyDetailsArray);
+                        for (j = 0; j < 9; j++) {
+                            var familyObj = new Object();
+                            familyObj.name = dataArray[(9 * i) + j].value;
+                            familyObj.relation = dataArray[(9 * i) + j].value;
+                            familyObj.gender = dataArray[(9 * i) + j].value;
+                            familyObj.contact = dataArray[(9 * i) + j].value;
+                            familyObj.dateOfBirth = dataArray[(9 * i) + j].value;
+                            familyObj.age = dataArray[(9 * i) + j].value;
+                        }
+                        familyDetailsArray.push(familyObj);
+                    }
+                    statusArray[0].familyStatus = true
+                    newEmp.set('familyDetails', familyDetailsArray);
                 }
-                
+
                 newEmp.set('statusPersonal', statusArray);
                 newEmp.save(null, {
                     success: function(Employee) {
@@ -295,33 +357,33 @@ function submitPersonal(empId, dataArray, type, callback) {
 }
 
 //function to check the values of status array in database
-function checkStatus(empId,type,callback){
-    console.log("Came inside function to check if the values are persent in the array");
+function checkStatus(empId, type, callback) {
+    console.log("Came inside function to check if the values are present in the array");
 
     var Employee = Parse.Object.extend("Employee");
     var query = new Parse.Query(Employee);
     query.equalTo("empId", empId);
     query.find({
         success: function(results) {
-            if(results.length){
+            if (results.length) {
                 var newEmp = results[0];
-                if(type=="personal"){
-                    var statusArray =results[0].get("statusPersonal");
+                if (type == "personal") {
+                    var statusArray = results[0].get("statusPersonal");
                     //console.log(statusArray);
-                    var length=statusArray.length;
-                    if(statusArray[0].personalStatus && statusArray[0].addressStatus && statusArray[0].academicStatus && statusArray[0].familyStatus && statusArray[0].documentStatus){
+                    var length = statusArray.length;
+                    if (statusArray[0].personalStatus && statusArray[0].addressStatus && statusArray[0].academicStatus && statusArray[0].familyStatus && statusArray[0].documentStatus) {
                         //addToApprovalTable('employeeProfile', 'p_'+Employee.get('empId'), Employee.get('supervisorId'),Employee.get('empId'), 'live', new Date()); //this will add a copy to input table
                         console.log("all values are true in personal status");
-                    }else{
+                    } else {
                         console.log("All status flags are not true yet");
-                    } 
+                    }
                     //console.log(results[0].get("personal"));
-                    callback(results[0]);      
-                }else if(type=="office"){
-                    var statusArray =results[0].get("statusOffice");
+                    callback(results[0]);
+                } else if (type == "office") {
+                    var statusArray = results[0].get("statusOffice");
                     console.log(statusArray);
                     console.log("Came inside office array");
-                    if(statusArray[0].officeInfoStatus && statusArray[0].joiningDetailStatus && statusArray[0].performanceStatus && statusArray[0].separationInfoStatus && statusArray[0].positionHistoryStatus && statusArray[0].perviousEmploymentStatus && statusArray[0].bankStatus && statusArray[0].salaryStatus && statusArray[0].otherBenefitStatus && statusArray[0].companyCarStatus && statusArray[0].personalCarStatus){
+                    if (statusArray[0].officeInfoStatus && statusArray[0].joiningDetailStatus && statusArray[0].performanceStatus && statusArray[0].separationInfoStatus && statusArray[0].positionHistoryStatus && statusArray[0].perviousEmploymentStatus && statusArray[0].bankStatus && statusArray[0].salaryStatus && statusArray[0].otherBenefitStatus && statusArray[0].companyCarStatus && statusArray[0].personalCarStatus) {
                         console.log("all vlaues are true in office status");
                         //addToApprovalTable('employeeProfile', 'ofc_'+Employee.get('empId'), Employee.get('supervisorId'),Employee.get('empId'), 'live', new Date()); //this will add a copy to input table
                     }
@@ -440,7 +502,7 @@ function submitPositionDetails(empId, dataArray, callback) {
                 newEmp.set('vertical', empArray[5].value);
                 newEmp.set('subVertical', empArray[6].value);
 
-                var statusArray = results[0].get("statusOffice");//array to set the flags of completion
+                var statusArray = results[0].get("statusOffice"); //array to set the flags of completion
                 var officePosArray = results[0].get("officePositionDetails");
 
                 if (officePosArray) {
@@ -495,9 +557,9 @@ function submitpreviousEmployment(empId, dataArray, callback) {
                 var newEmp = results[0];
                 console.log(newEmp);
                 console.log(dataArray);
-                
-                var statusArray = results[0].get("statusOffice");//array to set the flags of completion
-                
+
+                var statusArray = results[0].get("statusOffice"); //array to set the flags of completion
+
                 var dummyArray = new Array();
                 var dummyObj = new Object();
 
@@ -521,7 +583,7 @@ function submitpreviousEmployment(empId, dataArray, callback) {
                     },
                     error: function(Employee, error) {
                         alert('Failed to create new object, with error code: ' + error.message);
-                    } 
+                    }
                 });
                 callback(true);
             } else {
@@ -547,7 +609,7 @@ function submitPayrollInformation(empId, dataArray, type, callback) {
                 var newEmp = results[0];
             }
             console.log(newEmp);
-            var statusArray = results[0].get("statusOffice");//array to set the flags of completion
+            var statusArray = results[0].get("statusOffice"); //array to set the flags of completion
 
             if (type == "bankDetails") {
                 var dummyArray = new Array();
@@ -653,10 +715,39 @@ function selectWizard(dept, grade, callback) {
     });
 }
 
+//this will keep record of initiated actions as a batch with initiator ID
+function batchInitialize(empArray, initiatorId, type, callback) {
+    var BatchRecords = new Parse.Object.extend('BatchRecords');
+    var query = new Parse.Query(BatchRecords);
+    var batchIndex = 0;
+    query.count({
+        success: function(count) {
+            //var BatchRecords = Parse.Object.extend("BatchRecords");
+            var newBatch = new BatchRecords();
+
+            newBatch.set('batchId_', 'batchId_' + count + 1);
+            newBatch.set('initiatorId', initiatorId);
+            newBatch.set('type', type);
+            newBatch.set('startDate', new Date());
+            var valDate = new Date();
+            newBatch.set('endDate', valDate.addHours(730));
+            newBatch.set('isComplete', false);
+
+            newBatch.save(null, {
+                success: function(BatchRecords) {
+                    console.log('New object created with objectId: ' + BatchRecords.id);
+                },
+                error: function(BatchRecords, error) {
+                    console.log('Failed to create new object, with error code: ' + error.message);
+                }
+            });
+        }
+    });
+}
+
 
 //funtion to initiate KRA for some selected array of employees
-function initiateKRA(empArray, initiatorId,callback) {
-    //add to kra table
+function initiateKRA(empArray, initiatorId, callback) {
     //add to input table of all employees-being done in addToKraTable
 
     //send notification
@@ -705,7 +796,7 @@ function addToKRATable(empData, kraIndex, initiatorId) {
     dummyObj.kraWeight = "00";
     dummyObj.kraUos = "";
     dummyObj.kraMos = "";
-    dummyArray.push(dummyObj);//push object into array
+    dummyArray.push(dummyObj); //push object into array
 
     newKRA.set('kraValue', dummyArray); //kraValue is the name of the array
     newKRA.set('version', 'live');
@@ -741,7 +832,7 @@ function addToKRATable(empData, kraIndex, initiatorId) {
 }
 
 //function to set kra
-function setKRA(kraArray,typeId,callback) {
+function setKRA(kraArray, typeId, callback) {
     console.log("CAme in setKRA");
     //var empId = localStorage.empId;
     //var kraId = localStorage.kraId;
@@ -781,7 +872,7 @@ function setKRA(kraArray,typeId,callback) {
                     success: function(KRA) {
                         // Execute any logic that should take place after the object is saved.
                         console.log('New KRA set with objectId: ' + KRA.id);
-                        addToApprovalTable('KRA', KRA.get('kraId'), KRA.get('supervisorId'),KRA.get('empId'), 'live', new Date()); //this will add a copy to input table
+                        addToApprovalTable('KRA', KRA.get('kraId'), KRA.get('supervisorId'), KRA.get('empId'), 'live', new Date()); //this will add a copy to input table
                         callback(true);
                     },
                     error: function(KRA, error) {
@@ -802,7 +893,7 @@ function setKRA(kraArray,typeId,callback) {
 }
 
 //function to save as draft KRA
-function setKRADraft(kraArray,typeId, callback) {
+function setKRADraft(kraArray, typeId, callback) {
     console.log("Came in setDraft");
     //var empId = localStorage.empId;
     //var kraId = localStorage.kraId;
@@ -859,7 +950,7 @@ function setKRADraft(kraArray,typeId, callback) {
 }
 
 //funtion to initiate Learning for some selected array of employees
-function initiateLearning(empArray, initiatorId,callback) {
+function initiateLearning(empArray, initiatorId, callback) {
     //add to Learning table
     //add to input table of all employees-being done in addToLearningTable
 
@@ -910,7 +1001,7 @@ function addToLearningTable(empData, learningIndex, initiatorId) {
     dummyObj.timeline = "";
     dummyObj.supportRequired = "";
     dummyArray.push(dummyObj);
-    
+
     newLearning.set('learningValue', dummyArray); //LearningValue is the name of the array
     newLearning.set('version', 'live');
     newLearning.set('startDate', new Date());
@@ -945,7 +1036,7 @@ function addToLearningTable(empData, learningIndex, initiatorId) {
 }
 
 //function to set Learning
-function setLearning(learningArray,typeId,callback) {
+function setLearning(learningArray, typeId, callback) {
     console.log("Came in setLearning");
     //var empId = localStorage.empId;
     console.log("The Learning array is:");
@@ -983,7 +1074,7 @@ function setLearning(learningArray,typeId,callback) {
                 newLearning.save(null, {
                     success: function(Learning) {
                         console.log('New Learning set with objectId: ' + Learning.id);
-                        addToApprovalTable('learning', Learning.get('lrnid'), Learning.get('supervisorId'),Learning.get('empId'), 'live', new Date()); //this will add a copy to input table
+                        addToApprovalTable('learning', Learning.get('lrnid'), Learning.get('supervisorId'), Learning.get('empId'), 'live', new Date()); //this will add a copy to input table
                         callback(true);
                     },
                     error: function(Learning, error) {
@@ -1002,7 +1093,7 @@ function setLearning(learningArray,typeId,callback) {
 }
 
 //function to save as draft Learning
-function setLearningDraft(learningArray,typeId,callback) {
+function setLearningDraft(learningArray, typeId, callback) {
     console.log("Came in Learning setDraft");
     //var empId = localStorage.empId;
     //var LearningId = localStorage.LearningId;
@@ -1063,14 +1154,14 @@ function addToInputTable(type, typeId, empId, status, startDate) {
 
     var Inputs = Parse.Object.extend("Inputs");
     var query = new Parse.Query(Inputs);
-    query.equalTo("empId",empId);
-    query.equalTo("typeId",typeId);
+    query.equalTo("empId", empId);
+    query.equalTo("typeId", typeId);
     query.find({
-        success: function(results){
-            if(results.length){
+        success: function(results) {
+            if (results.length) {
                 var newInputs = results[0];
                 //newInputs.set('status', 'sentBack');
-            }else{
+            } else {
                 var newInputs = new Inputs();
                 //newInputs.set('status', status);
             }
@@ -1092,7 +1183,7 @@ function addToInputTable(type, typeId, empId, status, startDate) {
         }
     });
 
-    
+
 }
 
 //Generic Function to add to approval Table
@@ -1102,13 +1193,13 @@ function addToApprovalTable(type, typeId, empId, cameFrom, status, startDate) {
         console.log("INput table reset succes,came back to add to approval");
         var Approvals = Parse.Object.extend("Approvals");
         var query = new Parse.Query(Approvals);
-        query.equalTo("empId",empId);
-        query.equalTo("typeId",typeId);
+        query.equalTo("empId", empId);
+        query.equalTo("typeId", typeId);
         query.find({
-            success: function(results){
-                if(results.length){
+            success: function(results) {
+                if (results.length) {
                     var newApprovals = results[0];
-                }else{
+                } else {
                     var newApprovals = new Approvals();
                 }
                 newApprovals.set('type', type);
@@ -1122,7 +1213,7 @@ function addToApprovalTable(type, typeId, empId, cameFrom, status, startDate) {
                 newApprovals.save(null, {
                     success: function(Inputs) {
                         console.log('New Approval Table object created with objectId: ' + Approvals.id);
-                        resetDraftTable(typeId,'dead');
+                        resetDraftTable(typeId, 'dead');
                     },
                     error: function(Inputs, error) {
                         alert('Failed to create new object, with error code: ' + error.message);
@@ -1140,13 +1231,13 @@ function addToDraftTable(type, typeId, empId, status, startDate) {
         //setting the draft table entry
         var Drafts = Parse.Object.extend("Drafts");
         var query = new Parse.Query(Drafts);
-        query.equalTo("empId",empId);
-        query.equalTo("typeId",typeId);
+        query.equalTo("empId", empId);
+        query.equalTo("typeId", typeId);
         query.find({
-            success: function(results){
-                if(results.length){
+            success: function(results) {
+                if (results.length) {
                     var newDrafts = results[0];
-                }else{
+                } else {
                     var newDrafts = new Drafts();
                 }
                 //newDrafts.set('draftId','draft_0');
@@ -1180,7 +1271,7 @@ function resetInputTable(typeId, status, callback) {
         success: function(results) {
             if (results.length) {
                 console.log("got values in input table");
-                var newInputs=results[0];
+                var newInputs = results[0];
                 newInputs.set('status', status);
                 newInputs.save(null, {
                     success: function(Inputs) {
@@ -1208,7 +1299,7 @@ function resetApprovalTable(typeId, status, callback) {
         success: function(results) {
             if (results.length) {
                 console.log("got values in Approval table");
-                var newApprovals=results[0];
+                var newApprovals = results[0];
                 newApprovals.set('status', status);
                 newApprovals.save(null, {
                     success: function(Approvals) {
@@ -1253,7 +1344,7 @@ function resetDraftTable(typeId, status, callback) {
 }
 
 //function to check and then fetch a KRA for an emplopyee
-function fetchKra(empId,kraId,callback) {
+function fetchKra(empId, kraId, callback) {
     var Kra = Parse.Object.extend("Kra");
     var query = new Parse.Query(Kra);
     query.equalTo("empId", empId); //match empId to table
@@ -1261,9 +1352,9 @@ function fetchKra(empId,kraId,callback) {
     query.find({
         success: function(results) {
             if (results.length) {
-                callback(true,results[0]);
+                callback(true, results[0]);
             } else {
-                callback(false,null);
+                callback(false, null);
             }
         },
         error: function(error) {
@@ -1273,7 +1364,7 @@ function fetchKra(empId,kraId,callback) {
 }
 
 //function to check and then fetch a KRA for an emplopyee
-function fetchLearning(empId,lrnId,callback) {
+function fetchLearning(empId, lrnId, callback) {
     var Learning = Parse.Object.extend("Learning");
     var query = new Parse.Query(Learning);
     query.equalTo("lrnid", lrnId);
@@ -1282,9 +1373,9 @@ function fetchLearning(empId,lrnId,callback) {
     query.find({
         success: function(results) {
             if (results.length) {
-                callback(true,results[0]);
+                callback(true, results[0]);
             } else {
-                callback(false,null);
+                callback(false, null);
             }
         },
         error: function(error) {
@@ -1294,7 +1385,7 @@ function fetchLearning(empId,lrnId,callback) {
 }
 
 //function to check input table
-function checkInputTable(empId,callback) {
+function checkInputTable(empId, callback) {
     var Inputs = Parse.Object.extend("Inputs");
     var query = new Parse.Query(Inputs);
     query.equalTo("empId", empId); //match kraId to table
@@ -1302,13 +1393,13 @@ function checkInputTable(empId,callback) {
     query.find({
         success: function(results) {
             if (results.length) { //try in future for more results
-              var inputNumber=results.length;
-              console.log("these many results were found in input table: "+inputNumber);
-              //var inputObject = JSON.stringify(results[0]);
-              console.log(results);
-              callback(true,results);
+                var inputNumber = results.length;
+                console.log("these many results were found in input table: " + inputNumber);
+                //var inputObject = JSON.stringify(results[0]);
+                console.log(results);
+                callback(true, results);
             } else {
-                callback(false,null);
+                callback(false, null);
             }
         },
         error: function(error) {
@@ -1318,7 +1409,7 @@ function checkInputTable(empId,callback) {
 }
 
 //function to check drafts table
-function checkDraftsTable(empId,callback) {
+function checkDraftsTable(empId, callback) {
     var Drafts = Parse.Object.extend("Drafts");
     var query = new Parse.Query(Drafts);
     query.equalTo("empId", empId); //match kraId to table
@@ -1326,12 +1417,12 @@ function checkDraftsTable(empId,callback) {
     query.find({
         success: function(results) {
             if (results.length) { //try in future for more results
-              var draftsNumber=results.length;
-              console.log("these many results were found in drafts table: "+draftsNumber);
-              console.log(results);
-              callback(true,results);
+                var draftsNumber = results.length;
+                console.log("these many results were found in drafts table: " + draftsNumber);
+                console.log(results);
+                callback(true, results);
             } else {
-                callback(false,null);
+                callback(false, null);
             }
         },
         error: function(error) {
@@ -1341,7 +1432,7 @@ function checkDraftsTable(empId,callback) {
 }
 
 //function to check approvals table
-function checkApprovalTable(empId,callback) {
+function checkApprovalTable(empId, callback) {
     var Approvals = Parse.Object.extend("Approvals");
     var query = new Parse.Query(Approvals);
     query.equalTo("empId", empId); //match kraId to table
@@ -1349,12 +1440,12 @@ function checkApprovalTable(empId,callback) {
     query.find({
         success: function(results) {
             if (results.length) { //try in future for more results
-              var approvalsNumber=results.length;
-              console.log("these many results were found in approvals table: "+approvalsNumber);
-              console.log(results);
-              callback(true,results);
+                var approvalsNumber = results.length;
+                //console.log("these many results were found in approvals table: "+approvalsNumber);
+                //console.log(results);
+                callback(true, results);
             } else {
-                callback(false,null);
+                callback(false, null);
             }
         },
         error: function(error) {
@@ -1364,21 +1455,21 @@ function checkApprovalTable(empId,callback) {
 }
 
 //function to check participated in approvals table
-function checkParticipated(empId,callback) {
+function checkParticipated(empId, callback) {
     var Approvals = Parse.Object.extend("Approvals");
     var query = new Parse.Query(Approvals);
     query.equalTo("empId", empId);
-    query.equalTo("status", "accepted"); 
-    query.equalTo("status", "rejected"); 
+    query.equalTo("status", "accepted");
+    query.equalTo("status", "rejected");
     query.find({
         success: function(results) {
-            if (results.length) { 
-              var approvalsNumber=results.length;
-              console.log("these many results were found in approvals table: "+approvalsNumber);
-              console.log(results);
-              callback(true,results);
+            if (results.length) {
+                var approvalsNumber = results.length;
+                console.log("these many results were found in approvals table: " + approvalsNumber);
+                console.log(results);
+                callback(true, results);
             } else {
-                callback(false,null);
+                callback(false, null);
             }
         },
         error: function(error) {
@@ -1388,20 +1479,20 @@ function checkParticipated(empId,callback) {
 }
 
 //function to check Clarification table
-function checkClarificationTable(empId,callback) {
+function checkClarificationTable(empId, callback) {
     var Clarification = Parse.Object.extend("Clarification");
     var query = new Parse.Query(Clarification);
-    query.equalTo("empId", empId); 
+    query.equalTo("empId", empId);
     query.equalTo("status", "live");
     query.find({
         success: function(results) {
             if (results.length) { //try in future for more results
-              var clarificationNumber = results.length;
-              console.log("these many results were found in Clarification table: "+clarificationNumber);
-              console.log(results);
-              callback(true,results);
+                var clarificationNumber = results.length;
+                console.log("these many results were found in Clarification table: " + clarificationNumber);
+                console.log(results);
+                callback(true, results);
             } else {
-                callback(false,null);
+                callback(false, null);
             }
         },
         error: function(error) {
@@ -1411,7 +1502,7 @@ function checkClarificationTable(empId,callback) {
 }
 
 //function to check inProgress table
-function checkInProgress(empId,callback) {
+function checkInProgress(empId, callback) {
     var Inputs = Parse.Object.extend("Inputs");
     var query = new Parse.Query(Inputs);
     query.equalTo("empId", empId); //match kraId to table
@@ -1419,13 +1510,13 @@ function checkInProgress(empId,callback) {
     query.find({
         success: function(results) {
             if (results.length) { //try in future for more results
-              var inputNumber=results.length;
-              console.log("these many results were found in input table: "+inputNumber);
-              //var inputObject = JSON.stringify(results[0]);
-              console.log(results);
-              callback(true,results);
+                var inputNumber = results.length;
+                console.log("these many results were found in input table: " + inputNumber);
+                //var inputObject = JSON.stringify(results[0]);
+                console.log(results);
+                callback(true, results);
             } else {
-                callback(false,null);
+                callback(false, null);
             }
         },
         error: function(error) {
@@ -1435,7 +1526,7 @@ function checkInProgress(empId,callback) {
 }
 
 //function to check checkApproved table
-function checkApproved(empId,callback) {
+function checkApproved(empId, callback) {
     var Inputs = Parse.Object.extend("Inputs");
     var query = new Parse.Query(Inputs);
     query.equalTo("empId", empId); //match kraId to table
@@ -1443,13 +1534,13 @@ function checkApproved(empId,callback) {
     query.find({
         success: function(results) {
             if (results.length) { //try in future for more results
-              var inputNumber=results.length;
-              console.log("these many results were found in input table: "+inputNumber);
-              //var inputObject = JSON.stringify(results[0]);
-              console.log(results);
-              callback(true,results);
+                var inputNumber = results.length;
+                console.log("these many results were found in input table: " + inputNumber);
+                //var inputObject = JSON.stringify(results[0]);
+                console.log(results);
+                callback(true, results);
             } else {
-                callback(false,null);
+                callback(false, null);
             }
         },
         error: function(error) {
@@ -1459,7 +1550,7 @@ function checkApproved(empId,callback) {
 }
 
 //function to check rejected table
-function checkRejected(empId,callback) {
+function checkRejected(empId, callback) {
     var Inputs = Parse.Object.extend("Inputs");
     var query = new Parse.Query(Inputs);
     query.equalTo("empId", empId); //match kraId to table
@@ -1467,13 +1558,13 @@ function checkRejected(empId,callback) {
     query.find({
         success: function(results) {
             if (results.length) { //try in future for more results
-              var inputNumber=results.length;
-              console.log("these many results were found in input table: "+inputNumber);
-              //var inputObject = JSON.stringify(results[0]);
-              console.log(results);
-              callback(true,results);
+                var inputNumber = results.length;
+                console.log("these many results were found in input table: " + inputNumber);
+                //var inputObject = JSON.stringify(results[0]);
+                console.log(results);
+                callback(true, results);
             } else {
-                callback(false,null);
+                callback(false, null);
             }
         },
         error: function(error) {
@@ -1484,17 +1575,22 @@ function checkRejected(empId,callback) {
 
 
 //functino calling the mail API
-function sendEmail(to,cc,subject,body,callback){
+function sendEmail(to, cc, subject, body, callback) {
     //to is an Array, cc is an Array
 
-    $.post( "http://adn-hris.herokuapp.com/api/mail", { to: to, cc: cc, subject:subject,body:body })
-      .done(function( data ) {
-        callback(true);
-    });
+    $.post("http://adn-hris.herokuapp.com/api/mail", {
+            to: to,
+            cc: cc,
+            subject: subject,
+            body: body
+        })
+        .done(function(data) {
+            callback(true);
+        });
 }
 
 //function to reject Learning
-function reviewLearning(empId,supervisorId,supervisorInput,typeId,supervisorReview,callback){
+function reviewLearning(empId, supervisorId, supervisorInput, typeId, supervisorReview, callback) {
     var Learning = Parse.Object.extend("Learning");
     var query = new Parse.Query(Learning);
     query.equalTo("lrnid", typeId); //match LearningId to table
@@ -1503,7 +1599,7 @@ function reviewLearning(empId,supervisorId,supervisorInput,typeId,supervisorRevi
         success: function(results) {
             if (results.length) {
                 var newLearning = results[0];
-                
+
                 var dummyArray = results[0].get("supervisorData");
                 var dummyObj = new Object(); //create object to push into array
                 //dummyObj.supervisor = new Employee();
@@ -1511,12 +1607,12 @@ function reviewLearning(empId,supervisorId,supervisorInput,typeId,supervisorRevi
                 dummyObj.supervisorInput = supervisorInput;
                 dummyObj.supervisorInputDate = new Date();
                 dummyObj.supervisorReview = supervisorReview;
-                dummyArray.push(dummyObj);//push object into array
-                newLearning.set('supervisorData',dummyArray);
-                if(supervisorReview){
-                    newLearning.set('stage','accepted');
-                }else{
-                    newLearning.set('stage','rejected');
+                dummyArray.push(dummyObj); //push object into array
+                newLearning.set('supervisorData', dummyArray);
+                if (supervisorReview) {
+                    newLearning.set('stage', 'accepted');
+                } else {
+                    newLearning.set('stage', 'rejected');
                 }
 
                 newLearning.save(null, {
@@ -1529,7 +1625,7 @@ function reviewLearning(empId,supervisorId,supervisorInput,typeId,supervisorRevi
                         console.log('Failed to update Learning object, with error code: ' + error.message);
                     }
                 });
-            } 
+            }
         },
         error: function(error) {
             console.log("Error: " + error.code + " " + error.message);
@@ -1538,7 +1634,7 @@ function reviewLearning(empId,supervisorId,supervisorInput,typeId,supervisorRevi
 }
 
 //function to review KRA
-function reviewKRA(empId,supervisorId,supervisorInput,typeId,supervisorReview,callback){
+function reviewKRA(empId, supervisorId, supervisorInput, typeId, supervisorReview, callback) {
     var KRA = new Parse.Object.extend('Kra');
     var query = new Parse.Query(KRA);
     query.equalTo("kraId", typeId); //match kraId to table
@@ -1547,7 +1643,7 @@ function reviewKRA(empId,supervisorId,supervisorInput,typeId,supervisorReview,ca
         success: function(results) {
             if (results.length) {
                 var newKRA = results[0];
-                
+
                 var dummyArray = results[0].get("supervisorData");
                 var dummyObj = new Object(); //create object to push into array
                 //dummyObj.supervisor = new Employee();
@@ -1555,13 +1651,13 @@ function reviewKRA(empId,supervisorId,supervisorInput,typeId,supervisorReview,ca
                 dummyObj.supervisorInput = supervisorInput;
                 dummyObj.supervisorInputDate = new Date();
                 dummyObj.supervisorReview = supervisorReview;
-                dummyArray.push(dummyObj);//push object into array
+                dummyArray.push(dummyObj); //push object into array
                 console.log(dummyArray);
-                newKRA.set('supervisorData',dummyArray);
-                if(supervisorReview){
-                    newKRA.set('stage','accepted');
-                }else{
-                    newKRA.set('stage','rejected');
+                newKRA.set('supervisorData', dummyArray);
+                if (supervisorReview) {
+                    newKRA.set('stage', 'accepted');
+                } else {
+                    newKRA.set('stage', 'rejected');
                 }
 
                 newKRA.save(null, {
@@ -1574,7 +1670,7 @@ function reviewKRA(empId,supervisorId,supervisorInput,typeId,supervisorReview,ca
                         console.log('Failed to update KRA object, with error code: ' + error.message);
                     }
                 });
-            } 
+            }
         },
         error: function(error) {
             console.log("Error: " + error.code + " " + error.message);
@@ -1582,13 +1678,13 @@ function reviewKRA(empId,supervisorId,supervisorInput,typeId,supervisorReview,ca
     });
 }
 
-function uploadDocument(empId,id,type,callback){
+function uploadDocument(empId, id, type, callback) {
     // What to do here?
     var x = document.getElementById(id);
     var txt = "";
     if ('files' in x) {
         if (x.files.length == 0) {
-            alert("No File Selected");
+            swal("No File Selected");
         } else {
 
             var file = x.files[0];
@@ -1598,8 +1694,8 @@ function uploadDocument(empId,id,type,callback){
             if ('size' in file) {
                 txt += "size: " + file.size + " bytes <br>";
             }
-            var reader  = new FileReader();
-            reader.addEventListener("load", function () {
+            var reader = new FileReader();
+            reader.addEventListener("load", function() {
                 console.log(reader.result);
                 var Employee = Parse.Object.extend("Employee");
                 var query = new Parse.Query(Employee);
@@ -1607,23 +1703,47 @@ function uploadDocument(empId,id,type,callback){
                 query.find({
                     success: function(results) {
                         if (results.length) {
-                            //to get info in local storage upon first login
                             var emp = results[0];
-                            var parseFile = new Parse.File(empId+'_profile.jpg', { base64: reader.result },'image/jpg');
-                            //ifconditions
-                            emp.set('profileImage',parseFile);
-                            emp.save(null,{
-                                success:function(emp){
+                            if (type == "smartCard") {
+                                var parseFile = new Parse.File(empId + '_nIdSmartCard.jpg', {
+                                    base64: reader.result
+                                }, 'image/jpg');
+                                emp.set('nIdSmartCard', parseFile);
+                            } else if (type == "oldFormat") {
+                                var parseFile = new Parse.File(empId + '_nIdOldFormat.jpg', {
+                                    base64: reader.result
+                                }, 'image/jpg');
+                                emp.set('nIdOldFormat', parseFile);
+                            } else if (type == "passport") {
+                                var parseFile = new Parse.File(empId + '_passport.jpg', {
+                                    base64: reader.result
+                                }, 'image/jpg');
+                                emp.set('passport', parseFile);
+                            } else if (type == "birthRegistration") {
+                                var parseFile = new Parse.File(empId + '_birthRegistration.jpg', {
+                                    base64: reader.result
+                                }, 'image/jpg');
+                                emp.set('birthRegistration', parseFile);
+                            } else {
+                                var parseFile = new Parse.File(empId + 'profile.jpg', {
+                                    base64: reader.result
+                                }, 'image/jpg');
+                                emp.set('profileImage', parseFile);
+                            }
+                            emp.save(null, {
+                                success: function(emp) {
+                                    //alert("file save success");
+                                    swal("The file has been uploaded Successfully.");
                                     callback(true);
                                 }
                             });
-                                
+
                         }
                     },
                     error: function(error) {
                         alert("Error: " + error.code + " " + error.message);
                     }
-                });                   
+                });
                 /*var parseFile = new Parse.File('image.png', { base64: reader.result },'image/png');
                 showLoading();
                 parseFile.save().then(function(result) {
@@ -1640,7 +1760,7 @@ function uploadDocument(empId,id,type,callback){
                 console.log("File Save Failed");
                 console.log(error)
                 });*/
-                
+
             }, false);
 
             if (file) {
@@ -1648,13 +1768,9 @@ function uploadDocument(empId,id,type,callback){
             }
 
         }
-    } 
-    else {
+    } else {
         alert("No File Selected");
     }
     console.log(txt);
 
 }
-
-
-

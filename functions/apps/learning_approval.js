@@ -25,8 +25,8 @@ $(document).ready(function(){
 			console.log("The Learning Is in "+stage+" stage.");
 
 			if(stage=="posted"){
-				$("#sample_3 :input").attr("disabled", true);//disables the table after submitting KRA
-				//$("#submits").hide()
+				//$("#sample_3 :input").attr("disabled", true);//disables the table after submitting KRA
+				//$("#submitsLearningApproval").hide()
 				//$("#status").html('Learning agenda submitted sucessfully for your Supervisor\'s review');
 
 				for(i=0;i<learningValuelength;i++){
@@ -40,7 +40,7 @@ $(document).ready(function(){
 				console.log(data.get("learningValue"));
 			}else if(stage=="accepted"){
 				$("#sample_3 :input").attr("disabled", true);//disables the table after submitting KRA
-				$("#submits").hide()
+				$("#submitsLearningApproval").hide()
 				var supervisorData = data.get("supervisorData");
 				//supervisorData[0].supervisorInput;
 				console.log(supervisorData);
@@ -76,7 +76,7 @@ $(document).ready(function(){
 	$("#approveLearning").click(function(){
 		var supervisorInput = $("#managerCommentLearning").val();
 		console.log(supervisorInput);
-
+		
 		reviewLearning(globalEmpId,localStorage.empId,supervisorInput,globalTypeId,true,function(status){
 			
 			resetInputTable(globalTypeId, 'accepted', function(){
@@ -87,13 +87,14 @@ $(document).ready(function(){
 		  		//window.location.href= "controlPanel.html";
 		  		console.log("Approval table reset for "+globalEmpId);
 			});
-/*
+
 			var notiType= "Learning";
 			var notiTitle= "Learning agenda approved.";
 			var notiBody= "Learning agenda approved by "+empObject.name;
+			var notiLink= "approved";
 			var notiReceipent= globalEmpId;
-			sendNoti(localStorage.empId,notiType,notiTitle,notiBody,notiReceipent);
-*/
+			sendNoti(localStorage.empId,notiType,notiTitle,notiBody,notiLink,notinotiReceipent);
+
 			swal({
 					  title: "Learning Approved!",
 					  text: " You successfully approved the Learning.",
@@ -109,9 +110,10 @@ $(document).ready(function(){
 			});
 		});
 	});
-	$("sendBackLearning").click(function(){
+
+	$("#sendBack").click(function(){
 		var supervisorInput = $("#managerCommentLearning").val();
-		console.log(supervisorInput);
+		//console.log(supervisorInput);
 
 		reviewLearning(globalEmpId,localStorage.empId,supervisorInput,globalTypeId,false,function(status){
 			resetInputTable(globalTypeId, 'rejected', function(){
@@ -122,13 +124,14 @@ $(document).ready(function(){
 		  		//window.location.href= "controlPanel.html";
 		  		console.log("Approval table reset for "+globalEmpId);
 			});
-/*
+
 			var notiType= "Learning";
 			var notiTitle= "Learning agenda sent back.";
 			var notiBody= "Learning agenda sent back by "+empObject.name;
+			var notiLink= "rejected";
 			var notiReceipent= globalEmpId;
-			sendNoti(localStorage.empId,notiType,notiTitle,notiBody,notiReceipent);
-*/
+			sendNoti(localStorage.empId,notiType,notiTitle,notiBody,notiLink,notiReceipent);
+
 			swal({
 					  title: "Learning Rejected!",
 					  text: "You successfully rejected the Learning Agenda.",
