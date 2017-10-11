@@ -28,7 +28,7 @@ $(document).ready(function(){
 				'            </div>'+
 				''+
 				'            <div class="col-sm-3 col-xs-6">'+
-				'                <p class="search-counter-label" style="padding-top: 27px">Supervisor Name</p>'+
+				'                <p class="search-counter-label" style="padding-top: 27px">'+data[i].get('supervisorName')+'</p>'+
 				'            </div>'+
 				'            <div class="col-sm-3 col-xs-6">'+
 				'                <p class="search-counter-label" style="padding-top: 27px">'+dateTimeString(data[i].get('startDate'))+'</p>'+

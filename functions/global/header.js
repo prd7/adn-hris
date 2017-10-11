@@ -1,3 +1,8 @@
+//function to check wether the user is logged in
+var login = localStorage.loggedIn;
+if(!login){
+    window.location.href= "../index.html";
+}
 if(localStorage.empObject){
     var empObject = JSON.parse(localStorage.empObject);
     var name = empObject.name;
@@ -219,7 +224,7 @@ var header = '<div class="page-header navbar navbar-fixed-top">'+
 '                                    </li>'+
 '                                    <li>'+
 '                                        <ul class="dropdown-menu-list scroller" style="height: 250px;" data-handle-color="#637283">'+
-'                                            <li>'+
+'                                            <!--li>'+
 '                                                <a href="controlPanel.html">'+
 '                                                    <span class="time">just now</span>'+
 '                                                    <span class="details">'+
@@ -227,7 +232,7 @@ var header = '<div class="page-header navbar navbar-fixed-top">'+
 '                                                            <i class="fa fa-plus"></i>'+
 '                                                        </span> New user registered. </span>'+
 '                                                </a>'+
-'                                            </li>'+
+'                                            </li-->'+
 '                                        </ul>'+
 '                                    </li>'+
 '                                </ul>'+
@@ -293,6 +298,9 @@ var footer = '<div class="page-footer">'+
 '        </div>';
 	
 
+setCounters();
+populateNoti();
+
 
 //this function will clear localStorage on logout
 function clearLocalStorage() {
@@ -300,9 +308,7 @@ function clearLocalStorage() {
    console.log("Cleared Local Storage");
 };
 
-setCounters();
-populateNoti();
-
+//set the counters in sidemenu
 function setCounters(){
     console.log();
     var empId = localStorage.empId;
@@ -356,19 +362,22 @@ function setCounters(){
     });    
 }
 
+//populate notifications
 function populateNoti(){
     var empId = localStorage.empId;
-    fetchNotifications(empId,'inUnread',function(status,data){
+    fetchNotifications(empId,'isUnread',function(status,data){
         if(status){
-            $("#pedningNoti").html(data.length); 
-            $("#overallNotification").show();
-            $("#overallNotification").html(data.length); 
+            if(data.length){
+                $("#pedningNoti").html(data.length); 
+            }
+                $("#overallNotification").show();
+                $("#overallNotification").html(data.length); 
 
             for( var i = 0; i < data.length; i++ )
             {
-                //console.log(data[i].objectId);
+                //console.log(data[i].objectId);href="'+data[i].get('link')+'.html" 
                 var notificationListObject = '<li>'+
-                '                                     <a href="'+data[i].get('link')+'.html" onclick="checkRead('+data[i].get('notiId')+')">'+
+                '                                     <a onClick="checkRead(\'' + data[i].id +'+'+data[i].get('link')+ '\')">'+
                 '                                        <span class="time">3 mins</span>'+
                 '                                          <span class="details">'+
                 '                                            <span class="label label-sm label-icon label-danger">'+
@@ -380,16 +389,19 @@ function populateNoti(){
                 //add this to the drop down ul tag
                 $("#notificationDropDown ul").prepend(notificationListObject);
             }
+        }else{
+             $("#pedningNoti").html("No ");
         }
     })
 }
 
-function checkRead(notiId){
-    alert("high"+notiId);
-    console.log();
-    alert(data[0].objectId);
+//mark the notifications as checked read
+function checkRead(data){
 
-    /*markRead(objectId,function(status){
-        console.log("notification markRead");
-    })*/
+    console.log("came in check read");
+    var dataArray = data.split('+');
+    
+    markRead(dataArray[0],function(status){
+        window.location.href = dataArray[1]+".html";
+    }) 
 }

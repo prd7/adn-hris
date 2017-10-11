@@ -148,6 +148,7 @@ $(document).ready(function(){
 
 	$("#submitOfficeInfo").click(function(){
 		var officeInfo = $("#officeInfo").serializeArray();
+		
 		console.log(officeInfo);
 		//var globalEmpId = getUrlVars()["empId"]; //gives empid needed to search a perticular employee
 		//var empId = globalEmpId; //this is the empId from URL

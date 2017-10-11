@@ -21,12 +21,12 @@ $(document).ready(function(){
 				'                <img class="img-circle pull-left" style="margin-top: 5px; margin-right: 10px" src="../assets/pages/media/users/avatar1.jpg" width="54px" height="54px">'+
 				'                <h4>'+data[i].get('type')+'</h4>'+
 				'                <p>'+
-				'                    <strong>'+data[i].get('type')+'</strong> - Pending for review by Supervisor Name'+
+				'                    <strong>'+data[i].get('type')+'</strong> - Pending for review by '+data[i].get('supervisorName')+'.'+
 				'                </p>'+
 				'            </div>'+
 				''+
 				'            <div class="col-sm-3 col-xs-6">'+
-				'                <p class="search-counter-label" style="padding-top: 27px">Supervisor Name</p>'+
+				'                <p class="search-counter-label" style="padding-top: 27px">'+data[i].get('supervisorName')+'</p>'+
 				'            </div>'+
 				'            <div class="col-sm-3 col-xs-6">'+
 				'                <p class="search-counter-label" style="padding-top: 27px">'+dateTimeString(data[i].get('startDate'))+'</p>'+
