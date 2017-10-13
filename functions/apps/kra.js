@@ -34,6 +34,19 @@ $(document).ready(function(){
 					$('#txtmos'+index).text(kraValue[i].kraMos);
 				}
 
+			}else if(stage=="draft"){
+				//$("#sample_3 :input").attr("disabled", true);//disables the table after submitting KRA
+				//$("#submits").hide()
+				$("#status").html('Your KRA was saved as draft.');
+
+				for(i=0;i<kraValuelength;i++){
+					var index = i+1;
+					$('#txtkra'+index).text(kraValue[i].kra);
+					$("#selkracat"+index).val(kraValue[i].kraCat);
+					$("#selkrawght"+index).val(kraValue[i].kraWeight);
+					$('#txtuos'+index).text(kraValue[i].kraUos);
+					$('#txtmos'+index).text(kraValue[i].kraMos);
+				}
 			}else if(stage=="rejected"){
 				//swal('KRA was sent back by your Supervisor.');
 				$("#status").html('KRA was sent back by your Supervisor.');

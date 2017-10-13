@@ -23,7 +23,7 @@ $(document).ready(function(){
 					'                <img class="img-circle pull-left" style="margin-top: 5px; margin-right: 10px" src="../assets/pages/media/users/avatar1.jpg" width="54px" height="54px">'+
 					'                <h4>'+data[i].get('type')+' Approval</h4>'+
 					'                <p>'+
-					'                    <strong>'+data[i].get('type')+'</strong> - Submitted by '+data[i].get('cameFromId')+
+					'                    <strong>'+data[i].get('type')+'</strong> - Submitted by '+data[i].get('cameFromName')+
 					'                </p>'+
 					'            </div>'+
 					''+

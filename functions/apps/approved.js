@@ -1,9 +1,12 @@
 $(document).ready(function(){
 	console.log("Jquery approved requests Loaded");
 	var empId = localStorage.empId;
-	
+	console.log(empId);
+
+
 	checkApproved(empId,function(status,data){
 		if(status){
+			console.log("Dcas came back in js");
 			var awaitingResponses = data.length;
 			if(awaitingResponses==0){
 				$("#awaitingResponses").html('No Approved Responses.');	

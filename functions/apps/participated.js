@@ -22,7 +22,7 @@ $(document).ready(function(){
 					'        <div class="row">'+
 					'            <div class="col-sm-6 col-xs-12">'+
 					'                <img class="img-circle pull-left" style="margin-top: 5px; margin-right: 10px" src="../assets/pages/media/users/avatar1.jpg" width="54px" height="54px">'+
-					'                <h4>'+data[i].get('type')+' '+data[0].get("status")+' by you.</h4>'+
+					'                <h4>'+data[i].get('type')+' '+data[i].get("status")+' by you.</h4>'+
 					'                <p>'+
 					'                    <strong>'+data[i].get('type')+'</strong> - Submitted by '+data[i].get('cameFromName')+
 					'                </p>'+

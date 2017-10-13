@@ -1273,7 +1273,7 @@ function addToApprovalTable(type, typeId, empId, cameFrom, cameFromName, status,
                 newApprovals.set('typeId', typeId);
                 newApprovals.set('empId', empId);
                 newApprovals.set('status', status);
-                newApprovals.set('cameFrom', cameFrom);
+                newApprovals.set('cameFromId', cameFrom);
                 newApprovals.set('cameFromName', cameFromName);
                 newApprovals.set('startDate', startDate);
                 //newInputs.set('endDate',new Date());
@@ -1465,7 +1465,7 @@ function checkInputTable(empId, callback) {
                 var inputNumber = results.length;
                 console.log("these many results were found in input table: " + inputNumber);
                 //var inputObject = JSON.stringify(results[0]);
-                console.log(results);
+                //console.log(results);
                 callback(true, results);
             } else {
                 callback(false, null);
@@ -1488,7 +1488,6 @@ function checkDraftsTable(empId, callback) {
             if (results.length) { //try in future for more results
                 var draftsNumber = results.length;
                 console.log("these many results were found in drafts table: " + draftsNumber);
-                console.log(results);
                 callback(true, results);
             } else {
                 callback(false, null);
@@ -1528,8 +1527,9 @@ function checkParticipated(empId, callback) {
     var Approvals = Parse.Object.extend("Approvals");
     var query = new Parse.Query(Approvals);
     query.equalTo("empId", empId);
-    query.equalTo("status", "accepted");
-    query.equalTo("status", "rejected");
+    query.notEqualTo("status", "live");
+    //query.equalTo("status", "accepted");
+    //query.equalTo("status", "rejected");
     query.find({
         success: function(results) {
             if (results.length) {
@@ -1582,7 +1582,7 @@ function checkInProgress(empId, callback) {
                 var inputNumber = results.length;
                 console.log("these many results were found in input table: " + inputNumber);
                 //var inputObject = JSON.stringify(results[0]);
-                console.log(results);
+                //console.log(results);
                 callback(true, results);
             } else {
                 callback(false, null);
@@ -1596,6 +1596,7 @@ function checkInProgress(empId, callback) {
 
 //function to check checkApproved table
 function checkApproved(empId, callback) {
+    console.log("Came into check approved");
     var Inputs = Parse.Object.extend("Inputs");
     var query = new Parse.Query(Inputs);
     query.equalTo("empId", empId); //match kraId to table
@@ -1605,8 +1606,7 @@ function checkApproved(empId, callback) {
             if (results.length) { //try in future for more results
                 var inputNumber = results.length;
                 console.log("these many results were found in input table: " + inputNumber);
-                //var inputObject = JSON.stringify(results[0]);
-                console.log(results);
+                //console.log(results);
                 callback(true, results);
             } else {
                 callback(false, null);
