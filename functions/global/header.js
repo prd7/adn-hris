@@ -9,23 +9,28 @@ if(localStorage.empObject){
 }else{
     var name ="unknown";
 }
-
-//console.log(localStorage.empId);
+if(localStorage.empProfileImage){
+    var profileImage = localStorage.empProfileImage;
+}else{
+    var profileImage = "../assets/layouts/layout4/img/avatar9.jpg" ;
+}
 console.log(name);
+//console.log(empObject.empId);
+if(empObject.empId=="3010269"){
+    var sideLink = "controlPanel";
+    var sideIcon = "gear";
+    var sideName = "Control Panel";
+}else{
+    var sideLink = "userProfile";
+    var sideIcon = "user";
+    var sideName = "User Profile";
+}
 
 if (location.pathname == "/pages/approvals.html") {
     var approvals = 'start active open';   
 }
 else if (location.pathname == "/pages/inputRequests.html") {
     var inputRequests = 'start active open';
-
-    checkInputTable(empId,function(status,data){
-        if(status){
-            var awaitingResponses = data.length;            
-        }else{
-            //swal("Error!", "No input requests for you", "info")
-        }
-    });
 }
 else if (location.pathname == "/pages/clarifications.html") {
     var clarifications = 'start active open';
@@ -128,12 +133,12 @@ var sidebar = '<div class="page-sidebar-wrapper">'+
 '                            </a>'+
 '                        </li>  '+
 '                        <li class="heading">'+
-'                            <h3 class="uppercase">Admin</h3>'+
+'                            <h3 class="uppercase">SETTINGS</h3>'+
 '                        </li>'+
 '                        <li class="nav-item '+ admin +' ">'+
-'                            <a href="controlPanel.html" class="nav-link nav-toggle">'+
-'                                <i class="fa fa-gear"></i>'+
-'                                <span class="title">Control Panel</span>'+
+'                            <a href="'+sideLink+'.html" class="nav-link nav-toggle">'+
+'                                <i class="fa fa-'+sideIcon+'"></i>'+
+'                                <span class="title">'+sideName+'</span>'+
 '                            </a>'+
 '                        </li>                          '+
 '                    </ul>'+
@@ -248,7 +253,7 @@ var header = '<div class="page-header navbar navbar-fixed-top">'+
 '                                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">'+
 '                                    <span class="username username-hide-on-mobile"> '+name+' </span>'+
 '                                    <!-- DOC: Do not remove below empty space( ) as its purposely used -->'+
-'                                    <img alt="" class="img-circle" src="../assets/layouts/layout4/img/avatar9.jpg" /> </a>'+
+'                                    <img alt="" class="img-circle" src="'+profileImage+'" /> </a>'+
 '                                <ul class="dropdown-menu dropdown-menu-default">'+
 '                                    <li>'+
 '                                        <a href="myProfile.html">'+

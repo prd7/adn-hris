@@ -48,4 +48,39 @@ $('.forget-password').click(function(){
 			alert("Please enter username and password");
 		}
 	});
+
+	$("#submitForget").click(function(){
+		var email = $("#forgetEmail").val();
+		if(validateEmail(email)){
+			console.log("is vcalid");	
+			forgetPasswordMail(email,function(results){
+				
+				if(results.length){
+					console.log(results);
+					console.log(results[0].get("empId"));
+					console.log(results[0].get("officeEmail"));
+					console.log(results[0].get("userName"));
+					console.log(results[0].get("password"));
+					
+					var emailSubject = "You have raised a password change request "+results[0].get("name")+".";
+					var emailBody = "Your old user name is "+results[0].get("userName")+" and your old password is "+results[0].get("password")+". PLease Login And reset your pass.";
+					
+					//pass values to sendMail function to send mails
+					sendEmail(email,'',emailSubject,emailBody,function(status){
+						console.log("Sent Email Status "+status);
+						swal("Email sent to your registered email ID");
+					});
+				}else{
+					swal("PLease enter a valid registered email.");
+				}
+			});
+		}else{
+			console.log("is not valid");
+		}
+	});
 });
+
+function validateEmail(email) {
+  var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+  return emailReg.test( email );
+}

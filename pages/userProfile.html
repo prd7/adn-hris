@@ -106,6 +106,7 @@
                            <li>
                               <a href="#tab_4" data-toggle="tab"> Profile Picture </a>
                            </li>
+                           <button class="btn btn-square btn-sm red todo-bold pull-right"><i class="fa fa-check"></i> Send to HR Approval</button>
                         </ul>
                         <div class="tab-content">
                            <!-- BEGIN TAB_0-->
@@ -863,7 +864,7 @@
                               </div>
                            </div>
                            <!-- END TAB_2-->
-                          <!-- BEGIN TAB_3-->
+                           <!-- BEGIN TAB_3-->
                            <div class="tab-pane" id="tab_3">
                               <div class="portlet light bordered">
                                  <div class="portlet-title">
@@ -1012,7 +1013,7 @@
                                              <div class="col-md-12">
                                                 <!-- SIDEBAR USERPIC -->
                                                 <div class="profile-userpic">
-                                                   <img src="../assets/layouts/layout4/img/avatar9.jpg" style="height: 250px; width: 250px" id="profilePictureShow" class="img-circle" alt="Your Image"> 
+                                                   <img src="../assets/layouts/layout4/img/avatar9.jpg" style="height: 250px; width: 250px" id="profilePictureShow" name="profilePictureShow" class="img-circle" alt="Your Image"> 
                                                 </div>
                                                 <!-- END SIDEBAR USERPIC -->
                                              </div>
@@ -1111,7 +1112,90 @@
       <!-- ADDRESS INFO SCRIPT-->
       <script>
          $(document).ready(function() {
-             $("#addressCheck").click(function() {
+
+            /*File Auto Upload Functions starts here*/
+            $("#uploadNationalIdSmartCard").click(function() {
+               swal({
+                    title: "Please upload JPEG image only.",
+                    showCancelButton: false,
+                    confirmButtoynClass: "btn-success",
+                    confirmButtonText: "Ok",
+                    closeOnConfirm: true
+                  },
+                  function(){
+                     $("#fileNationalIdSmartCard").click()
+               });
+             });
+            $("#fileNationalIdSmartCard").change(function() {
+                 $("#uploadNationalIdSmartCard").click()
+             });
+
+
+            $("#uploadNationalIDOldFormat").click(function() {
+               swal({
+                    title: "Please upload JPEG image only.",
+                    showCancelButton: false,
+                    confirmButtoynClass: "btn-success",
+                    confirmButtonText: "Ok",
+                    closeOnConfirm: true
+                  },
+                  function(){
+                     $("#fileNationalIDOldFormat").click()
+               });
+             });                 
+          
+            $("#fileNationalIDOldFormat").change(function() {
+                 $("#uploadNationalIDOldFormat").click()
+             });
+
+
+            $("#uploadBirthRegistrationNumber").click(function() {
+                swal({
+                    title: "Please upload JPEG image only.",
+                    showCancelButton: false,
+                    confirmButtoynClass: "btn-success",
+                    confirmButtonText: "Ok",
+                    closeOnConfirm: true
+                  },
+                  function(){
+                     $("#fileBirthRegistrationNumber").click()
+               });
+                
+             });
+            $("#fileBirthRegistrationNumber").change(function() {
+                 $("#uploadBirthRegistrationNumber").click()
+             });
+
+
+            $("#uploadPassportNumber").click(function() {
+                swal({
+                    title: "Please upload JPEG image only.",
+                    showCancelButton: false,
+                    confirmButtoynClass: "btn-success",
+                    confirmButtonText: "Ok",
+                    closeOnConfirm: true
+                  },
+                  function(){
+                     $("#filePassportNumber").click()
+               });
+                 
+             });
+            $("#filePassportNumber").change(function() {
+                 $("#uploadPassportNumber").click()
+             });
+
+
+            $("#uploadProfilePicture").click(function() {
+                     $("#fileProfilePicture").click()            
+             });
+            $("#fileProfilePicture").change(function() {
+                 $("#uploadProfilePicture").click()
+             });
+       
+
+            /*File Auto Upload Functions ends here*/
+
+             $("#addressCheck").change(function() {
                  if ($('input.md-check').is(':checked')) {
                      $("#permAddLine1").val($("#curAddLine1").val()).attr('readonly', true);
                      $("#permAddLine2").val($("#curAddLine2").val()).attr('readonly', true);
@@ -1120,16 +1204,17 @@
                      $("#permAddDivision").val($("#curAddDivision").val()).attr('readonly', true);
                      $("#permAddPostCode").val($("#curAddPostCode").val()).attr('readonly', true);
                  } else {
-                     $("#curAddLine1").val($("").val()).removeAttr('readonly', true);
-                     $("#curAddLine2").val($("").val()).removeAttr('readonly', true);
-                     $("#curAddThana").val($("").val()).removeAttr('readonly', true);
-                     $("#curAddDistrict").val($("").val()).removeAttr('readonly', true);
-                     $("#curAddDivision").val($("").val()).removeAttr('readonly', true);
-                     $("#curAddPostCode").val($("").val()).removeAttr('readonly', true);
+                     $("#permAddLine1").val($("").val()).removeAttr('readonly', true);
+                     $("#permAddLine2").val($("").val()).removeAttr('readonly', true);
+                     $("#permAddThana").val($("").val()).removeAttr('readonly', true);
+                     $("#permAddDistrict").val($("").val()).removeAttr('readonly', true);
+                     $("#permAddDivision").val($("").val()).removeAttr('readonly', true);
+                     $("#permAddPostCode").val($("").val()).removeAttr('readonly', true);
                  }
              });
          });
       </script>
+
       <script type="text/javascript">
          function readURL(input) {
          

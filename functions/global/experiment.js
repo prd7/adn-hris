@@ -1,45 +1,283 @@
-function reviewKRA(empId,supervisorId,supervisorInput,typeId,supervisorReview,callback){
-    var KRA = new Parse.Object.extend('Kra');
-    var kraQuery = new Parse.Query(KRA);
-    query.equalTo("kraId", typeId); //match kraId to table
-    query.equalTo("empId", empId);
-    query.find({
-        success: function(results) {
-            if (results.length) {
-                var newKRA = results[0];
-                
-                var dummyArray = results[0].get("supervisorData");
-                var dummyObj = new Object(); //create object to push into array
-                //dummyObj.supervisor = new Employee();
-                dummyObj.supervisorId = supervisorId;
-                dummyObj.supervisorInput = supervisorInput;
-                dummyObj.supervisorInputDate = new Date();
-                dummyObj.supervisorReview = supervisorReview;
-                dummyArray.push(dummyObj);//push object into array
-                newKRA.set('supervisorData',dummyArray);
-                if(supervisorReview){
-                    newKRA.set('stage','accepted');
-                }else{
-                    newKRA.set('stage','rejected');
-                }
+//upload data function
+function uploadData(callback){
+    var start = 1;
+    var end = 10;
+    for(i=start;i<end;i++){
 
-                newKRA.save(null, {
-                    success: function(KRA) {
-                        console.log('KRA updated with objectId: ' + KRA.id);
-                        addToInputTable('KRA', KRA.get('lrnid'), KRA.get('empId'), 'live', new Date());
-                        callback(true);
-                    },
-                    error: function(KRA, error) {
-                        callback(false);
-                        console.log('Failed to update KRA object, with error code: ' + error.message);
-                    }
-                });
-            } 
-        },
-        error: function(error) {
-            console.log("Error: " + error.code + " " + error.message);
-        }
-    });
+        var Employee = Parse.Object.extend("Employee");
+        var newEmployee = new Employee();
+
+        newEmployee.set('empId',EmployeeDataJSON[i].A);
+        newEmployee.set('userName',EmployeeDataJSON[i].A);
+        newEmployee.set('password',EmployeeDataJSON[i].A);
+        newEmployee.set('name',EmployeeDataJSON[i].C);
+        newEmployee.set('passwordReset',false);
+        newEmployee.set('designation',EmployeeDataJSON[i].D);
+        newEmployee.set('department',EmployeeDataJSON[i].F);
+        newEmployee.set('buisnessDivision',EmployeeDataJSON[i].E);
+        newEmployee.set('officeEmail',EmployeeDataJSON[i].I);
+        newEmployee.set('officePhone','9999999999');
+        newEmployee.set('employeeGrade',EmployeeDataJSON[i].B);
+        newEmployee.set('vertical',EmployeeDataJSON[i].G);
+        newEmployee.set('subVertical',EmployeeDataJSON[i].H);
+        newEmployee.set('supervisor',new Employee());
+        newEmployee.set('supervisorId',EmployeeDataJSON[i].J);
+        newEmployee.set('supervisorName',EmployeeDataJSON[i].K);
+        newEmployee.set('companyName','ADN Telecom');
+
+        //personalDetails array
+        var dummyArray = new Array();
+        var dummyObj = new Object(); //create object to push into array
+        //dummyObj.personal = new Array();
+        dummyObj.gender = "Male";
+        dummyObj.personalEmail = "";
+        dummyObj.personalMobile = "";
+        dummyObj.dob = "";
+        dummyObj.bloodGroup = "";
+        dummyObj.religion = "Islam";
+        dummyObj.nationality = "Bangladesh";
+        dummyObj.homePhone = "";
+        dummyObj.motherName = "";
+        dummyObj.fatherName = "";
+        dummyObj.presentAddress = "";
+        dummyObj.permanentAddress = "";
+        dummyObj.maritialStatus = "";
+        dummyObj.emergencyContactName = "";
+        dummyObj.emergencyContactNumber = "";
+        dummyObj.nationalId = "";
+        dummyObj.birthRegistrationNumber = "";
+        dummyObj.passportNumber = "";
+
+
+        dummyArray.push(dummyObj);//push object into personal array
+        newEmployee.set('personal',dummyArray);
+
+
+        //academicDetails
+        var dummyArray = new Array();
+        var dummyObj = new Object(); //create object to push into academicDetails array
+        dummyObj.levelOfEducation="";
+        dummyObj.examDegreeTitle="";
+        dummyObj.major="";
+        dummyObj.instituteName="";
+        dummyObj.result="";
+        dummyObj.marks="";
+        dummyObj.cgpa="";
+        dummyObj.scale="";
+        dummyObj.yearOfPassing="";
+        dummyObj.duration="";
+        dummyObj.achievements="";
+
+        dummyArray.push(dummyObj);//push object into academicDetails array
+        newEmployee.set('academicDetails',dummyArray);
+
+        //familyDetails
+        var dummyArray = new Array();
+        var dummyObj = new Object(); //create object to push into familyDetails array
+        dummyObj.relation="";
+        dummyObj.name="";
+        dummyObj.gender="";
+        dummyObj.dateOfBirth="";
+        dummyObj.age="";
+        dummyObj.contact="";
+
+        dummyArray.push(dummyObj);//push object into familyDetails array
+        newEmployee.set('familyDetails',dummyArray);
+
+        //officeDetails array
+        var dummyArray = new Array();
+        var dummyObj = new Object(); //create object to push into officeDetails array
+        dummyObj.dateOfJoining = "";
+        dummyObj.dateOfConfirmation = "";
+        dummyObj.stateOfConfirmation = "";
+        dummyObj.idCardNumber = "";
+        dummyObj.officeMobileNumber = "";
+        dummyObj.jobTitle = "";
+        dummyObj.pfRating1516 = "";
+        dummyObj.pfRating1617 = "";
+        dummyObj.dateOfResignation = "";
+        dummyObj.dateOfSeparation = "";
+        dummyObj.separationType = "";
+        dummyObj.separationEffectiveDate = "";
+        dummyObj.workPermitNumber = "";
+        dummyObj.effectiveDate = "";
+        dummyObj.expiryDate = "";
+        dummyObj.facility = "";
+        dummyObj.city = "Dhaka";
+        dummyObj.country = "Bangladesh";
+        dummyObj.costCenter = "";
+
+        dummyArray.push(dummyObj);//push object into officeDetails array
+        newEmployee.set('officeDetails',dummyArray);
+
+        var dummyArray = new Array();
+        var dummyObj = new Object();
+
+        dummyObj.designation = EmployeeDataJSON[i].D;
+        dummyObj.department = EmployeeDataJSON[i].F;
+        dummyObj.employeeCategory = "";
+        dummyObj.buisnessDivision = EmployeeDataJSON[i].E;
+        dummyObj.employeeGrade = EmployeeDataJSON[i].B;
+        dummyObj.vertical = EmployeeDataJSON[i].G;
+        dummyObj.subVertical = EmployeeDataJSON[i].H;
+        dummyObj.reportingManager = new Employee();
+        dummyObj.reportingManagerId = "";
+        dummyObj.reviewer = new Employee();
+        dummyObj.reviewerId = "";
+        dummyObj.buisnessHrSpoc = new Employee();
+        dummyObj.buisnessHrSpocId = "";
+        dummyObj.buisnessHrHead = new Employee();
+        dummyObj.buisnessHrHeadId = "";
+        dummyObj.groupHrHead = new Employee();
+        dummyObj.groupHrHeadId = "";
+
+        dummyArray.push(dummyObj);//push object into officeDetails array
+        newEmployee.set('officePositionDetails',dummyArray);
+
+        //previosWorkDetails
+        var dummyArray = new Array();
+        var dummyObj = new Object(); //create object to push into previosWorkDetails array
+        dummyObj.companyName="";
+        dummyObj.companyBuisness="";
+        dummyObj.designation="";
+        dummyObj.department="";
+        dummyObj.responsibility="";
+        dummyObj.companyLocation="Dhaka";
+        dummyObj.employmentPeriod="";
+        dummyObj.areaOfExperience="";
+
+        dummyArray.push(dummyObj);//push object into previosWorkDetails array
+        newEmployee.set('previousWorkDetails',dummyArray);
+
+        //bankDetails
+        var dummyArray = new Array();
+        var dummyObj = new Object();
+        dummyObj.bankName = "";
+        dummyObj.accountName = "";
+        dummyObj.accountNumber = "";
+        dummyObj.currency = "";
+        dummyArray.push(dummyObj);
+        newEmployee.set('bankDetails',dummyArray);
+
+        //salaryDetails
+        var dummyArray = new Array();
+        var dummyObj = new Object(); //create object to push into array
+        dummyObj.basic = "xyz";
+        dummyObj.hra = "xyz";
+        dummyObj.conveyanceAllowance = "20";
+        dummyObj.lfa = "xyz";
+        dummyObj.medicalAllowance = "xyz";
+        dummyObj.specialAllowance = "xyz";
+        dummyObj.grossSalary = "xyz";
+        dummyObj.lunchAllowance = "xyz";
+        dummyObj.mobileAllowance = "xyz";
+        dummyObj.otherAllowance = "xyz";
+        dummyObj.totalEarnings = "xyz";
+        dummyArray.push(dummyObj);//push object into array
+        newEmployee.set('salaryDetails',dummyArray);//kraValue is the name of the array
+
+        //otherBenefitDetails
+        var dummyArray = new Array();
+        var dummyObj = new Object(); //create object to push into array
+        dummyObj.festivalAllowance = "E1001";
+        dummyObj.providentFundMembership = "xyz";
+        dummyObj.groupLifeInsurance = "yes";
+        dummyObj.hospitalizationScheme = "yes";
+        dummyArray.push(dummyObj);//push object into array
+        newEmployee.set('otherBenefitDetails',dummyArray);
+
+        //companyCarDetails
+        var dummyArray = new Array();
+        var dummyObj = new Object(); //create object to push into array
+        dummyObj.registrationNumber = "E1001";
+        dummyObj.effectiveDate = "xyz";
+        dummyObj.expiryDate = "yes";
+        dummyObj.fuelAllowance = "yes";
+        dummyObj.maintainanceAllowance = "yes";
+        dummyObj.driverAllowance = "yes";
+        dummyObj.grossPay = "yes";
+        dummyArray.push(dummyObj);//push object into array
+        newEmployee.set('companyCarDetails',dummyArray);
+
+        //personalCarDetails
+        var dummyArray = new Array();
+        var dummyObj = new Object(); //create object to push into array
+        dummyObj.registrationNumber = "E1001";
+        dummyObj.effectiveDate = "xyz";
+        dummyObj.expiryDate = "yes";
+        dummyObj.ownCarUsageAllowance = "yes";
+        dummyArray.push(dummyObj);//push object into array
+        newEmployee.set('personalCarDetails',dummyArray);
+
+        var dummyArray = new Array();
+        var dummyObj = new Object();
+        dummyObj.officeInfoStatus =  false ;
+        dummyObj.joiningDetailStatus = false ;
+        dummyObj.performanceStatus =  false ;
+        dummyObj.separationInfoStatus = false ;
+        dummyObj.positionHistoryStatus = false ;
+        dummyObj.perviousEmploymentStatus = false ;
+        dummyObj.bankStatus = false ;
+        dummyObj.salaryStatus =  false ;
+        dummyObj.otherBenefitStatus = false ;
+        dummyObj.companyCarStatus = false ;
+        dummyObj.personalCarStatus = false ;
+        dummyArray.push(dummyObj);
+        newEmployee.set('statusOffice',dummyArray);
+
+        var dummyArray = new Array();
+        var dummyObj = new Object();
+        dummyObj.personalStatus= false ;
+        dummyObj.addressStatus= false ;
+        dummyObj.academicStatus= false ;
+        dummyObj.familyStatus= false ;
+        dummyObj.documentStatus= false ;
+        dummyArray.push(dummyObj);
+        newEmployee.set('statusPersonal',dummyArray);
+
+        newEmployee.save(null, {
+          success: function(Employee) {
+            console.log('New object created with objectId: ' + Employee.id);
+            callback(true);
+          },
+          error: function(Employee, error) {
+            // error is a Parse.Error with an error code and message.
+            console.log('Failed to create new object, with error code: ' + error.message);
+            callback(false);
+          }
+        });   
+    }
+
+
 }
 
 
+/*
+
+var sideMenuControlPanelObject = '<li class="nav-item '+ admin +' ">'+
+'                               <a href="controlPanel.html" class="nav-link nav-toggle">'+
+'                                   <i class="fa fa-gear"></i>'+
+'                                    <span class="title">Control Panel</span>'+
+'                                </a>'+
+'                           </li>';
+
+setCounters();
+populateNoti();
+//setSideMenu();
+
+function setSideMenu(){
+    var sideMenuControlPanelObject = '<li class="nav-item '+ admin +' ">'+
+    '                               <a href="controlPanel.html" class="nav-link nav-toggle">'+
+    '                                   <i class="fa fa-gear"></i>'+
+    '                                    <span class="title">Control Panel</span>'+
+    '                                </a>'+
+    '                           </li>';
+
+    if(localStorage.empId=="3010269"){
+        var ul = document.getElementById("sideMenu");
+       document.getElementById("sideMenu").append(sideMenuControlPanelObject);
+    }
+}
+
+
+*/

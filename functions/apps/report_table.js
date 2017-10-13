@@ -11,24 +11,79 @@ function populateList(){
 		console.log(results);
 		if(results.length){
 			for(var i=0;i<results.length;i++){
-				console.log("This is the "+i+" Loop");
+				console.log("This is the "+i+" Loop of batch Table");
 				var batchId = results[i].get("batchId");
 				var type = results[i].get("type");		
 				var startDate = dateTimeString(results[i].get('startDate'));
 
 				if(type=="KRA"){
-					//console.log("Identified this batch "+batchId+" as KRA");
 					getKraStats(batchId,function(status,data){
-						//console.log("The targeted Users are : "+data.length);
-						console.log("And the "+batchId+" is of type :"+type+" and was started on "+startDate);	
-						t.row.add([data[0].get("batchId"),'KRA',startDate,data.length,"inProgress","completed","rejected","Withdrew"]).draw(false);
+						
+						var inProgressCount = 0;
+						var completedCount = 0;
+						var rejectedCount = 0;
+						var initiatedCount = 0;
+
+						for(var i=0;i<data.length;i++){
+							var stage = data[i].get("stage");
+							switch (stage)
+							{
+							   case "inProgress":
+							   		inProgressCount++;
+							   		console.log("inProgress found,now breaking");
+							   		break;
+
+							   case "accepted":
+							   		completedCount++;
+							   		console.log("accepted case found now breaking");
+							   		break;
+
+							   case "rejected": 
+							       rejectedCount++;
+							       console.log('found rejected case now breaking');
+							       break;
+
+							   default: 
+							       console.log('This case is of init');
+							       initiatedCount++;
+							       break;
+							}
+							console.log("This is the "+i+" Loop inProgress:"+inProgressCount+" completed: "+completedCount+" rejected :"+rejectedCount);
+						}	
+						t.row.add([data[0].get("batchId"),'KRA',startDate,data.length,inProgressCount,completedCount,rejectedCount,"Withdrew"]).draw(false);
 					});
 				}else if(type=="Learning"){
-					//console.log("Identified this batch "+batchId+" as Learning");
 					getLearningStats(batchId,function(status,data){
-						//console.log("The targeted Users are : "+data.length);
-						console.log("And the "+batchId+" is of type :"+type+" and was started on "+startDate);	
-						t.row.add([data[0].get("batchId"),'Learning',startDate,data.length,"inProgress","completed","rejected","Withjdrew"]).draw(false);
+						//console.log("And the "+batchId+" is of type :"+type+" and was started on "+startDate);	
+						var inProgressCount = 0;
+						var completedCount = 0;
+						var rejectedCount = 0;
+						var initiatedCount = 0;
+
+						for(var i=0;i<data.length;i++){
+							var stage = data[i].get("stage");
+							switch (stage)
+							{
+							   case "inProgress":
+							   		inProgressCount++;
+							   		break;
+
+							   case "accepted":
+							   		completedCount++;
+							   		break;
+
+							   case "rejected": 
+							       rejectedCount++;
+							       break;
+
+							   default: 
+							       initiatedCount++;
+							       break;
+							}
+						}
+						t.row.add([data[0].get("batchId"),'KRA',startDate,data.length,inProgressCount,completedCount,rejectedCount,"Withdrew"]).draw(false);
+						
+						//t.row.add([data[0].get("batchId"),'Learning',startDate,data.length,"inProgress","completed","rejected","Withdrew"]).draw(false);
 					});
 				}
 			}

@@ -317,28 +317,25 @@ function submitPersonal(empId, dataArray, type, callback) {
                         academicObj.yearOfPassing = dataArray[(11 * i) + 8].value;
                         academicObj.duration = dataArray[(11 * i) + 9].value;
                         academicObj.achievements = dataArray[(11 * i) + 10].value;
-                        //push this object to the array
-                        console.log(academicObj);
+
                         academicDetailsArray.push(academicObj);
                     }
-                    newEmp.set('academicDetails', academicDetailsArray);
                     statusArray[0].academicStatus = true
-                }else if (type == "family") {
-                    for (i = 0; i < (length / 9); i++) {
-
-                        for (j = 0; j < 9; j++) {
-                            var familyObj = new Object();
-                            familyObj.name = dataArray[(9 * i) + j].value;
-                            familyObj.relation = dataArray[(9 * i) + j].value;
-                            familyObj.gender = dataArray[(9 * i) + j].value;
-                            familyObj.contact = dataArray[(9 * i) + j].value;
-                            familyObj.dateOfBirth = dataArray[(9 * i) + j].value;
-                            familyObj.age = dataArray[(9 * i) + j].value;
-                        }
+                    newEmp.set('academicDetails', academicDetailsArray);
+                } else if (type == "family") {
+                    for (i = 0; i < (length / 6); i++) {
+                        var familyObj = new Object();
+                        familyObj.name = dataArray[(6 * i) + 0].value;
+                        familyObj.relation = dataArray[(6 * i) + 1].value;
+                        familyObj.gender = dataArray[(6 * i) + 2].value;
+                        familyObj.contact = dataArray[(6 * i) + 3].value;
+                        familyObj.dateOfBirth = dataArray[(6 * i) + 4].value;
+                        familyObj.age = dataArray[(6 * i) + 5].value;
+                
                         familyDetailsArray.push(familyObj);
                     }
-                    statusArray[0].familyStatus = true
                     newEmp.set('familyDetails', familyDetailsArray);
+                    statusArray[0].familyStatus = true
                 }
 
                 newEmp.set('statusPersonal', statusArray);
@@ -382,11 +379,10 @@ function checkStatus(empId, type, callback) {
                     } else {
                         console.log("All status flags are not true yet");
                     }
-                    //console.log(results[0].get("personal"));
                     callback(results[0]);
                 } else if (type == "office") {
                     var statusArray = results[0].get("statusOffice");
-                    console.log(statusArray);
+                    //console.log(statusArray);
                     console.log("Came inside office array");
                     if (statusArray[0].officeInfoStatus && statusArray[0].joiningDetailStatus && statusArray[0].performanceStatus && statusArray[0].separationInfoStatus && statusArray[0].positionHistoryStatus && statusArray[0].perviousEmploymentStatus && statusArray[0].bankStatus && statusArray[0].salaryStatus && statusArray[0].otherBenefitStatus && statusArray[0].companyCarStatus && statusArray[0].personalCarStatus) {
                         console.log("all vlaues are true in office status");
@@ -428,12 +424,12 @@ function submitOfficeInfo(empId, dataArray, type, callback) {
                 //if(officeArray[0]){
                 if (type == "basicOffice") {
                     console.log("came in basicOffice");
-                    //newEmp.set('officeEmail',dataArray[4].value);
-                    //newEmp.set('officeEmail',dataArray[4].value);
-                    //newEmp.set('officeMobile',dataArray[6].value);
+                    newEmp.set('officeEmail',dataArray[6].value);
+                    newEmp.set('officePhone',dataArray[4].value);
+                    newEmp.set('companyName',dataArray[3].value);
 
                     officeArray[0].idCardNumber = dataArray[2].value;
-                    officeArray[0].companyName = dataArray[3].value;
+                    officeArray[0].officeMobileNumber = dataArray[5].value;
                     officeArray[0].facility = dataArray[7].value;
                     officeArray[0].city = dataArray[8].value;
                     officeArray[0].country = dataArray[9].value;
@@ -455,10 +451,10 @@ function submitOfficeInfo(empId, dataArray, type, callback) {
                     statusArray[0].performanceStatus = true //status flag for performance rating
                 } else if (type == "separationDetails") {
                     console.log("came in separationDetails");
-                    officeArray[0].dateOfResignation = dataArray[23].value;
-                    officeArray[0].dateOfSeparation = dataArray[5].value;
-                    officeArray[0].separationEffectiveDate = dataArray[9].value;
-                    officeArray[0].separationType = dataArray[24].value;
+                    officeArray[0].dateOfResignation = dataArray[0].value;
+                    officeArray[0].dateOfSeparation = dataArray[1].value;
+                    officeArray[0].separationEffectiveDate = dataArray[2].value;
+                    officeArray[0].separationType = dataArray[3].value;
                     statusArray[0].separationInfoStatus = true //status flag for separation details
                 }
                 //}
@@ -500,16 +496,14 @@ function submitPositionDetails(empId, dataArray, callback) {
                 console.log(newEmp);
                 console.log(dataArray);
 
-                newEmp.set('designation', empArray[0].value);
-                newEmp.set('employeeGrade', empArray[2].value);
-                newEmp.set('buisnessDivision', empArray[3].value);
-                newEmp.set('department', empArray[4].value);
-                newEmp.set('vertical', empArray[5].value);
-                newEmp.set('subVertical', empArray[6].value);
-
+                newEmp.set('designation', dataArray[0].value);
+                newEmp.set('employeeGrade', dataArray[2].value);
+                newEmp.set('buisnessDivision', dataArray[3].value);
+                newEmp.set('department', dataArray[4].value);
+                newEmp.set('vertical', dataArray[5].value);
+                newEmp.set('subVertical', dataArray[6].value);
                 var statusArray = results[0].get("statusOffice"); //array to set the flags of completion
                 var officePosArray = results[0].get("officePositionDetails");
-
                 if (officePosArray) {
                     officePosArray[0].designation = dataArray[0].value;
                     officePosArray[0].employeeCategory = dataArray[1].value;
@@ -558,10 +552,11 @@ function submitpreviousEmployment(empId, dataArray, callback) {
     query.find({
         success: function(results) {
             if (results.length) {
+                alert("Dsad");
                 console.log("came into results  function " + empId);
                 var newEmp = results[0];
-                console.log(newEmp);
-                console.log(dataArray);
+                //console.log(newEmp);
+                //console.log(dataArray);
 
                 var statusArray = results[0].get("statusOffice"); //array to set the flags of completion
 
@@ -603,19 +598,18 @@ function submitpreviousEmployment(empId, dataArray, callback) {
 
 //submit payroll information
 function submitPayrollInformation(empId, dataArray, type, callback) {
-    console.log("Came inside submitPayrollInformation in module.js " + empId);
+    console.log("Came inside submitPayrollInformation in module.js");
     var Employee = Parse.Object.extend("Employee");
     var query = new Parse.Query(Employee);
     query.equalTo("empId", empId);
     query.find({
         success: function(results) {
             if (results.length) {
-                console.log("Found the " + empId + " entry in table.");
+                console.log("Found the entry for " + empId + "  in Employee table.");
                 var newEmp = results[0];
             }
             console.log(newEmp);
             var statusArray = results[0].get("statusOffice"); //array to set the flags of completion
-
             if (type == "bankDetails") {
                 var dummyArray = new Array();
                 var dummyObj = new Object();
@@ -653,6 +647,18 @@ function submitPayrollInformation(empId, dataArray, type, callback) {
                 dummyArray.push(dummyObj); //push object into array
                 statusArray[0].otherBenefitStatus = true
                 newEmp.set('otherBenefitDetails', dummyArray);
+            } else if (type == "personalCar") {
+                console.log("came in personal car");
+                var dummyArray = new Array();
+                var dummyObj = new Object();
+                
+                dummyObj.registrationNumber = dataArray[0].value;
+                dummyObj.effectiveDate = dataArray[1].value;
+                dummyObj.expiryDate = dataArray[2].value;
+                dummyObj.ownCarUsageAllowance = dataArray[3].value;
+                dummyArray.push(dummyObj); //push object into array
+                statusArray[0].personalCarStatus = true
+                newEmp.set('personalCarDetails', dummyArray);
             } else if (type = 'companyCarDetails') {
                 var dummyArray = new Array();
                 var dummyObj = new Object();
@@ -665,19 +671,8 @@ function submitPayrollInformation(empId, dataArray, type, callback) {
                 dummyObj.grossPay = dataArray[6].value;
                 dummyArray.push(dummyObj); //push object into array
                 statusArray[0].companyCarStatus = true
+            } 
                 newEmp.set('companyCarDetails', dummyArray);
-            } else if (type == "personalCarDetails") {
-                var dummyArray = new Array();
-                var dummyObj = new Object();
-                console.log("came in personal car");
-                dummyObj.registrationNumber = dataArray[0].value;
-                dummyObj.effectiveDate = dataArray[1].value;
-                dummyObj.expiryDate = dataArray[2].value;
-                dummyObj.ownCarUsageAllowance = dataArray[3].value;
-                dummyArray.push(dummyObj); //push object into array
-                statusArray[0].personalCarStatus = true
-                newEmp.set('personalCarDetails', dummyArray);
-            }
             newEmp.set('statusOffice', statusArray); //set the status array
             newEmp.save(null, {
                 success: function(Employee) {
@@ -730,7 +725,7 @@ function batchInitialize(empArray, initiatorId, type, callback) {
             //var BatchRecords = Parse.Object.extend("BatchRecords");
             var newBatch = new BatchRecords();
 
-            newBatch.set('batchId', 'batchId_' + count);
+            newBatch.set('batchId', 'BatchId_' + count);
             newBatch.set('initiatorId', initiatorId);
             newBatch.set('type', type);
             newBatch.set('startDate', new Date());
@@ -850,16 +845,17 @@ function addToKRATable(empData, kraIndex, initiatorId, batchId) {
     newKRA.save(null, {
         success: function(KRA) {
             console.log('New entry added to KRA table,with objectId: ' + KRA.id);
-            //console.log(JSON.stringify(KRA));
-            addToInputTable('KRA', KRA.get('kraId'), KRA.get('empId'), KRA.get('empName'),KRA.get('supervisorId'),KRA.get('supervisorName'), 'live', new Date()); //this will add a copy to input table
-            
+     
+            //send notification to Supervisor
+            var senderId = KRA.get('cameFrom');
             var notiType= "KRA";
-            var notiTitle= "KRA Initiated.";
-            var notiBody= "Please fill the KRA and submit to "+KRA.get('supervisorName');
+            var notiTitle= "KRA initiated.";
+            var notiBody= "Please fill your KRA and get approved from "+KRA.get('supervisorName');
             var notiLink= "inputRequests";
             var notiReceipent= KRA.get('empId');
-            sendNoti(initiatorId,notiType,notiTitle,notiBody,notiLink,notiReceipent);
+            sendNoti(senderId,notiType,notiTitle,notiBody,notiLink,notiReceipent);
 
+            addToInputTable('KRA', KRA.get('kraId'), KRA.get('empId'), KRA.get('empName'),KRA.get('supervisorId'),KRA.get('supervisorName'), 'live', new Date()); //this will add a copy to input table
         },
         error: function(KRA, error) {
             alert('Failed to create new object, with error code: ' + error.message);
@@ -908,6 +904,16 @@ function setKRA(kraArray, typeId, callback) {
                     success: function(KRA) {
                         // Execute any logic that should take place after the object is saved.
                         console.log('New KRA set with objectId: ' + KRA.id);
+                        
+                        //send notification to Supervisor
+                        var senderId = KRA.get('empId');
+                        var notiType= "KRA";
+                        var notiTitle= "KRA submitted by "+KRA.get('empName');
+                        var notiBody= "Please review the KRA.";
+                        var notiLink= "approvals";
+                        var notiReceipent= KRA.get('supervisorId');
+                        sendNoti(senderId,notiType,notiTitle,notiBody,notiLink,notiReceipent);
+
                         addToApprovalTable('KRA', KRA.get('kraId'), KRA.get('supervisorId'), KRA.get('empId'), KRA.get('empName'), 'live', new Date()); //this will add a copy to input table
                         callback(true);
                     },
@@ -1064,7 +1070,16 @@ function addToLearningTable(empData, learningIndex, initiatorId, batchId) {
     newLearning.save(null, {
         success: function(Learning) {
             console.log('New Learning object created with objectId: ' + Learning.id);
-            //console.log(JSON.stringify(Learning));
+            
+            //send notification to Supervisor
+            var senderId = Learning.get('cameFrom');
+            var notiType= "Learning";
+            var notiTitle= "Learning Agenda initiated.";
+            var notiBody= "Please fill your learning agenda before end date.";
+            var notiLink= "inputRequests";
+            var notiReceipent= Learning.get('empId');
+            sendNoti(senderId,notiType,notiTitle,notiBody,notiLink,notiReceipent);
+
             addToInputTable('Learning', Learning.get('lrnid'), Learning.get('empId'), Learning.get('empName'),Learning.get('supervisorId'),Learning.get('supervisorName'), 'live', new Date()); //this will add a copy to input table
         },
         error: function(Learning, error) {
@@ -1112,6 +1127,16 @@ function setLearning(learningArray, typeId, callback) {
                 newLearning.save(null, {
                     success: function(Learning) {
                         console.log('New Learning set with objectId: ' + Learning.id);
+                        
+                        //send notification to Supervisor
+                        var senderId = Learning.get('empId');
+                        var notiType= "Learning";
+                        var notiTitle= "Learning Agenda submitted by "+Learning.get('empName');
+                        var notiBody= "Please review the learning agenda.";
+                        var notiLink= "approvals";
+                        var notiReceipent= Learning.get('supervisorId');
+                        sendNoti(senderId,notiType,notiTitle,notiBody,notiLink,notiReceipent);
+
                         addToApprovalTable('learning', Learning.get('lrnid'), Learning.get('supervisorId'), Learning.get('empId'),Learning.get('empName'), 'live', new Date()); //this will add a copy to input table
                         callback(true);
                     },
@@ -1827,7 +1852,9 @@ function getKraStats(batchId,callback) {
     query.find({
         success: function(results) {
             if (results.length) {
-                callback(false,results);
+                callback(true,results);
+            }else{
+                callback(false,null);
             }  
         }
     });
@@ -1842,17 +1869,20 @@ function getLearningStats(batchId,callback) {
     query.find({
         success: function(results) {
             if (results.length) {
-                callback(false,results);
+                callback(true,results);
             }  
         }
     });
 }
 
 //function to get batch stats
-function getBatchStats(callback){
+function getBatchStats(batchId,callback){
     console.log("Getting Batch wise stats from Module");
     var BatchRecords = new Parse.Object.extend('BatchRecords');
     var query = new Parse.Query(BatchRecords);
+    if(batchId){
+        query.equalTo("batchId",batchId);
+    }
     query.find({
         success: function(results) {
             if (results.length) {
@@ -1862,4 +1892,43 @@ function getBatchStats(callback){
         }
     });
 
+}
+
+function getEmployeeData(callback){
+    console.log("came inside get emplopyee data");
+    var Employee = new Parse.Object.extend('Employee');
+    var query = new Parse.Query(Employee); 
+    query.find({
+        success: function(results) {
+            if (results.length) {
+                callback(results);
+            } else {
+                callback(null);
+            }
+        },
+        error: function(error) {
+            console.log("Error : " + error.code + " " + error.message);
+        }
+    });    
+
+}
+
+function forgetPasswordMail(email,callback){
+    console.log("came inside forget pss");
+    var Employee = new Parse.Object.extend('Employee');
+    var query = new Parse.Query(Employee); 
+    query.equalTo("officeEmail",email);
+    query.find({
+        success: function(results) {
+            console.log("found results");
+            if (results.length) {
+                callback(results);
+            } else {
+                callback(null);
+            }
+        },
+        error: function(error) {
+            console.log("Error : " + error.code + " " + error.message);
+        }
+    });    
 }

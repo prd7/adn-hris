@@ -16,13 +16,30 @@ $(document).ready(function(){
 		console.log(EmployeeDataJSON[i].I);
 		console.log(EmployeeDataJSON[i].J);
 	}
-
-	$("#sendEmail").click(function(){
-		/*
-		sendEmail(['m.mayur404@gmail.com','theprithvirajdeshmukh@gmail.com'],[],'Test Email','Test Body',function(status){
-			console.log("Sent Email Status "+status);
-			alert("Email sent to test ids");
+	/*
+	$('#bulkUpload').click(function (){
+		uploadData(function(status){
+			alert("Data uploaded");
 		});
-		*/
+	});*/
+
+
+	$('#addEmployee').click(function (){
+		window.location.href = 'add_employee.html';
+	});
+	$('#bulkEmail').click(function (){
+		window.location.href = 'selectWizard.html';
+	});
+	$('#initiateKRA').click(function (){
+		window.location.href = 'selectWizard.html';
+	});
+	$('#initiateLearning').click(function (){
+		window.location.href = 'selectWizard.html';
+	});
+	$('#batchReports').click(function (){
+		window.location.href = 'reports.html';
+	});
+	$('#directory').click(function (){
+		window.location.href = 'directory.html';
 	});
 });

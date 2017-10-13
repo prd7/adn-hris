@@ -101,6 +101,7 @@ $(document).ready(function(){
 				
 			}
 		}
+
 		if(result.get("nIdSmartCard")){
 			
 			var file = result.get("nIdSmartCard");
@@ -120,14 +121,20 @@ $(document).ready(function(){
 			$("#downloadBirthRegistrationNumber").attr("href", file._url);
 		}
 		if(result.get("passport")){
-			//console.log(result.get("passport"));
+			console.log(result.get("passport"));
 			var file = result.get("passport");
 			$("#txtPassportNumber").val(file._name);
 			$("#downloadPassportNumber").attr("href", file._url);
 		}
+		if(result.get("profileImage")){
+			console.log(result.get("profileImage"));
+			var file = result.get("profileImage");
+			$("#profilePictureShow").attr("src", file._url);
+		}
 	});
 
-	$("#downloadSmart").click(function(){
+	//buttn top download
+	$("#downloadNationalIdSmartCard").click(function(){
 		//download the saved url
 	});
 
@@ -232,27 +239,32 @@ $(document).ready(function(){
 		$("#familyDetails :input").attr("disabled", true);
 	});
 	
-	$("#uploadSmart").click(function(){
-		console.log("Uploading Document");
-		var id = "nationalIdSmartCard";
+	$("#uploadNationalIdSmartCard").click(function(){ //button to upload id
+		console.log("Uploading Document"); 
+		var id = "fileNationalIdSmartCard"; //file location id type="file"
 		uploadDocument(localStorage.empId,id,'smartCard');
 	});
 
-	$("#uploadOldFormat").click(function(){
+	$("#uploadNationalIDOldFormat").click(function(){
 		console.log("Uploading Document");
-		var id = "oldFormat";
+		var id = "fileNationalIDOldFormat";
 		uploadDocument(localStorage.empId,id,'oldFormat');
 	});
 
-	$("#uploadPassport").click(function(){
+	$("#uploadPassportNumber").click(function(){
 		console.log("Uploading Document");
-		var id = "passport";
+		var id = "filePassportNumber";
 		uploadDocument(localStorage.empId,id,'passport');
 	});
-	$("#uploadBirthRegistration").click(function(){
+	$("#uploadBirthRegistrationNumber").click(function(){
 		console.log("Uploading Document");
-		var id = "birthRegistration";
+		var id = "fileBirthRegistrationNumber";
 		uploadDocument(localStorage.empId,id,'birthRegistration');
+	});
+	$("#uploadProfilePicture").click(function(){
+		console.log("Uploading Profile picture");
+		var id = "fileProfilePicture";
+		uploadDocument(localStorage.empId,id,'profileImage');
 	});
 
 

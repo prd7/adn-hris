@@ -12,134 +12,141 @@ $(document).ready(function(){
 		var globalEmpId = localStorage.empId;	
 	}
 	console.log(globalEmpId);
+	//fetch default values
+    var empObject = JSON.parse(localStorage.empObject);
+    var name = empObject.name;
 	
-	checkStatus(globalEmpId,"office",function(result){
-		var statusArray =results[0].get("statusOffice");
+	$('#employeeName').val(name);
+	$('#employeeId').val(globalEmpId);
 
-		var officeArray =results[0].get("officeDetails");
-		var officePositionArray =results[0].get("officePositionDetails");
-		var previousWorkArray =results[0].get("previousWorkDetails");
-		var bankArray =results[0].get("bankDetails");
-		var salaryArray =results[0].get("salaryDetails");
-		var otherBenefitArray =results[0].get("otherBenefitDetails");
-		var companyCarArray =results[0].get("companyCarDetails");
-		var personalCarArray =results[0].get("personalCarDetails");
-		console.log("fetch stuff here");
+	
+	checkStatus(globalEmpId,"office",function(results){
+		console.log("Came back from module to office profile");
+		var statusArray = results.get("statusOffice");
+
+		var officeArray = results.get("officeDetails");
+		var officePositionArray = results.get("officePositionDetails");
+		var previousWorkArray = results.get("previousWorkDetails");
+		var bankArray = results.get("bankDetails");
+		var salaryArray = results.get("salaryDetails");
+		var otherBenefitArray = results.get("otherBenefitDetails");
+		var companyCarArray = results.get("companyCarDetails");
+		var personalCarArray = results.get("personalCarDetails");
+		
 		//fetch and populate stuff here
-
-		if(statusArray.officeInfoStatus){
+		if(statusArray[0].officeInfoStatus){
 			$("#officeInfo :input").attr("disabled", true);
-			//$('#employeeId').text(officeArray.employeeId);
-			$('#idcardNo').text(officeArray.idCardNo);
-			$('#companyName').val(officeArray.companyName);
-			$('#officePhoneNumber').text(officeArray.officePhone);
-			$('#officeMobileNumber').text(officeArray.officeMobile);
-			$('#officeEmailID ').text(officeArray.officeEmailId);
-			$('#facility').text(officeArray.facility);
-			$('#city').text(officeArray.city);
-			$('#country').val(officeArray.country);
-			$('#costCenter ').text(officeArray.costCenter);
+			
+			$('#idCardNumber').val(officeArray[0].idCardNumber);
+			$('#companyName').val(results.get("companyName"));
+			$('#officePhoneNumber').val(results.get("officePhone"));
+			$('#officeMobileNumber').val(officeArray[0].officeMobileNumber);
+			$('#officeEmailId ').val(results.get("officeEmail"));
+			$('#facility').val(officeArray[0].facility);
+			$('#city').val(officeArray[0].city);
+			$('#country').val(officeArray[0].country);
+			$('#costCenter ').val(officeArray[0].costCenter);
 
 		}
-		if(statusArray.joiningDetailStatus){
-			$('#dateOfJoining').text(officeArray.dateOfJoining);
-			$('#dateOfConfirmation ').text(officeArray.dateOfConfirmation);
-			$('#confirmationStatus').val(officeArray.stateOfConfirmation);
-			$('#workPermitNumber').text(officeArray.workPermitNumber);
-			$('#workPermitEffectiveDate ').text(officeArray.effectiveDate);
-			$('#workPermitExpiryDate ').text(officeArray.expiryDate);
+		if(statusArray[0].joiningDetailStatus){
+			$('#dateOfJoining').val(officeArray[0].dateOfJoining);
+			$('#dateOfConfirmation ').val(officeArray[0].dateOfConfirmation);
+			$('#confirmationStatus').val(officeArray[0].stateOfConfirmation);
+			$('#workPermitNumber').val(officeArray[0].workPermitNumber);
+			$('#workPermitEffectiveDate ').val(officeArray[0].effectiveDate);
+			$('#workPermitExpiryDate ').val(officeArray[0].expiryDate);
 
 			$("#joiningDetails :input").attr("disabled", true);
 		}
-		if(statusArray.positionHistoryStatus){
-			$('#jobTitle').text(officeArray.jobTitle);
-			$('#employeeCategory').val(officePositionArray.employeeCategory);
-			$('#employeeGrade').val(officePositionArray.employeeGrade);
-			$('#division').val(officePositionArray.buisnessDivision);
-			$('#department').val(officePositionArray.department);
-			$('#verticalUnit').val(officePositionArray.vertical);
-			$('#subVerticalUnit').val(officePositionArray.subVertical);
-			//$('#reportingManagerSupervisor').val(officePositionArray.Group HR Head);
-			$('#reviewer').val(officePositionArray.reviewer);
-			$('#hrSpoc').val(officePositionArray.buisnessHrSpoc);
-			$('#businessHrHead').val(officePositionArray.buisnessHrHead);
-			$('#groupHrHead').val(officePositionArray.groupHrHead);
+		if(statusArray[0].positionHistoryStatus){
+			$('#jobTitle').val(officeArray[0].jobTitle);
+			$('#employeeCategory').val(officePositionArray[0].employeeCategory);
+			$('#employeeGrade').val(officePositionArray[0].employeeGrade);
+			$('#division').val(officePositionArray[0].buisnessDivision);
+			$('#department').val(officePositionArray[0].department);
+			$('#verticalUnit').val(officePositionArray[0].vertical);
+			$('#subVerticalUnit').val(officePositionArray[0].subVertical);
+			//$('#reportingManagerSupervisor').val(officePositionArray[0].Group HR Head);
+			$('#reviewer').val(officePositionArray[0].reviewer);
+			$('#hrSpoc').val(officePositionArray[0].buisnessHrSpoc);
+			$('#businessHrHead').val(officePositionArray[0].buisnessHrHead);
+			$('#groupHrHead').val(officePositionArray[0].groupHrHead);
 
 			$("#positionDetails :input").attr("disabled", true);
 		}
-		if(statusArray.performanceStatus){
-			$('#performanceRatingFy1516').text(officeArray.pfRating1516);
-			$('#performanceRatingFy1617').text(officeArray.pfRating1617);  
+		if(statusArray[0].performanceStatus){
+			$('#performanceRatingFy1516').val(officeArray[0].pfRating1516);
+			$('#performanceRatingFy1617').val(officeArray[0].pfRating1617);  
 
 			$("#performanceDetails :input").attr("disabled", true);
 		}
-		if(statusArray.perviousEmploymentStatus){
-			$('#companyName1').text(previousWorkArray.companyName);
-			$('#companyBusiness').text(previousWorkArray.companyBuisness);
-			$('#designationPrev').text(previousWorkArray.designation);
-			$('#departmentPrev').text(previousWorkArray.department);
-			$('#responsibility').text(previousWorkArray.responsibility);
-			$('#companyLocation').text(previousWorkArray.companyLocation);
-			$('#employmentPeriod').text(previousWorkArray.employmentPeriod);
-			$('#areaOfExperience').text(previousWorkArray.areaOfExperience);
+		if(statusArray[0].perviousEmploymentStatus){
+			$('#companyName1').val(previousWorkArray[0].companyName);
+			$('#companyBusiness').val(previousWorkArray[0].companyBuisness);
+			$('#designationPrev').val(previousWorkArray[0].designation);
+			$('#departmentPrev').val(previousWorkArray[0].department);
+			$('#responsibility').val(previousWorkArray[0].responsibility);
+			$('#companyLocation').val(previousWorkArray[0].companyLocation);
+			$('#employmentPeriod').val(previousWorkArray[0].employmentPeriod);
+			$('#areaOfExperience').val(previousWorkArray[0].areaOfExperience);
 
 			$("#previousEmploymentDetail :input").attr("disabled", true);
 		}
-		if(statusArray.bankStatus){
-			$('#bankName').text(bankArray.bankName);
-			$('#accountName').text(bankArray.accountName);
-			$('#accountNumber').text(bankArray.accountNumber);
-			$('#currency').val(bankArray.currency);
+		if(statusArray[0].bankStatus){
+			$('#bankName').val(bankArray[0].bankName);
+			$('#accountName').val(bankArray[0].accountName);
+			$('#accountNumber').val(bankArray[0].accountNumber);
+			$('#currency').val(bankArray[0].currency);
 
 			$("#bankDetails :input").attr("disabled", true);
 		}
-		if(statusArray.salaryStatus){
-			$('#basic').text(salaryArray.basic);
-			$('#hra').text(salaryArray.hra);
-			$('#conveyanceAllowance').text(salaryArray.conveyanceAllowance);
-			$('#lfa').text(salaryArray.lfa);
-			$('#medicalAllowance').text(salaryArray.medicalAllowance);
-			$('#specialAllowance').text(salaryArray.specialAllowance);
-			$('#grossSalary ').text(salaryArray.grossSalary);
-			$('#lunchAllowance').text(salaryArray.lunchAllowance);
-			$('#mobileAllowance').text(salaryArray.mobileAllowance);
-			$('#otherAllowance').text(salaryArray.otherAllowance);
-			$('#totalEarnings ').text(salaryArray.totalEarnings);
+		if(statusArray[0].salaryStatus){
+			$('#basic').val(salaryArray[0].basic);
+			$('#hra').val(salaryArray[0].hra);
+			$('#conveyanceAllowance').val(salaryArray[0].conveyanceAllowance);
+			$('#lfa').val(salaryArray[0].lfa);
+			$('#medicalAllowance').val(salaryArray[0].medicalAllowance);
+			$('#specialAllowance').val(salaryArray[0].specialAllowance);
+			$('#grossSalary ').val(salaryArray[0].grossSalary);
+			$('#lunchAllowance').val(salaryArray[0].lunchAllowance);
+			$('#mobileAllowance').val(salaryArray[0].mobileAllowance);
+			$('#otherAllowance').val(salaryArray[0].otherAllowance);
+			$('#totalEarnings ').val(salaryArray[0].totalEarnings);
 
 			$("#salaryDetails :input").attr("disabled", true);
 		}
-		if(statusArray.otherBenefitStatus){
-			$('#festivalAllowance').text(otherBenefitArray.festivalAllowance);
-			$('#pfMembership').text(otherBenefitArray.providentFundMembership);
-			$('#groupLifeInsurance').text(otherBenefitArray.groupLifeInsurance);
-			$('#hospitalizationScheme').text(otherBenefitArray.hospitalizationScheme);
+		if(statusArray[0].otherBenefitStatus){
+			$('#festivalAllowance').val(otherBenefitArray[0].festivalAllowance);
+			$('#pfMembership').val(otherBenefitArray[0].providentFundMembership);
+			$('#groupLifeInsurance').val(otherBenefitArray[0].groupLifeInsurance);
+			$('#hospitalizationScheme').val(otherBenefitArray[0].hospitalizationScheme);
 
 			$("#otherBenefitDetails :input").attr("disabled", true);
 		}
-		if(statusArray.companyCarStatus){
-			$('#registrationNumber').text(companyCarArray.registrationNumber);
-			$('#effectiveDate1').text(companyCarArray.effectiveDate);
-			$('#expiryDate1').text(companyCarArray.expiryDate);
-			$('#fuelAllowance').text(companyCarArray.fuelAllowance);
-			$('#maintenanceAllowance').text(companyCarArray.maintainanceAllowance);
-			$('#driverAllowance').text(companyCarArray.driverAllowance);
-			$('#grossPay').text(companyCarArray.grossPay);
+		if(statusArray[0].companyCarStatus){
+			$('#registrationNumber').val(companyCarArray[0].registrationNumber);
+			$('#effectiveDate1').val(companyCarArray[0].effectiveDate);
+			$('#expiryDate1').val(companyCarArray[0].expiryDate);
+			$('#fuelAllowance').val(companyCarArray[0].fuelAllowance);
+			$('#maintenanceAllowance').val(companyCarArray[0].maintainanceAllowance);
+			$('#driverAllowance').val(companyCarArray[0].driverAllowance);
+			$('#grossPay').val(companyCarArray[0].grossPay);
 
 			$("#companyCarDetails :input").attr("disabled", true);
 		}
-		if(statusArray.personalCarStatus){
-			$('#registrationNumber').text(personalCarArray.registrationNumber);
-			$('#effectiveDate').text(personalCarArray.effectiveDate);
-			$('#expiryDate').text(personalCarArray.expiryDate);
-			$('#ownCarUsageAllowance').text(personalCarArray.ownCarUsageAllowance);			
+		if(statusArray[0].personalCarStatus){
+			$('#registrationNumberPersonal').val(personalCarArray[0].registrationNumber);
+			$('#effectiveDate').val(personalCarArray[0].effectiveDate);
+			$('#expiryDate').val(personalCarArray[0].expiryDate);
+			$('#ownCarUsageAllowance').val(personalCarArray[0].ownCarUsageAllowance);			
 
 			$("#personalCarDetails :input").attr("disabled", true);
 		}
-		if(statusArray.separationInfoStatus){
-			$('#dateOfResignation').text(officeArray.dateOfResignation);
-			$('#dateOfSeparation').text(officeArray.dateOfSeparation);
-			$('#effectiveDate').text(officeArray.separationEffectiveDate);
-			$('#separationType').val(officeArray.separationType);
+		if(statusArray[0].separationInfoStatus){
+			$('#dateOfResignation').val(officeArray[0].dateOfResignation);
+			$('#dateOfSeparation').val(officeArray[0].dateOfSeparation);
+			$('#effectiveDate').val(officeArray[0].separationEffectiveDate);
+			$('#separationType').val(officeArray[0].separationType);
 
 			$("#separationDetails :input").attr("disabled", true);
 		}
@@ -151,8 +158,9 @@ $(document).ready(function(){
 		
 		console.log(officeInfo);
 		//var globalEmpId = getUrlVars()["empId"]; //gives empid needed to search a perticular employee
-		//var empId = globalEmpId; //this is the empId from URL
-		var empId= 'E1001';
+		//var empId= 'E1001';
+		var empId = globalEmpId; //this is the empId from URL
+		console.log(globalEmpId);
 
 		submitOfficeInfo(empId,officeInfo,'basicOffice',function(status){
 			swal({
@@ -176,8 +184,8 @@ $(document).ready(function(){
 		var joiningDetails = $("#joiningDetails").serializeArray();
 		console.log(joiningDetails);
 		//var globalEmpId = getUrlVars()["empId"]; //gives empid needed to search a perticular employee
-		//var empId = globalEmpId; //this is the empId from URL
-		var empId= 'E1001';
+		var empId = globalEmpId; //this is the empId from URL
+		//var empId= 'E1001';
 
 		submitOfficeInfo(empId,joiningDetails,'joiningDetails',function(status){
 			swal({
@@ -202,8 +210,7 @@ $(document).ready(function(){
 		var positionDetails = $("#positionDetails").serializeArray();
 		console.log(positionDetails);
 		//var globalEmpId = getUrlVars()["empId"]; //gives empid needed to search a perticular employee
-		//var empId = globalEmpId; //this is the empId from URL
-		var empId= 'E1001';
+		var empId = globalEmpId; //this is the empId from URL
 
 		submitPositionDetails(empId,positionDetails,function(status){
 			swal({
@@ -227,8 +234,8 @@ $(document).ready(function(){
 		var performanceDetails = $("#performanceDetails").serializeArray();
 		console.log(performanceDetails);
 		//var globalEmpId = getUrlVars()["empId"]; //gives empid needed to search a perticular employee
-		//var empId = globalEmpId; //this is the empId from URL
- 		var empId= 'E1001';
+ 		//var empId= 'E1001';
+		var empId = globalEmpId; //this is the empId from URL
 
 		submitOfficeInfo(empId,performanceDetails,'performanceRating',function(status){
 			swal({
@@ -250,7 +257,8 @@ $(document).ready(function(){
 
 	$("#submitpreviousEmployment").click(function(){
 		//here we will use the empId for the file
-		var empId= 'E1001';
+		//var empId= 'E1001';
+		var empId = globalEmpId;
 		var companyName = $("#companyName1").val();
 		if(companyName=""){
 			console.log("Not filled the mandatory  fields");
@@ -260,8 +268,8 @@ $(document).ready(function(){
 			console.log(previousEmploymentDetail);
 			event.preventDefault(); //to prevent form from auto submitting
 			//var globalEmpId = getUrlVars()["empId"]; //gives empid needed to search a perticular employee
-			//var empId = globalEmpId; //this is the empId from URL
-			var empId= 'E1001';
+			var empId = globalEmpId; //this is the empId from URL
+			
 			
 			submitpreviousEmployment(empId,previousEmploymentDetail,function(status){
 				swal({
@@ -289,8 +297,8 @@ $(document).ready(function(){
 		console.log(bankDetails);
 		event.preventDefault(); //to prevent form from auto submitting
 		//var globalEmpId = getUrlVars()["empId"]; //gives empid needed to search a perticular employee
-		//var empId = globalEmpId; //this is the empId from URL
-		var empId= 'E1001';
+		//var empId= 'E1001';
+		var empId = globalEmpId; //this is the empId from URL
 		
 		submitPayrollInformation(empId,bankDetails,'bankDetails',function(status){
 			swal({
@@ -317,8 +325,8 @@ $(document).ready(function(){
 		console.log(salaryDetails);
 		event.preventDefault(); //to prevent form from auto submitting
 		//var globalEmpId = getUrlVars()["empId"]; //gives empid needed to search a perticular employee
-		//var empId = globalEmpId; //this is the empId from URL
-		var empId= 'E1001';
+		//var empId= 'E1001';
+		var empId = globalEmpId; //this is the empId from URL
 		
 		submitPayrollInformation(empId,salaryDetails,'salaryDetails',function(status){
 			swal({
@@ -343,8 +351,8 @@ $(document).ready(function(){
 		console.log(otherBenefitDetails);
 		event.preventDefault(); //to prevent form from auto submitting
 		//var globalEmpId = getUrlVars()["empId"]; //gives empid needed to search a perticular employee
-		//var empId = globalEmpId; //this is the empId from URL
-		var empId= 'E1001';
+		//var empId= 'E1001';
+		var empId = globalEmpId; //this is the empId from URL
 		
 		submitPayrollInformation(empId,otherBenefitDetails,'otherBenefitDetails',function(status){
 			swal({
@@ -369,8 +377,8 @@ $(document).ready(function(){
 		console.log(companyCarDetails);
 		event.preventDefault(); //to prevent form from auto submitting
 		//var globalEmpId = getUrlVars()["empId"]; //gives empid needed to search a perticular employee
-		//var empId = globalEmpId; //this is the empId from URL
-		var empId= 'E1001';
+		//var empId= 'E1001';
+		var empId = globalEmpId; //this is the empId from URL
 				
 		submitPayrollInformation(empId,companyCarDetails,'companyCarDetails',function(status){
 			swal({
@@ -392,12 +400,10 @@ $(document).ready(function(){
 	$("#submitPersonalCarDetails").click(function(){		
 		var personalCarDetails = $("#personalCarDetails").serializeArray();
 		console.log(personalCarDetails);
-		event.preventDefault(); //to prevent form from auto submitting
 		//var globalEmpId = getUrlVars()["empId"]; //gives empid needed to search a perticular employee
-		//var empId = globalEmpId; //this is the empId from URL
-		var empId= 'E1001';
+		var empId = globalEmpId; //this is the empId from URL
 				
-		submitPayrollInformation(empId,personalCarDetails,'personalCarDetails',function(status){
+		submitPayrollInformation(empId,personalCarDetails,'personalCar',function(status){
 			swal({
 				  title: "Employee Personal car details updated successfully!",
 				  text: " Your Information has been saved.",
@@ -418,8 +424,8 @@ $(document).ready(function(){
 		var separationDetails = $("#separationDetails").serializeArray();
 		console.log(separationDetails);
 		//var globalEmpId = getUrlVars()["empId"]; //gives empid needed to search a perticular employee
-		//var empId = globalEmpId; //this is the empId from URL
- 		var empId= 'E1001';
+ 		//var empId= 'E1001';
+		var empId = globalEmpId; //this is the empId from URL
 
 		submitOfficeInfo(empId,separationDetails,'separationDetails',function(status){
 			swal({
