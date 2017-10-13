@@ -1,9 +1,5 @@
 $(document).ready(function(){
-	/* //function to check wether the user is logged in
-	var login = localStorage.loggedIn;
-	if(!login){
-		window.location.href= "../index.html";
-	}*/
+
 	var globalTypeId = getUrlVars()["typeId"];
 	var globalEmpId = getUrlVars()["empId"];
 	if(globalEmpId){
@@ -17,17 +13,18 @@ $(document).ready(function(){
 	fetchLearning(empId,globalTypeId,function(status,data){
 		if(status){
 			console.log("Valid entry in Learning Table for "+empId+" and typeId is "+globalTypeId);
-			//var version = data.get("version");
-			//this part will consist of if condition to check what stage and status the learning is in
+			$("#empName").html(data.get("empName"));
+			$("#empSubmitTime").html(dateTimeString(data.get('endDate')));
+			
 			var stage = data.get("stage");
 			var learningValue = data.get("learningValue");
 			var learningValuelength = (data.get("learningValue")).length;
 			console.log("The Learning Is in "+stage+" stage.");
 
 			if(stage=="posted"){
-				//$("#sample_3 :input").attr("disabled", true);//disables the table after submitting KRA
-				//$("#submitsLearningApproval").hide()
 				//$("#status").html('Learning agenda submitted sucessfully for your Supervisor\'s review');
+				$("#empSubmitTime").html(dateTimeString(data.get('endDate')));
+
 
 				for(i=0;i<learningValuelength;i++){
 					var index = i+1;
@@ -41,9 +38,12 @@ $(document).ready(function(){
 			}else if(stage=="accepted"){
 				$("#sample_3 :input").attr("disabled", true);//disables the table after submitting KRA
 				$("#submitsLearningApproval").hide()
+				$("#empSubmitTime").html(dateTimeString(data.get('endDate')));
+				$("#smallStatus").html("Learning Agenda Approved");
+
+
 				var supervisorData = data.get("supervisorData");
-				//supervisorData[0].supervisorInput;
-				console.log(supervisorData);
+				//console.log(supervisorData);
 				for(i=0;i<learningValuelength;i++){
 					var index = i+1;
 					$("#selDevArea"+index).val(learningValue[i].developmentArea);
@@ -65,7 +65,7 @@ $(document).ready(function(){
 					  closeOnConfirm: true
 					},
 					function(){
-					  	window.location.href= "../home.html";	
+					  	//window.location.href= "../approvals.html";	
 				});
 			}
 		}
@@ -77,7 +77,7 @@ $(document).ready(function(){
 		var supervisorInput = $("#managerCommentLearning").val();
 		console.log(supervisorInput);
 		
-		reviewLearning(globalEmpId,localStorage.empId,supervisorInput,globalTypeId,true,function(status){
+		reviewLearning(globalEmpId,localStorage.empId,empObject.name,supervisorInput,globalTypeId,true,function(status){
 			
 			resetInputTable(globalTypeId, 'accepted', function(){
 		  		//window.location.href= "controlPanel.html";
@@ -88,12 +88,14 @@ $(document).ready(function(){
 		  		console.log("Approval table reset for "+globalEmpId);
 			});
 
-			var notiType= "Learning";
-			var notiTitle= "Learning agenda approved.";
-			var notiBody= "Learning agenda approved by "+empObject.name;
-			var notiLink= "approved";
-			var notiReceipent= globalEmpId;
-			sendNoti(localStorage.empId,notiType,notiTitle,notiBody,notiLink,notinotiReceipent);
+			//send notification to Supervisor
+            var senderId = localStorage.empId;
+            var notiType= "Learning";
+            var notiTitle= "Learning agenda approved.";
+            var notiBody= "Your Learning agenda has been approved by "+empObject.name+".";
+            var notiLink= "approved";
+            var notiReceipent= globalEmpId;
+            sendNoti(senderId,notiType,notiTitle,notiBody,notiLink,notiReceipent);
 
 			swal({
 					  title: "Learning Approved!",
@@ -115,7 +117,7 @@ $(document).ready(function(){
 		var supervisorInput = $("#managerCommentLearning").val();
 		//console.log(supervisorInput);
 
-		reviewLearning(globalEmpId,localStorage.empId,supervisorInput,globalTypeId,false,function(status){
+		reviewLearning(globalEmpId,localStorage.empId,empObject.name,supervisorInput,globalTypeId,false,function(status){
 			resetInputTable(globalTypeId, 'rejected', function(){
 		  		//window.location.href= "controlPanel.html";
 		  		console.log("Inpupts table reset for "+globalEmpId);
@@ -125,12 +127,14 @@ $(document).ready(function(){
 		  		console.log("Approval table reset for "+globalEmpId);
 			});
 
-			var notiType= "Learning";
-			var notiTitle= "Learning agenda sent back.";
-			var notiBody= "Learning agenda sent back by "+empObject.name;
-			var notiLink= "rejected";
-			var notiReceipent= globalEmpId;
-			sendNoti(localStorage.empId,notiType,notiTitle,notiBody,notiLink,notiReceipent);
+			//send notification to Supervisor
+            var senderId = localStorage.empId;
+            var notiType= "Learning";
+            var notiTitle= "Learning agenda sent back.";
+            var notiBody= "Learning agenda sent back by "+empObject.name;
+            var notiLink= "approved";
+            var notiReceipent= globalEmpId;
+            sendNoti(senderId,notiType,notiTitle,notiBody,notiLink,notiReceipent);
 
 			swal({
 					  title: "Learning Rejected!",

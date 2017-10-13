@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	console.log("userProfile Jquery Loaded");
-	console.log(getUrlVars()["typeId"]);
+	//console.log(getUrlVars()["typeId"]);
 	if(getUrlVars()["typeId"]){
 		var globalTypeId = getUrlVars()["typeId"];
 
@@ -9,6 +9,8 @@ $(document).ready(function(){
 	    var globalEmpId= empIdArray[1];
 	}else{
 		var globalEmpId = localStorage.empId;	
+		$('#fname').html(empObject.name);
+		$('#officeEmail').val(empObject.officeEmail);
 	}
 	console.log(globalEmpId);
 	
@@ -94,7 +96,7 @@ $(document).ready(function(){
 			for(i=0; i<length; i++){
 				$('[name="group-a['+i+'][familyMemberName]"]').val(familyDetailsArray[i].name);
 				$('[name="group-a['+i+'][familyMemberRelation]"]').val(familyDetailsArray[i].relation);
-				$('[name="group-a['+i+'][familyMember'+familyDetailsArray[i].gender+']"]').attr('checked', true);
+				$('[name="group-a['+i+'][familyMemberGender]"]').val(familyDetailsArray[i].gender);
 				$('[name="group-a['+i+'][familyMembermobileNumber]"]').val(familyDetailsArray[i].contact);
 				$('[name="group-a['+i+'][familyMemberBirthdate]"]').val(familyDetailsArray[i].dateOfBirth);
 				$('[name="group-a['+i+'][familyMemberAge]"]').val(familyDetailsArray[i].age);
@@ -105,37 +107,44 @@ $(document).ready(function(){
 		if(result.get("nIdSmartCard")){
 			
 			var file = result.get("nIdSmartCard");
-			$("#txtNationalIdSmartCard").val(file._name);
+			var filename = file._name.split('_');
+			$('#txtNationalIdSmartCard').val(filename[2]);
+			$("#downloadNationalIdSmartCard").show();
 			$("#downloadNationalIdSmartCard").attr("href", file._url);
 		}
 		if(result.get("nIdOldFormat")){
 			
 			var file = result.get("nIdOldFormat");
-			$("#txtNationalIDOldFormat").val(file._name);
+			var filename = file._name.split('_');
+			$('#txtNationalIDOldFormat').val(filename[2]);
+			$("#downloadNationalIDOldFormat").show();
 			$("#downloadNationalIDOldFormat").attr("href", file._url);
 		}
 		if(result.get("birthRegistration")){
 			
 			var file = result.get("birthRegistration");
-			$("#txtBirthRegistrationNumber").val(file._name);
+			var filename = file._name.split('_');
+			$('#txtBirthRegistrationNumber').val(filename[2]);
+			$("#downloadBirthRegistrationNumber").show();
 			$("#downloadBirthRegistrationNumber").attr("href", file._url);
 		}
 		if(result.get("passport")){
-			console.log(result.get("passport"));
 			var file = result.get("passport");
-			$("#txtPassportNumber").val(file._name);
+			var filename = file._name.split('_');
+			$('#txtPassportNumber').val(filename[2]);
+			$("#downloadPassportNumber").show();
 			$("#downloadPassportNumber").attr("href", file._url);
 		}
 		if(result.get("profileImage")){
-			console.log(result.get("profileImage"));
+			//console.log(result.get("profileImage"));
 			var file = result.get("profileImage");
+			$("#uploadProfilePicture").text("Change");
 			$("#profilePictureShow").attr("src", file._url);
 		}
 	});
 
 	//buttn top download
 	$("#downloadNationalIdSmartCard").click(function(){
-		//download the saved url
 	});
 
 	$("#submitPersonal").click(function(){
@@ -241,30 +250,50 @@ $(document).ready(function(){
 	
 	$("#uploadNationalIdSmartCard").click(function(){ //button to upload id
 		console.log("Uploading Document"); 
-		var id = "fileNationalIdSmartCard"; //file location id type="file"
-		uploadDocument(localStorage.empId,id,'smartCard');
+		var id = "fileNationalIdSmartCard";
+		var documentName = $("#txtNationalIdSmartCard").val(); //file location id type="file"
+		uploadDocument(localStorage.empId,id,documentName,'smartCard');
 	});
 
 	$("#uploadNationalIDOldFormat").click(function(){
 		console.log("Uploading Document");
 		var id = "fileNationalIDOldFormat";
-		uploadDocument(localStorage.empId,id,'oldFormat');
+		var documentName = $("#txtNationalIDOldFormat").val();
+		uploadDocument(localStorage.empId,id,documentName,'oldFormat');
 	});
 
 	$("#uploadPassportNumber").click(function(){
 		console.log("Uploading Document");
 		var id = "filePassportNumber";
-		uploadDocument(localStorage.empId,id,'passport');
+		var documentName = $("#txtPassportNumber").val();
+		uploadDocument(localStorage.empId,id,documentName,'passport');
 	});
 	$("#uploadBirthRegistrationNumber").click(function(){
 		console.log("Uploading Document");
 		var id = "fileBirthRegistrationNumber";
-		uploadDocument(localStorage.empId,id,'birthRegistration');
+		var documentName = $("#txtBirthRegistrationNumber").val();
+		uploadDocument(localStorage.empId,id,documentName,'birthRegistration');
 	});
 	$("#uploadProfilePicture").click(function(){
 		console.log("Uploading Profile picture");
 		var id = "fileProfilePicture";
-		uploadDocument(localStorage.empId,id,'profileImage');
+		var documentName = $("#txtProfilePicture").val();
+		uploadDocument(localStorage.empId,id,documentName,'profileImage');
+	});
+
+	$("#sendToHR").click(function(){
+		console.log("Sending for HR Approval");
+		checkStatus(globalEmpId,"personal",function(result){
+			var statusArray = results[0].get("statusPersonal");
+			console.log("Came back here");
+			if (statusArray[0].personalStatus && statusArray[0].addressStatus && statusArray[0].academicStatus && statusArray[0].familyStatus && statusArray[0].documentStatus) {
+                addToApprovalTable('employeeProfile', 'p_'+globalEmpId, empObject.hrId,globalEmpId,empObject.name, 'live', new Date()); 		
+                console.log("all values are true in personal status");
+            } else {
+            	swal("Please fill all the Information and then submit.");
+            }
+		});
+		 
 	});
 
 

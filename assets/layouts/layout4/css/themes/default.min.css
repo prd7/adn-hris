@@ -9,7 +9,7 @@ body.page-md {
 }
 .page-header.navbar {
     background: #fff;
-    border-bottom: 4px solid #52961F
+    border-bottom: 4px solid #008F45
 }
 .page-header.navbar .top-menu .navbar-nav>li.dropdown .dropdown-toggle:hover {
     background-color: #FAFAFA
@@ -392,7 +392,7 @@ body.page-md {
 @media (max-width: 767px) {
     .page-header.navbar {
         background: #fff;
-        border-bottom: 4px solid #52961F
+        border-bottom: 4px solid #008F45
     }
     .page-header.navbar .page-top {
         background: #fff

@@ -1,13 +1,14 @@
 $(document).ready(function(){
-	console.log("Jquery approved requests Loaded");
+	console.log("Jquery notifications requests Loaded");
 	var empId = localStorage.empId;
 	
 	fetchNotifications(empId,'isRead',function(status,data){
 		if(status){
 			//$("#pedningNoti").html(data.length); 
-
+			console.log("came back");
 			for( var i = 0; i < data.length; i++ )
 		    {
+		    	//console.log("came inside loop");
 				var notificationListObject = '<div class="item">'+
 				'    <div class="item-head">'+
 				'        <div class="item-details">'+

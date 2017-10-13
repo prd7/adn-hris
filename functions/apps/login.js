@@ -49,13 +49,13 @@ $('.forget-password').click(function(){
 		}
 	});
 
+	//forget password function
 	$("#submitForget").click(function(){
 		var email = $("#forgetEmail").val();
 		if(validateEmail(email)){
-			console.log("is vcalid");	
-			forgetPasswordMail(email,function(results){
-				
-				if(results.length){
+			console.log("is valid");	
+			forgetPasswordMail(email,function(status,results){
+				if(status){
 					console.log(results);
 					console.log(results[0].get("empId"));
 					console.log(results[0].get("officeEmail"));
@@ -69,9 +69,22 @@ $('.forget-password').click(function(){
 					sendEmail(email,'',emailSubject,emailBody,function(status){
 						console.log("Sent Email Status "+status);
 						swal("Email sent to your registered email ID");
-					});
+					});				
 				}else{
-					swal("PLease enter a valid registered email.");
+					console.log("Email not registered");
+					swal({
+					  title: "Email not registered!",
+					  text: "Please enter a valid registered email address.",
+					  type: "warning",
+					  showCancelButton: false,
+					  confirmButtonClass: "btn-warning",
+					  confirmButtonText: "Ok",
+					  closeOnConfirm: true
+					},
+					function(){
+					  	window.location.href= "index.html";	
+				});
+
 				}
 			});
 		}else{

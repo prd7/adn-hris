@@ -281,3 +281,105 @@ function setSideMenu(){
 
 
 */
+
+
+/*
+
+//function to upload documents
+function uploadDocument(empId, id, type, callback) {
+    // What to do here?
+    var x = document.getElementById(id);
+    var txt = "";
+    if ('files' in x) {
+        if (x.files.length == 0) {
+            swal("No File Selected");
+        } else {
+
+            var file = x.files[0];
+            if ('name' in file) {
+                txt += "name: " + file.name + "<br>";
+            }
+            if ('size' in file) {
+                txt += "size: " + file.size + " bytes <br>";
+            }
+            var reader = new FileReader();
+            reader.addEventListener("load", function() {
+                console.log(reader.result);
+                var Employee = Parse.Object.extend("Employee");
+                var query = new Parse.Query(Employee);
+                query.equalTo("empId", empId);
+                query.find({
+                    success: function(results) {
+                        if (results.length) {
+                            var emp = results[0];
+                            if (type == "smartCard") {
+                                var parseFile = new Parse.File(empId + '_nIdSmartCard.jpg', {
+                                    base64: reader.result
+                                }, 'image/jpg');
+                                emp.set('nIdSmartCard', parseFile);
+                            } else if (type == "oldFormat") {
+                                var parseFile = new Parse.File(empId + '_nIdOldFormat.jpg', {
+                                    base64: reader.result
+                                }, 'image/jpg');
+                                emp.set('nIdOldFormat', parseFile);
+                            } else if (type == "passport") {
+                                var parseFile = new Parse.File(empId + '_passport.jpg', {
+                                    base64: reader.result
+                                }, 'image/jpg');
+                                emp.set('passport', parseFile);
+                            } else if (type == "birthRegistration") {
+                                var parseFile = new Parse.File(empId + '_birthRegistration.jpg', {
+                                    base64: reader.result
+                                }, 'image/jpg');
+                                emp.set('birthRegistration', parseFile);
+                            } else {
+                                var parseFile = new Parse.File(empId + 'profile.jpg', {
+                                    base64: reader.result
+                                }, 'image/jpg');
+                                emp.set('profileImage', parseFile);
+                            }
+                            emp.save(null, {
+                                success: function(emp) {
+                                    //alert("file save success");
+                                    swal("The file has been uploaded Successfully.");
+                                    callback(true);
+                                }
+                            });
+
+                        }
+                    },
+                    error: function(error) {
+                        alert("Error: " + error.code + " " + error.message);
+                    }
+                });
+                /*var parseFile = new Parse.File('image.png', { base64: reader.result },'image/png');
+                showLoading();
+                parseFile.save().then(function(result) {
+                // The file has been saved to Parse.
+                console.log("File Save Successfully")
+                photoArray.push(result.url());
+                console.log(photoArray);
+                $("#new-venue-photos-section").append(file.name);
+                $("#new-venue-photos-section").append('<hr/>');
+                hideLoading();
+                }, function(error) {
+                // The file either could not be read, or could not be saved to Parse.
+                hideLoading();
+                console.log("File Save Failed");
+                console.log(error)
+                });*/
+/*
+            }, false);
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
+    } else {
+        alert("No File Selected");
+    }
+    console.log(txt);
+}
+
+
+*/

@@ -24,6 +24,7 @@ function getUrlVars() {
 }
 
 function dateTimeString(eventDate) {
+    var yearString = eventDate.getFullYear();
     var monthString = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     var dateString = eventDate.getDate() + " " + monthString[eventDate.getMonth()];
     var hours = eventDate.getHours();
@@ -45,7 +46,7 @@ function dateTimeString(eventDate) {
         }
         //AM Time
     }
-    var finalTime = dateString + ', ' + timeString;
+    var finalTime = dateString +' '+ yearString + ', ' + timeString;
     return finalTime;
 }
 
@@ -102,8 +103,6 @@ function fetchNotifications(empId,type,callback) {
     query.equalTo("recipientId", empId);
     if(type=="isUnread"){
         query.equalTo("isUnread", true);
-    }else{
-        query.equalTo("isUnread", false);
     }
     query.find({
         success: function(results) {
@@ -156,6 +155,7 @@ function checklogin(username, password, callback) {
                 //to get info in local storage upon first login
                 localStorage.empId = results[0].get('empId');
                 localStorage.empObject = JSON.stringify(results[0]);
+                //localStorage.empProfileImage=results[0].get("profileImage")._url;
                 localStorage.loggedIn = "true";
                 callback(true, results[0]);
             } else {
@@ -1659,7 +1659,7 @@ function sendEmail(to, cc, subject, body, callback) {
 }
 
 //function to reject Learning
-function reviewLearning(empId, supervisorId, supervisorInput, typeId, supervisorReview, callback) {
+function reviewLearning(empId, supervisorId, supervisorInput, supervisorName, typeId, supervisorReview, callback) {
     var Learning = Parse.Object.extend("Learning");
     var query = new Parse.Query(Learning);
     query.equalTo("lrnid", typeId); //match LearningId to table
@@ -1673,6 +1673,7 @@ function reviewLearning(empId, supervisorId, supervisorInput, typeId, supervisor
                 var dummyObj = new Object(); //create object to push into array
                 //dummyObj.supervisor = new Employee();
                 dummyObj.supervisorId = supervisorId;
+                dummyObj.supervisorName = supervisorName;
                 dummyObj.supervisorInput = supervisorInput;
                 dummyObj.supervisorInputDate = new Date();
                 dummyObj.supervisorReview = supervisorReview;
@@ -1703,7 +1704,7 @@ function reviewLearning(empId, supervisorId, supervisorInput, typeId, supervisor
 }
 
 //function to review KRA
-function reviewKRA(empId, supervisorId, supervisorInput, typeId, supervisorReview, callback) {
+function reviewKRA(empId, supervisorId,supervisorName, supervisorInput, typeId, supervisorReview, callback) {
     var KRA = new Parse.Object.extend('Kra');
     var query = new Parse.Query(KRA);
     query.equalTo("kraId", typeId); //match kraId to table
@@ -1717,6 +1718,7 @@ function reviewKRA(empId, supervisorId, supervisorInput, typeId, supervisorRevie
                 var dummyObj = new Object(); //create object to push into array
                 //dummyObj.supervisor = new Employee();
                 dummyObj.supervisorId = supervisorId;
+                dummyObj.supervisorName = supervisorName;
                 dummyObj.supervisorInput = supervisorInput;
                 dummyObj.supervisorInputDate = new Date();
                 dummyObj.supervisorReview = supervisorReview;
@@ -1725,6 +1727,7 @@ function reviewKRA(empId, supervisorId, supervisorInput, typeId, supervisorRevie
                 newKRA.set('supervisorData', dummyArray);
                 if (supervisorReview) {
                     newKRA.set('stage', 'accepted');
+                    newKRA.set('endDate',new Date());
                 } else {
                     newKRA.set('stage', 'rejected');
                 }
@@ -1747,14 +1750,12 @@ function reviewKRA(empId, supervisorId, supervisorInput, typeId, supervisorRevie
     });
 }
 
-//function to upload documents
-function uploadDocument(empId, id, type, callback) {
+function uploadDocument(empId, id, documentName, type, callback) {
     // What to do here?
     var x = document.getElementById(id);
     var txt = "";
     if ('files' in x) {
         if (x.files.length == 0) {
-            swal("No File Selected");
         } else {
 
             var file = x.files[0];
@@ -1765,6 +1766,15 @@ function uploadDocument(empId, id, type, callback) {
                 txt += "size: " + file.size + " bytes <br>";
             }
             var reader = new FileReader();
+            swal({
+                  title: "Uploading the file..",
+                  //text: "You will be redirected to send Bulk Email to selected employees!",
+                  type: "info",
+                  showCancelButton: false,
+                  showConfirmButton: false,
+                  confirmButtonClass: "btn-error",
+                  closeOnConfirm: false
+                });
             reader.addEventListener("load", function() {
                 console.log(reader.result);
                 var Employee = Parse.Object.extend("Employee");
@@ -1775,27 +1785,27 @@ function uploadDocument(empId, id, type, callback) {
                         if (results.length) {
                             var emp = results[0];
                             if (type == "smartCard") {
-                                var parseFile = new Parse.File(empId + '_nIdSmartCard.jpg', {
+                                var parseFile = new Parse.File(empId+'_'+documentName+'_nIdSmartCard.jpg', {
                                     base64: reader.result
                                 }, 'image/jpg');
                                 emp.set('nIdSmartCard', parseFile);
                             } else if (type == "oldFormat") {
-                                var parseFile = new Parse.File(empId + '_nIdOldFormat.jpg', {
+                                var parseFile = new Parse.File(empId+'_'+documentName+'_nIdOldFormat.jpg', {
                                     base64: reader.result
                                 }, 'image/jpg');
                                 emp.set('nIdOldFormat', parseFile);
                             } else if (type == "passport") {
-                                var parseFile = new Parse.File(empId + '_passport.jpg', {
+                                var parseFile = new Parse.File(empId+'_'+documentName+'_passport.jpg', {
                                     base64: reader.result
                                 }, 'image/jpg');
                                 emp.set('passport', parseFile);
                             } else if (type == "birthRegistration") {
-                                var parseFile = new Parse.File(empId + '_birthRegistration.jpg', {
+                                var parseFile = new Parse.File(empId+'_'+documentName+'_birthRegistration.jpg', {
                                     base64: reader.result
                                 }, 'image/jpg');
                                 emp.set('birthRegistration', parseFile);
                             } else {
-                                var parseFile = new Parse.File(empId + 'profile.jpg', {
+                                var parseFile = new Parse.File(empId+'_'+documentName+'profile.jpg', {
                                     base64: reader.result
                                 }, 'image/jpg');
                                 emp.set('profileImage', parseFile);
@@ -1804,7 +1814,13 @@ function uploadDocument(empId, id, type, callback) {
                                 success: function(emp) {
                                     //alert("file save success");
                                     swal("The file has been uploaded Successfully.");
+                                    location.reload();
                                     callback(true);
+
+                                },
+                                erro: function(emp) {
+                                    swal("Upload failed,try again");
+                                    callback(false);
                                 }
                             });
 
@@ -1836,13 +1852,14 @@ function uploadDocument(empId, id, type, callback) {
             if (file) {
                 reader.readAsDataURL(file);
             }
+
         }
     } else {
-        alert("No File Selected");
+        //alert("No File Selected");
     }
     console.log(txt);
-}
 
+}
 //function to fetch KRA table data
 function getKraStats(batchId,callback) {
     //console.log("Getting KRA stats from Module");
@@ -1924,6 +1941,7 @@ function forgetPasswordMail(email,callback){
             if (results.length) {
                 callback(results);
             } else {
+                console.log("Results length s ");
                 callback(null);
             }
         },

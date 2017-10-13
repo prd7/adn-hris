@@ -106,7 +106,7 @@
                            <li>
                               <a href="#tab_4" data-toggle="tab"> Profile Picture </a>
                            </li>
-                           <button class="btn btn-square btn-sm red todo-bold pull-right"><i class="fa fa-check"></i> Send to HR Approval</button>
+                           <button class="btn btn-square btn-sm red todo-bold pull-right" id="sendToHR"><i class="fa fa-check"></i> Send to HR Approval</button>
                         </ul>
                         <div class="tab-content">
                            <!-- BEGIN TAB_0-->
@@ -140,6 +140,7 @@
                                                 <div class="form-group">
                                                    <label class="control-label">Name
                                                    </label>
+                                                   <input type="text" name="username" class="username" hidden="hidden">
                                                    <label type="text" name="fname" id="fname" class="form-control"></label>
                                                 </div>
                                              </div>
@@ -550,7 +551,7 @@
                                                          <label class="control-label">National ID Smart Card
                                                          <span class="required" aria-required="true"> * </span>
                                                          </label>
-                                                         <input type="text" name="txtNationalIdSmartCard" id="txtNationalIdSmartCard" data-required="1" class="form-control">
+                                                         <input type="text" name="txtNationalIdSmartCard" id="txtNationalIdSmartCard" data-required="1" class="form-control" placeholder="Enter National ID Smart Card number">
                                                       </div>
                                                       <div class="col-md-3">
                                                          <label class="control-label" style="visibility: hidden;">A
@@ -558,7 +559,7 @@
                                                          </label>
                                                          <div class="input-group-btn" >
                                                             <button type="button" class="btn green" tabindex="-1" id="uploadNationalIdSmartCard" name="uploadNationalIdSmartCard"> Upload </button>
-                                                            <a id="downloadNationalIdSmartCard" name="downloadNationalIdSmartCard" target="_blank"><button type="button" class="btn default" tabindex="-1"><i class="fa fa-eye"></i></button></a>
+                                                            <a id="downloadNationalIdSmartCard" hidden="hidden" name="downloadNationalIdSmartCard" target="_blank"><button type="button" class="btn default" tabindex="-1">View</button></a>
                                                          </div>
                                                       </div>
                                                    </div>
@@ -570,10 +571,10 @@
                                                 <div class="form-group">
                                                    <div class="row">
                                                       <div class="col-md-9">
-                                                         <label class="control-label">National ID Old Format
+                                                         <label class="control-label">National ID (Old Format)
                                                          <span class="required" aria-required="true"> * </span>
                                                          </label>
-                                                         <input type="text" name="txtNationalIDOldFormat" id="txtNationalIDOldFormat" data-required="1" class="form-control">
+                                                         <input type="text" name="txtNationalIDOldFormat" id="txtNationalIDOldFormat" data-required="1" class="form-control" placeholder="Enter National ID number (Old Format)">
                                                       </div>
                                                       <div class="col-md-3">
                                                          <label class="control-label" style="visibility: hidden;">A
@@ -581,7 +582,7 @@
                                                          </label>
                                                          <div class="input-group-btn" >
                                                             <button type="button" class="btn green" tabindex="-1" id="uploadNationalIDOldFormat" name="uploadNationalIDOldFormat"> Upload </button>
-                                                            <a id="downloadNationalIDOldFormat" name="downloadNationalIDOldFormat" target="_blank"><button type="button" class="btn default" tabindex="-1"><i class="fa fa-eye"></i></button></a>
+                                                            <a id="downloadNationalIDOldFormat" hidden="hidden" name="downloadNationalIDOldFormat" target="_blank"><button type="button" class="btn default" tabindex="-1">View</button></a>
                                                          </div>
                                                       </div>
                                                    </div>
@@ -599,7 +600,7 @@
                                                          <label class="control-label">Birth Registration Number
                                                          <span class="required" aria-required="true"> * </span>
                                                          </label>
-                                                         <input type="text" name="txtBirthRegistrationNumber" id="txtBirthRegistrationNumber" data-required="1" class="form-control">
+                                                         <input type="text" name="txtBirthRegistrationNumber" id="txtBirthRegistrationNumber" data-required="1" class="form-control" placeholder="Enter Birth Registration number">
                                                       </div>
                                                       <div class="col-md-3">
                                                          <label class="control-label" style="visibility: hidden;">A
@@ -607,7 +608,7 @@
                                                          </label>
                                                          <div class="input-group-btn" >
                                                             <button type="button" class="btn green" tabindex="-1" id="uploadBirthRegistrationNumber" name="uploadBirthRegistrationNumber"> Upload </button>
-                                                            <a id="downloadBirthRegistrationNumber" name="downloadBirthRegistrationNumber" target="_blank"><button type="button" class="btn default" tabindex="-1"><i class="fa fa-eye"></i></button></a>
+                                                            <a id="downloadBirthRegistrationNumber" hidden="hidden"  name="downloadBirthRegistrationNumber" target="_blank"><button type="button" class="btn default" tabindex="-1">View</button></a>
                                                          </div>
                                                       </div>
                                                    </div>
@@ -622,15 +623,15 @@
                                                          <label class="control-label">Passport Number
                                                          <span class="required" aria-required="true"> * </span>
                                                          </label>
-                                                         <input type="text" name="txtPassportNumber" id="txtPassportNumber" data-required="1" class="form-control">
+                                                         <input type="text" name="txtPassportNumber" id="txtPassportNumber" data-required="1" class="form-control" placeholder="Enter Passport number">
                                                       </div>
                                                       <div class="col-md-3">
                                                          <label class="control-label" style="visibility: hidden;">A
                                                          <span class="required" aria-required="true"> * </span>
                                                          </label>
-                                                         <div class="input-group-btn" >
+                                                         <div class="input-group-btn">
                                                             <button type="button" class="btn green" tabindex="-1" id="uploadPassportNumber" name="uploadPassportNumber"> Upload </button>
-                                                            <a id="downloadPassportNumber" name="downloadPassportNumber" target="_blank"><button type="button" class="btn default" tabindex="-1"><i class="fa fa-eye"></i></button></a>
+                                                            <a id="downloadPassportNumber" hidden="hidden" name="downloadPassportNumber" target="_blank"><button type="button" class="btn default" tabindex="-1">View</button></a>
                                                          </div>
                                                       </div>
                                                    </div>
@@ -638,12 +639,7 @@
                                                 </div>
                                              </div>
                                           </div>
-                                       </div>
-                                       <div class="form-actions left" style="padding-top: 10px">
-                                          <button type="button" class="btn default">Cancel</button>
-                                          <button type="submit" class="btn blue">
-                                          <i class=""></i> Save</button>
-                                       </div>
+                                       </div>                                     
                                     </form>
                                     <!-- END FORM-->
                                  </div>
@@ -796,21 +792,21 @@
                                                             </select>
                                                          </div>
                                                       </div>
-                                                      <div class="col-md-3 ">
-                                                         <div class="mt-repeater-input" name="group-a[0][marksPercentageDiv]">
+                                                      <div class="col-md-6 " name="group-a[0][marksPercentageDiv]">
+                                                         <div class="mt-repeater-input" >
                                                             <label class="control-label" name="group-a[0][label1]" >Marks in %</label>
                                                             <br>
                                                             <input type="text" id="marksIn"  value="" name="group-a[0][marksPercentage]" class="form-control">
                                                          </div>
                                                       </div>
-                                                      <div class="col-md-3">
-                                                         <div class="mt-repeater-input" name="group-a[0][cgpaScaleDiv]">
-                                                            <div class="col-md-6 ">
+                                                      <div class="col-md-6" name="group-a[0][cgpaScaleDiv]" hidden="hidden">
+                                                         <div class="mt-repeater-input" >
+                                                            <div class="col-md-6 " style="padding-left: 0px;">
                                                             <label class="control-label" name="group-a[0][label2]" >CGPA</label>
                                                             <br>
                                                             <input type="text" id="marksIn" value=""  name="group-a[0][cgpa]" class="form-control">
                                                          </div>
-                                                         <div class="col-md-6">
+                                                         <div class="col-md-6" style="padding: 0px;">
                                                             <label class="control-label" name="group-a[0][label2]" >Scale</label>
                                                             <br>
                                                             <input type="text" value="" id="marksIn" name="group-a[0][scale]" class="form-control">
@@ -893,15 +889,14 @@
                                                          <div class="mt-repeater-input">
                                                             <label class="control-label">Name</label>
                                                             <br>
-                                                            <input type="text" id="familyName" name="group-a[0][familyMemberName]" class="form-control" >
+                                                            <input type="text" id="group-a[0][familyMemberName]" name="group-a[0][familyMemberName]" class="form-control" >
                                                          </div>
                                                       </div>
                                                       <div class="col-md-6 ">
                                                          <div class="mt-repeater-input">
                                                             <label class="control-label">Relation</label>
                                                             <br>
-                                                            <select id="first" name="group-a[0][familyMemberRelation]" class="form-control">
-                                                               <option value="">Select...</option>
+                                                            <select id="group-a[0][familyMemberRelation]" name="group-a[0][familyMemberRelation]" class="form-control">
                                                                <option value="Father">Father</option>
                                                                <option value="Mother">Mother</option>
                                                                <option value="Spouse">Spouse</option>
@@ -915,21 +910,15 @@
                                                    </div>
                                                    <div class="row">
                                                       <div class="col-md-6 ">
-                                                         <div class="mt-repeater-input mt-radio-inline">
+                                                         <div class="mt-repeater-input">
                                                             <label class="control-label">Gender</label>
                                                             <br>
-                                                            <label class="mt-radio">
-                                                            <input type="radio" name="group-a[0][familyMemberMale]" id="familyMale" value="male" checked="checked"> Male
-                                                            <span></span>
-                                                            </label>
-                                                            <label class="mt-radio">
-                                                            <input type="radio" name="group-a[0][familyMemberFemale]" id="familyFemale" value="female"> Female
-                                                            <span></span>
-                                                            </label>
-                                                            <label class="mt-radio">
-                                                            <input type="radio" name="group-a[0][familyMemberOther]" id="familyOther" value="other"> Other
-                                                            <span></span>
-                                                            </label>
+                                                            <select id="group-a[0][familyMemberGender]" name="group-a[0][familyMemberGender]" class="form-control">
+                                                               <option value="Male">Male</option>
+                                                               <option value="Female">Female</option>
+                                                               <option value="Other">Other</option>
+                                                             
+                                                            </select>
                                                          </div>
                                                       </div>
                                                       <div class="col-md-6 ">
