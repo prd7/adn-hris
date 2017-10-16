@@ -8,6 +8,9 @@ $(document).ready(function(){
 		swal("Please go back to Approvals");
 	}
 	console.log("Jquery Loaded");
+	$("#printFunction").click(function(){
+	    window.print();
+	});
 	//checkInitiate();
 
 	fetchKra(empId,globalTypeId,function(status,data){
@@ -19,8 +22,39 @@ $(document).ready(function(){
 			var stage = data.get("stage");
 			var kraValue = data.get("kraValue");
 			var kraValuelength = (data.get("kraValue")).length;
-			//console.log(stage);
-			//console.log(kraValue);
+			//console.log("KRA is in the "+stage+" stage");
+
+			//show the timeline here
+			var supervisorData = data.get("supervisorData");
+			if(supervisorData.length){
+				console.log(supervisorData);
+				for( var i = 0; i < supervisorData.length; i++ )
+	        	{
+					//console.log(supervisorData[i].supervisorInputDate);
+					var timelineItem = '<div class="timeline-item">'+
+					'	<div class="timeline-badge">'+
+					'		<img class="timeline-badge-userpic" src="../assets/pages/media/users/avatar80_2.jpg">'+
+					'	</div>'+
+					'	<div class="timeline-body">'+
+					'		<div class="timeline-body-arrow"></div>'+
+					'		<div class="timeline-body-head">'+
+					'			<div class="timeline-body-head-caption"> <a href="javascript:;" class="timeline-body-title font-blue-madison">'+supervisorData[i].supervisorName+'</a>'+
+					'				<span class="timeline-body-time font-grey-cascade">Sent Back KRA at '+dateTimeString(new Date(supervisorData[i].supervisorInputDate))+'</span>'+
+					'			</div>'+
+					'			<div class="timeline-body-head-actions">'+
+					'				<div class="btn-group dropup">'+
+					'					<button class="btn red btn-sm" type="button">Sent Back</button>'+
+					'				</div>'+
+					'			</div>'+
+					'		</div>'+
+					'		<div class="timeline-body-content"> <span class="font-grey-cascade"> '+supervisorData[i].supervisorInput+' </span>'+
+					'		</div>'+
+					'	</div>'+
+					'</div>';
+				
+					$("#timeline").prepend(timelineItem);	
+				}
+			}
 
 				
 			if(stage=="posted"){
@@ -32,14 +66,15 @@ $(document).ready(function(){
 				for(i=0;i<kraValuelength;i++){
 					var index = i+1;
 					$('#txtkra'+index).text(kraValue[i].kra);
-					$("#selkracat"+index).val(kraValue[i].kraCat);
-					$("#selkrawght"+index).val(kraValue[i].kraWeight);
+					$("#selkracat"+index).text(kraValue[i].kraCat);
+					$("#selkrawght"+index).text(kraValue[i].kraWeight);
 					$('#txtuos'+index).text(kraValue[i].kraUos);
 					$('#txtmos'+index).text(kraValue[i].kraMos);
 				}
 			}else if(stage=="accepted"){
 				$("#sample_3 :input").attr("disabled", true);//disables the table after submitting KRA
-				$("#submits").hide()
+				$("#submits").hide();
+				$("#managerCommentKra").hide();
 				$("#empSubmitTime").html(dateTimeString(data.get('endDate')));
 				$("#smallStatus").html("Learning Agenda Approved");
 
@@ -48,17 +83,16 @@ $(document).ready(function(){
 				for(i=0;i<kraValuelength;i++){
 					var index = i+1;
 					$('#txtkra'+index).text(kraValue[i].kra);
-					$("#selkracat"+index).val(kraValue[i].kraCat);
-					$("#selkrawght"+index).val(kraValue[i].kraWeight);
+					$("#selkracat"+index).text(kraValue[i].kraCat);
+					$("#selkrawght"+index).text(kraValue[i].kraWeight);
 					$('#txtuos'+index).text(kraValue[i].kraUos);
 					$('#txtmos'+index).text(kraValue[i].kraMos);
 				}
-				$("#managerComment").attr("disabled", true);
-				$("#managerComment").val(supervisorData[0].supervisorInput);
 			}else if(stage=="rejected"){
 				console.log(stage);
 				$("#sample_3 :input").attr("disabled", true);//disables the table after submitting KRA
-				$("#submits").hide()
+				$("#submits").hide();
+				$("#managerCommentKra").hide();
 				$("#smallStatus").html("Learning Agenda Rejected");
 
 				var supervisorData = data.get("supervisorData");
@@ -67,13 +101,11 @@ $(document).ready(function(){
 				for(i=0;i<kraValuelength;i++){
 					var index = i+1;
 					$('#txtkra'+index).text(kraValue[i].kra);
-					$("#selkracat"+index).val(kraValue[i].kraCat);
-					$("#selkrawght"+index).val(kraValue[i].kraWeight);
+					$("#selkracat"+index).text(kraValue[i].kraCat);
+					$("#selkrawght"+index).text(kraValue[i].kraWeight);
 					$('#txtuos'+index).text(kraValue[i].kraUos);
 					$('#txtmos'+index).text(kraValue[i].kraMos);
 				}
-				$("#managerComment").attr("disabled", true);
-				$("#managerComment").val(supervisorData[0].supervisorInput);
 			}
 		}else{
 			swal({
@@ -92,81 +124,88 @@ $(document).ready(function(){
 	});
 
 	$("#approveKra").click(function(){
-		var supervisorInput = $("#managerComment").val();
+		if( $("#managerCommentKra").val()){
+			var supervisorInput = $("#managerCommentKra").val();
+			reviewKRA(globalEmpId,localStorage.empId,empObject.name,supervisorInput,globalTypeId,true,function(status){
+				
+				resetInputTable(globalTypeId, 'accepted', function(){
+			  		//window.location.href= "controlPanel.html";
+			  		console.log("Inpupts table reset for "+globalEmpId);
+				});
+				resetApprovalTable(globalTypeId, 'accepted', function(){
+			  		//window.location.href= "controlPanel.html";
+			  		console.log("Approval table reset for "+globalEmpId);
+				});
+				
+				//send notification to Supervisor
+	            var senderId = localStorage.empId;
+	            var notiType= "KRA";
+	            var notiTitle= "KRA approved.";
+	            var notiBody= "Your KRA has been approved by "+empObject.name+".";
+	            var notiLink= "approved";
+	            var notiReceipent= globalEmpId;
+	            sendNoti(senderId,notiType,notiTitle,notiBody,notiLink,notiReceipent);
 
-		reviewKRA(globalEmpId,localStorage.empId,empObject.name,supervisorInput,globalTypeId,true,function(status){
-			
-			resetInputTable(globalTypeId, 'accepted', function(){
-		  		//window.location.href= "controlPanel.html";
-		  		console.log("Inpupts table reset for "+globalEmpId);
+				swal({
+						  title: "Kra Approved!",
+						  text: " You successfully approved the KRA.",
+						  type: "success",
+						  showCancelButton: false,
+						  confirmButtonClass: "btn-success",
+						  confirmButtonText: "Ok",
+						  closeOnConfirm: true
+						},
+						function(){
+							console.log("Came in Swal");
+						  	window.location = window.location;
+				});
 			});
-			resetApprovalTable(globalTypeId, 'accepted', function(){
-		  		//window.location.href= "controlPanel.html";
-		  		console.log("Approval table reset for "+globalEmpId);
-			});
-			
-			//send notification to Supervisor
-            var senderId = localStorage.empId;
-            var notiType= "KRA";
-            var notiTitle= "KRA approved.";
-            var notiBody= "Your KRA has been approved by "+empObject.name+".";
-            var notiLink= "approved";
-            var notiReceipent= globalEmpId;
-            sendNoti(senderId,notiType,notiTitle,notiBody,notiLink,notiReceipent);
-
-			swal({
-					  title: "Kra Approved!",
-					  text: " You successfully approved the KRA.",
-					  type: "success",
-					  showCancelButton: false,
-					  confirmButtonClass: "btn-success",
-					  confirmButtonText: "Ok",
-					  closeOnConfirm: true
-					},
-					function(){
-						console.log("Came in Swal");
-					  	window.location = window.location;
-			});
-		});
+		}else{
+			swal("You need to enter a remark.");
+		}
 	});
 	$("#sendBackKra").click(function(){
-		var supervisorInput = $("#managerComment").val();
-		reviewKRA(globalEmpId,localStorage.empId,empObject.name,supervisorInput,globalTypeId,false,function(status){
-			console.log("sent back");
-			
-			resetInputTable(globalTypeId, 'rejected', function(){
-		  		//window.location.href= "controlPanel.html";
-		  		console.log("Inpupts table reset for "+globalEmpId);
+		if( $("#managerCommentKra").val()){
+			var supervisorInput = $("#managerCommentKra").val();
+			reviewKRA(globalEmpId,localStorage.empId,empObject.name,supervisorInput,globalTypeId,false,function(status){
+				console.log("sent back");
+				
+				resetInputTable(globalTypeId, 'rejected', function(){
+			  		//window.location.href= "controlPanel.html";
+			  		console.log("Inpupts table reset for "+globalEmpId);
+				});
+				
+				resetApprovalTable(globalTypeId, 'rejected', function(){
+			  		//window.location.href= "controlPanel.html";
+			  		console.log("Approval table reset for "+globalEmpId);
+				});
+				
+				
+				//send notification to Supervisor
+	            var senderId = localStorage.empId;
+	            var notiType= "KRA";
+	            var notiTitle= "KRA Rejected.";
+	          	var notiBody= "Learning agenda sent back by "+empObject.name;
+	            var notiLink= "rejected";
+	            var notiReceipent= globalEmpId;
+	            sendNoti(senderId,notiType,notiTitle,notiBody,notiLink,notiReceipent);
+				
+				swal({
+						  title: "Kra Rejcted!",
+						  text: " You successfully rejected the KRA.",
+						  type: "success",
+						  showCancelButton: false,
+						  confirmButtonClass: "btn-success",
+						  confirmButtonText: "Ok",
+						  closeOnConfirm: true
+						},
+						function(){
+							console.log("Came in Swal");
+						  	window.location = window.location;	
+				});
 			});
-			
-			resetApprovalTable(globalTypeId, 'rejected', function(){
-		  		//window.location.href= "controlPanel.html";
-		  		console.log("Approval table reset for "+globalEmpId);
-			});
-			
-			
-			//send notification to Supervisor
-            var senderId = localStorage.empId;
-            var notiType= "KRA";
-            var notiTitle= "KRA Rejected.";
-          	var notiBody= "Learning agenda sent back by "+empObject.name;
-            var notiLink= "rejected";
-            var notiReceipent= globalEmpId;
-            sendNoti(senderId,notiType,notiTitle,notiBody,notiLink,notiReceipent);
-			
-			swal({
-					  title: "Kra Rejcted!",
-					  text: " You successfully rejected the KRA.",
-					  type: "success",
-					  showCancelButton: false,
-					  confirmButtonClass: "btn-success",
-					  confirmButtonText: "Ok",
-					  closeOnConfirm: true
-					},
-					function(){
-						console.log("Came in Swal");
-					  	window.location = window.location;	
-			});
-		});
+		}else{
+			swal("You need to enter a remark.");
+		}
 	});
 });

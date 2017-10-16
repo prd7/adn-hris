@@ -1,5 +1,8 @@
 $(document).ready(function(){
 	console.log("Jquery rejected requests Loaded");
+	$("#printFunction").click(function(){
+	    window.print();
+	});
 	var empId = localStorage.empId;
 	
 	checkRejected(empId,function(status,data){

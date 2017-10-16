@@ -1,5 +1,8 @@
 $(document).ready(function(){
 	console.log("Jquery Loaded");
+	$("#printFunction").click(function(){
+	    window.print();
+	});
 	$("#submitKraSel").click(function(){
 		var dept =$("#seldept").find(":selected").text();
 		console.log(dept);

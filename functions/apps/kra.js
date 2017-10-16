@@ -5,8 +5,12 @@ $(document).ready(function(){
 		window.location.href= "../index.html";
 	}*/
 	var globalTypeId = getUrlVars()["typeId"];
+	console.log(globalTypeId);
 	var empId=localStorage.empId;
 	console.log("Jquery Loaded");
+	$("#printFunction").click(function(){
+	    window.print();
+	});
 
 	//function to check and fetch values for a KRA
 	fetchKra(empId,globalTypeId,function(status,data){
@@ -23,7 +27,7 @@ $(document).ready(function(){
 			if(stage=="posted"){
 				$("#sample_3 :input").attr("disabled", true);//disables the table after submitting KRA
 				$("#submits").hide()
-				$("#status").html('Your KRA was submitted for review.');
+				$("#status").html('Your KRA is submitted for review.');
 
 				for(i=0;i<kraValuelength;i++){
 					var index = i+1;
@@ -226,10 +230,10 @@ function validateKra(){
 				setKRA(kraArray,globalTypeId,function(status){
 				  		if(status){
 				  			console.log("kra submitted success.");
-							swal("Success!", "Your KRA was submitted.", "success"); //success alert
+							swal("Success!", "Your KRA is submitted.", "success"); //success alert
 							$("#sample_3 :input").attr("disabled", true);//disables the table after submitting KRA
 							$("#submits").hide()//disables the table after submitting KRA
-							$("#status").html('Your KRA was submitted for review.');
+							$("#status").html('Your KRA is submitted for review.');
 				  		}else{
 				  			
 				  		}
@@ -246,7 +250,7 @@ function validateKra(){
 				  			console.log("kra submitted success.");
 							swal("Success!", "Your KRA was submitted.", "success");//success alert
 							$("#sample_3 :input").attr("disabled", true);//disables the table after submitting KRA
-							$("#status").html('Your KRA was submitted for review.');
+							$("#status").html('Your KRA is submitted for review.');
 				  		}else{
 				  			
 				  		}
@@ -261,9 +265,9 @@ function validateKra(){
 				setKRA(kraArray,globalTypeId,function(status){
 				  		if(status){
 				  			console.log("kra submitted success.");
-							swal("Success!", "Your KRA was submitted.", "success");//success alert
+							swal("Success!", "Your KRA is submitted.", "success");//success alert
 							$("#sample_3 :input").attr("disabled", true);//disables the table after submitting KRA
-							$("#status").html('Your KRA was submitted for review.');
+							$("#status").html('Your KRA is submitted for review.');
 				  		}else{
 				  			
 				  		}
@@ -323,13 +327,14 @@ function proceedWarn(kraArray){
 				function(){
 					console.log("Came in Swal of proceedWarn");
 				  	//window.location.href= "../pages/kra_wizard.html";	
+				  	var globalTypeId = getUrlVars()["typeId"];
 				  	setKRA(kraArray,globalTypeId,function(status){
 				  		if(status){
 				  			console.log("kra submitted success.");
-							swal("Success!", "Your KRA was submitted.", "success");//success message after submit
+							swal("Success!", "Your KRA is submitted.", "success");//success message after submit
 							$("#sample_3 :input").attr("disabled", true);//disables the table after submitting KRA
 							$("#submits").hide();
-							$("#status").html('Your KRA was submitted for review.');
+							$("#status").html('Your KRA is submitted for review.');
 				  		}else{
 
 				  		}

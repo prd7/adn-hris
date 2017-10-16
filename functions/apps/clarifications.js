@@ -1,5 +1,8 @@
 $(document).ready(function(){
 	console.log("Jquery clarifications requests Loaded");
+	$("#printFunction").click(function(){
+	    window.print();
+	});
 	var empId = localStorage.empId;
 	
 	checkClarificationTable(empId,function(status,data){

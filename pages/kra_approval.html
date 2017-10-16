@@ -90,39 +90,10 @@
                                                 <li class="todo-padding-b-0">
                                                     <div class="todo-head">
                                                         <div class="btn-group pull-right">
-                                                            <a class="btn green btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
-                                                                <i class="fa fa-share"></i>
-                                                                <span class="hidden-xs"> Tools </span>
-                                                                <i class="fa fa-angle-down"></i>
-                                                            </a>
-                                                            <ul class="dropdown-menu pull-right" id="sample_3_tools">
-                                                                <li>
-                                                                    <a href="javascript:;" data-action="0" class="tool-action">
-                                                                        <i class="icon-printer"></i> Print
-                                                                    </a>
-                                                                </li>
-                                                                <li>
-                                                                    <a href="javascript:;" data-action="1" class="tool-action">
-                                                                        <i class="icon-check"></i> Copy
-                                                                    </a>
-                                                                </li>
-                                                                <li>
-                                                                    <a href="javascript:;" data-action="2" class="tool-action">
-                                                                        <i class="icon-doc"></i> PDF
-                                                                    </a>
-                                                                </li>
-                                                                <li>
-                                                                    <a href="javascript:;" data-action="3" class="tool-action">
-                                                                        <i class="icon-paper-clip"></i> Excel
-                                                                    </a>
-                                                                </li>
-                                                                <li>
-                                                                    <a href="javascript:;" data-action="4" class="tool-action">
-                                                                        <i class="icon-cloud-upload"></i> CSV
-                                                                    </a>
-                                                                </li>
-                                                                <li class="divider"></li>
-                                                            </ul>
+                                                            <a class="btn red btn-outline btn-circle" id="printFunction" href="javascript:;" data-toggle="dropdown">
+                                                                <span class="hidden-xs"> Print </span>
+                                                                <i class="fa fa-print"></i>
+                                                            </a>   
                                                         </div>
                                                         <h3>Approve</h3>
                                                     </div>
@@ -167,232 +138,153 @@
                                                                                 <!--td rowspan="2"> 1 </td-->
                                                                                 <td> 1 </td>
                                                                                 <td>
-                                                                                    <label name="txtkra1" id="txtkra1" class="form-control" rows="1"></label>
+                                                                                    <label name="txtkra1" id="txtkra1"></label>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <select class="form-control" name="selkracat1" id="selkracat1">
-                                                                                        <option value="">Select KRA Category</option>
-                                                                                        <option value="Strategic Initiative">Strategic Initiative</option>
-                                                                                        <option value="Functional Deliverables">Functional Deliverables</option>
-                                                                                        <option value="Financial Deliverables">Financial Deliverables</option>
-                                                                                        <option value="Institutionalization Quotient">Institutionalization Quotient</option>
-                                                                                        <option value="People Development">People Development</option>
-                                                                                    </select>
+                                                                                    <label  name="selkracat1" id="selkracat1"></label>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <select class="form-control" name="selkrawght1" id="selkrawght1">
-                                                                                        <option value="0">0%</option>
-                                                                                        <option value="10">10%</option>
-                                                                                        <option value="15">15%</option>
-                                                                                        <option value="20">20%</option>
-                                                                                        <option value="25">25%</option>
-                                                                                        <option value="30">30%</option>
-                                                                                        <option value="35">35%</option>
-                                                                                    </select>
+                                                                                    <label  name="selkrawght1" id="selkrawght1">
+                                                                                       
+                                                                                    </label>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <label name="txtuos1" id="txtuos1" class="form-control" rows="1"></label>
+                                                                                    <label name="txtuos1" id="txtuos1" ></label>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <label name="txtmos1" id="txtmos1" class="form-control" rows="1"></label>
+                                                                                    <label name="txtmos1" id="txtmos1" ></label>
                                                                                 </td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <td> 2 </td>
                                                                                 <td>
-                                                                                    <label name="txtkra2" id="txtkra2" class="form-control" rows="1"></label>
+                                                                                    <label name="txtkra2" id="txtkra2" ></label>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <select class="form-control" name="selkracat2" id="selkracat2">
-                                                                                        <option value="">Select KRA Category</option>
-                                                                                        <option value="Strategic Initiative">Strategic Initiative</option>
-                                                                                        <option value="Functional Deliverables">Functional Deliverables</option>
-                                                                                        <option value="Financial Deliverables">Financial Deliverables</option>
-                                                                                        <option value="Institutionalization Quotient">Institutionalization Quotient</option>
-                                                                                        <option value="People Development">People Development</option>
-                                                                                    </select>
+                                                                                    <label  name="selkracat2" id="selkracat2">
+                                                                                        
+                                                                                    </label>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <select class="form-control" name="selkrawght2" id="selkrawght2">
-                                                                                        <option value="0">0%</option>
-                                                                                        <option value="10">10%</option>
-                                                                                        <option value="15">15%</option>
-                                                                                        <option value="20">20%</option>
-                                                                                        <option value="25">25%</option>
-                                                                                        <option value="30">30%</option>
-                                                                                        <option value="35">35%</option>
-                                                                                    </select>
+                                                                                    <label  name="selkrawght2" id="selkrawght2">
+                                                                                       
+                                                                                    </label>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <label name="txtuos2" id="txtuos2" class="form-control" rows="1"></label>
+                                                                                    <label name="txtuos2" id="txtuos2" ></label>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <label name="txtmos2" id="txtmos2" class="form-control" rows="1"></label>
+                                                                                    <label name="txtmos2" id="txtmos2" ></label>
                                                                                 </td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <td> 3 </td>
                                                                                 <td>
-                                                                                    <label name="txtkra3" id="txtkra3" class="form-control" rows="1"></label>
+                                                                                    <label name="txtkra3" id="txtkra3" ></label>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <select class="form-control" name="selkracat3" id="selkracat3">
-                                                                                        <option value="">Select KRA Category</option>
-                                                                                        <option value="Strategic Initiative">Strategic Initiative</option>
-                                                                                        <option value="Functional Deliverables">Functional Deliverables</option>
-                                                                                        <option value="Financial Deliverables">Financial Deliverables</option>
-                                                                                        <option value="Institutionalization Quotient">Institutionalization Quotient</option>
-                                                                                        <option value="People Development">People Development</option>
-                                                                                    </select>
+                                                                                    <label  name="selkracat3" id="selkracat3">
+                                                                                        
+                                                                                    </label>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <select class="form-control" name="selkrawght3" id="selkrawght3">
-                                                                                        <option value="0">0%</option>
-                                                                                        <option value="10">10%</option>
-                                                                                        <option value="15">15%</option>
-                                                                                        <option value="20">20%</option>
-                                                                                        <option value="25">25%</option>
-                                                                                        <option value="30">30%</option>
-                                                                                        <option value="35">35%</option>
-                                                                                    </select>
+                                                                                    <label  name="selkrawght3" id="selkrawght3">
+                                                                                       
+                                                                                    </label>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <label name="txtuos3" id="txtuos3" class="form-control" rows="1"></label>
+                                                                                    <label name="txtuos3" id="txtuos3" ></label>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <label name="txtmos3" id="txtmos3" class="form-control" rows="1"></label>
+                                                                                    <label name="txtmos3" id="txtmos3" ></label>
                                                                                 </td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <td> 4 </td>
                                                                                 <td>
-                                                                                    <label name="txtkra4" id="txtkra4" class="form-control" rows="1"></label>
+                                                                                    <label name="txtkra4" id="txtkra4" ></label>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <select class="form-control" name="selkracat4" id="selkracat4">
-                                                                                        <option value="">Select KRA Category</option>
-                                                                                        <option value="Strategic Initiative">Strategic Initiative</option>
-                                                                                        <option value="Functional Deliverables">Functional Deliverables</option>
-                                                                                        <option value="Financial Deliverables">Financial Deliverables</option>
-                                                                                        <option value="Institutionalization Quotient">Institutionalization Quotient</option>
-                                                                                        <option value="People Development">People Development</option>
-                                                                                    </select>
+                                                                                    <label  name="selkracat4" id="selkracat4">
+                                                                                        
+                                                                                    </label>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <select class="form-control" name="selkrawght4" id="selkrawght4">
-                                                                                        <option value="0">0%</option>
-                                                                                        <option value="10">10%</option>
-                                                                                        <option value="15">15%</option>
-                                                                                        <option value="20">20%</option>
-                                                                                        <option value="25">25%</option>
-                                                                                        <option value="30">30%</option>
-                                                                                        <option value="35">35%</option>
-                                                                                    </select>
+                                                                                    <label  name="selkrawght4" id="selkrawght4">
+                                                                                       
+                                                                                    </label>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <label name="txtuos4" id="txtuos4" class="form-control" rows="1"></label>
+                                                                                    <label name="txtuos4" id="txtuos4" ></label>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <label name="txtmos4" id="txtmos4" class="form-control" rows="1"></label>
+                                                                                    <label name="txtmos4" id="txtmos4" ></label>
                                                                                 </td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <td> 5 </td>
                                                                                 <td>
-                                                                                    <label name="txtkra5" id="txtkra5" class="form-control" rows="1"></label>
+                                                                                    <label name="txtkra5" id="txtkra5" ></label>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <select class="form-control" name="selkracat5" id="selkracat5">
-                                                                                        <option value="">Select KRA Category</option>
-                                                                                        <option value="Strategic Initiative">Strategic Initiative</option>
-                                                                                        <option value="Functional Deliverables">Functional Deliverables</option>
-                                                                                        <option value="Financial Deliverables">Financial Deliverables</option>
-                                                                                        <option value="Institutionalization Quotient">Institutionalization Quotient</option>
-                                                                                        <option value="People Development">People Development</option>
-                                                                                    </select>
+                                                                                    <label  name="selkracat5" id="selkracat5">
+                                                                                        
+                                                                                    </label>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <select class="form-control" name="selkrawght5" id="selkrawght5">
-                                                                                        <option value="0">0%</option>
-                                                                                        <option value="10">10%</option>
-                                                                                        <option value="15">15%</option>
-                                                                                        <option value="20">20%</option>
-                                                                                        <option value="25">25%</option>
-                                                                                        <option value="30">30%</option>
-                                                                                        <option value="35">35%</option>
-                                                                                    </select>
+                                                                                    <label  name="selkrawght5" id="selkrawght5">
+                                                                                       
+                                                                                    </label>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <label name="txtuos5" id="txtuos5" class="form-control" rows="1"></label>
+                                                                                    <label name="txtuos5" id="txtuos5" ></label>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <label name="txtmos5" id="txtmos5" class="form-control" rows="1"></label>
+                                                                                    <label name="txtmos5" id="txtmos5" ></label>
                                                                                 </td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <td> 6 </td>
                                                                                 <td>
-                                                                                    <label name="txtkra6" id="txtkra6" class="form-control" rows="1"></label>
+                                                                                    <label name="txtkra6" id="txtkra6" ></label>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <select class="form-control" name="selkracat6" id="selkracat6">
-                                                                                        <option value="">Select KRA Category</option>
-                                                                                        <option value="Strategic Initiative">Strategic Initiative</option>
-                                                                                        <option value="Functional Deliverables">Functional Deliverables</option>
-                                                                                        <option value="Financial Deliverables">Financial Deliverables</option>
-                                                                                        <option value="Institutionalization Quotient">Institutionalization Quotient</option>
-                                                                                        <option value="People Development">People Development</option>
-                                                                                    </select>
+                                                                                    <label  name="selkracat6" id="selkracat6">
+                                                                                        
+                                                                                    </label>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <select class="form-control" name="selkrawght6" id="selkrawght6">
-                                                                                        <option value="0">0%</option>
-                                                                                        <option value="10">10%</option>
-                                                                                        <option value="15">15%</option>
-                                                                                        <option value="20">20%</option>
-                                                                                        <option value="25">25%</option>
-                                                                                        <option value="30">30%</option>
-                                                                                        <option value="35">35%</option>
-                                                                                    </select>
+                                                                                    <label  name="selkrawght6" id="selkrawght6">
+                                                                                       
+                                                                                    </label>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <label name="txtuos6" id="txtuos6" class="form-control" rows="1"></label>
+                                                                                    <label name="txtuos6" id="txtuos6" ></label>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <label name="txtmos6" id="txtmos6" class="form-control" rows="1"></label>
+                                                                                    <label name="txtmos6" id="txtmos6" ></label>
                                                                                 </td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <td> 7 </td>
                                                                                 <td>
-                                                                                    <label name="txtkra7" id="txtkra7" class="form-control" rows="1"></label>
+                                                                                    <label name="txtkra7" id="txtkra7" ></label>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <select class="form-control" name="selkracat7" id="selkracat7">
-                                                                                        <option value="">Select KRA Category</option>
-                                                                                        <option value="Strategic Initiative">Strategic Initiative</option>
-                                                                                        <option value="Functional Deliverables">Functional Deliverables</option>
-                                                                                        <option value="Financial Deliverables">Financial Deliverables</option>
-                                                                                        <option value="Institutionalization Quotient">Institutionalization Quotient</option>
-                                                                                        <option value="People Development">People Development</option>
-                                                                                    </select>
+                                                                                    <label  name="selkracat7" id="selkracat7">
+                                                                                        
+                                                                                    </label>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <select class="form-control" name="selkrawght7" id="selkrawght7">
-                                                                                        <option value="0">0%</option>
-                                                                                        <option value="10">10%</option>
-                                                                                        <option value="15">15%</option>
-                                                                                        <option value="20">20%</option>
-                                                                                        <option value="25">25%</option>
-                                                                                        <option value="30">30%</option>
-                                                                                        <option value="35">35%</option>
-                                                                                    </select>
+                                                                                    <label  name="selkrawght7" id="selkrawght7">
+                                                                                       
+                                                                                    </label>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <label name="txtuos7" id="txtuos7" class="form-control" rows="1"></label>
+                                                                                    <label name="txtuos7" id="txtuos7" ></label>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <label name="txtmos7" id="txtmos7" class="form-control" rows="1"></label>
+                                                                                    <label name="txtmos7" id="txtmos7" ></label>
                                                                                 </td>
                                                                             </tr>
                                                                         </tbody>
@@ -402,7 +294,7 @@
                                                         </div>
                                                         <div class="row" style="padding-bottom: 20px">
                                                             <div class="col-md-12">
-                                                                <textarea style="resize:none" placeholder="Please give a remark." name="managerComment" id="managerComment" rows="3" class="form-control" rows="1"></textarea>
+                                                                <textarea style="resize:none" placeholder="Please give a remark." name="managerCommentKra" id="managerCommentKra" rows="3" class="form-control"></textarea>
                                                             </div>
                                                         </div>
                                                         <div class="row" id="submits">
@@ -412,37 +304,36 @@
                                                             </div>
                                                         </div>
                                                     </li>
-                                                    <li class="hidden">
+                                                    <li>
+                                                        <!--class="hidden" TIIMELINE PORTLET START-->
                                                         <div class="portlet-body">
-                                                            <div class="timeline">
-                                                                <!-- TIMELINE ITEM -->
-                                                                <div class="timeline-item">
+                                                            <div class="timeline" id="timeline">
+                                                                 <!-- TIMELINE ITEM -->
+                                                                <!--div class="timeline-item">
                                                                     <div class="timeline-badge">
                                                                         <img class="timeline-badge-userpic" src="../assets/pages/media/users/avatar80_2.jpg">
+                                                                    </div>
+                                                                    <div class="timeline-body">
+                                                                        <div class="timeline-body-arrow"></div>
+                                                                        <div class="timeline-body-head">
+                                                                            <div class="timeline-body-head-caption"> <a href="javascript:;" class="timeline-body-title font-blue-madison">Supervisor Imran</a>
+                                                                                <span class="timeline-body-time font-grey-cascade">Sent Back KRA at 17:45 PM 18 August 2017</span>
+                                                                            </div>
+                                                                            <div class="timeline-body-head-actions">
+                                                                                <div class="btn-group dropup">
+                                                                                    <button class="btn red btn-sm" type="button">Sent Back</button>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
-                                                                        <div class="timeline-body">
-                                                                            <div class="timeline-body-arrow"></div>
-                                                                            <div class="timeline-body-head">
-                                                                                <div class="timeline-body-head-caption">
-                                                                                    <a href="javascript:;" class="timeline-body-title font-blue-madison">Supervisor Imran</a>
-                                                                                    <span class="timeline-body-time font-grey-cascade">Sent Back KRA at 17:45 PM 18 August 2017</span>
-                                                                                </div>
-                                                                                <div class="timeline-body-head-actions">
-                                                                                    <div class="btn-group dropup">
-                                                                                        <button class="btn btn-circle red btn-sm dropdown-toggle" type="button"> Sent Back
-                                                                        </button>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="timeline-body-content">
-                                                                                <span class="font-grey-cascade"> Please write in detail the 3rd KRA measure. </span>
-                                                                            </div>
+                                                                        <div class="timeline-body-content"> <span class="font-grey-cascade"> Please write in detail the 3rd KRA measure. </span>
                                                                         </div>
                                                                     </div>
-                                                                    <!-- END TIMELINE ITEM -->
-                                                                </div>
+                                                                </div-->
+                                                                <!-- END TIMELINE ITEM -->
                                                             </div>
-                                                        </li>
+                                                        </div>
+                                                    <!-- TIIMELINE PORTLET END-->
+                                                    </li>
                                                     </ul>
                                                 </div>
                                             </div>

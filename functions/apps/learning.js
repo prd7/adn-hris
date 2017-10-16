@@ -7,6 +7,9 @@ $(document).ready(function(){
 	var globalTypeId = getUrlVars()["typeId"];
 	var empId=localStorage.empId;
 	console.log("Jquery Loaded");
+	$("#printFunction").click(function(){
+	    window.print();
+	});
 
 	fetchLearning(empId,globalTypeId,function(status,data){
 		if(status){
@@ -17,6 +20,38 @@ $(document).ready(function(){
 			var learningValue = data.get("learningValue");
 			var learningValuelength = (data.get("learningValue")).length;
 			console.log(stage);
+
+
+			//show the timeline here
+			var supervisorData = data.get("supervisorData");
+			console.log(supervisorData);
+			for( var i = 0; i < supervisorData.length; i++ )
+        	{
+				//console.log(supervisorData[i].supervisorInputDate);
+				var timelineItem = '<div class="timeline-item">'+
+				'	<div class="timeline-badge">'+
+				'		<img class="timeline-badge-userpic" src="../assets/pages/media/users/avatar80_2.jpg">'+
+				'	</div>'+
+				'	<div class="timeline-body">'+
+				'		<div class="timeline-body-arrow"></div>'+
+				'		<div class="timeline-body-head">'+
+				'			<div class="timeline-body-head-caption"> <a href="javascript:;" class="timeline-body-title font-blue-madison">'+supervisorData[i].supervisorName+'</a>'+
+				'				<span class="timeline-body-time font-grey-cascade">Sent Back KRA at '+dateTimeString(new Date(supervisorData[i].supervisorInputDate))+'</span>'+
+				'			</div>'+
+				'			<div class="timeline-body-head-actions">'+
+				'				<div class="btn-group dropup">'+
+				'					<button class="btn red btn-sm" type="button">Sent Back</button>'+
+				'				</div>'+
+				'			</div>'+
+				'		</div>'+
+				'		<div class="timeline-body-content"> <span class="font-grey-cascade"> '+supervisorData[i].supervisorInput+' </span>'+
+				'		</div>'+
+				'	</div>'+
+				'</div>';
+			
+				$("#timeline").prepend(timelineItem);	
+				}
+
 
 			if(stage=="posted"){
 				$("#sample_3 :input").attr("disabled", true);//disables the table after submitting KRA
@@ -46,36 +81,6 @@ $(document).ready(function(){
 					$('#txtSupportReq'+index).text(learningValue[i].timeline);
 				}
 
-				//show the timeline here
-				var supervisorData = data.get("supervisorData");
-				console.log(supervisorData);
-				for( var i = 0; i < supervisorData.length; i++ )
-	        	{
-					//console.log(supervisorData[i].supervisorInputDate);
-					var timelineItem = '<div class="timeline-item">'+
-					'	<div class="timeline-badge">'+
-					'		<img class="timeline-badge-userpic" src="../assets/pages/media/users/avatar80_2.jpg">'+
-					'	</div>'+
-					'	<div class="timeline-body">'+
-					'		<div class="timeline-body-arrow"></div>'+
-					'		<div class="timeline-body-head">'+
-					'			<div class="timeline-body-head-caption"> <a href="javascript:;" class="timeline-body-title font-blue-madison">Supervisor Imran '+supervisorData[i].supervisorId+'</a>'+
-					'				<span class="timeline-body-time font-grey-cascade">Sent Back KRA at '+dateTimeString(new Date(supervisorData[i].supervisorInputDate))+'</span>'+
-					'			</div>'+
-					'			<div class="timeline-body-head-actions">'+
-					'				<div class="btn-group dropup">'+
-					'					<button class="btn red btn-sm" type="button">Sent Back</button>'+
-					'				</div>'+
-					'			</div>'+
-					'		</div>'+
-					'		<div class="timeline-body-content"> <span class="font-grey-cascade"> '+supervisorData[i].supervisorInput+' </span>'+
-					'		</div>'+
-					'	</div>'+
-					'</div>';
-				
-					$("#timeline").append(timelineItem);	
-				}
-
 			}else if(stage=="accepted"){
 				$("#sample_3 :input").attr("disabled", true);//disables the table after submitting KRA
 				$("#submits").hide()
@@ -89,6 +94,16 @@ $(document).ready(function(){
 					$('#txtTimeline'+index).text(learningValue[i].supportRequired);
 					$('#txtSupportReq'+index).text(learningValue[i].timeline);
 				}
+			} else if(stage=="draft"){
+				for(i=0;i<learningValuelength;i++){
+					var index = i+1;
+					$("#selDevArea"+index).val(learningValue[i].developmentArea);
+					$('#txtDevPlan'+index).text(learningValue[i].developmentPlan);
+					$('#txtMos'+index).text(learningValue[i].learningMos);
+					$('#txtTimeline'+index).text(learningValue[i].supportRequired);
+					$('#txtSupportReq'+index).text(learningValue[i].timeline);
+				}
+				console.log(data.get("learningValue"));
 			}
 		}else{
 				swal({
@@ -197,37 +212,43 @@ function validateLearning(){
 	}
 	console.log(learningArray);
 
-	setLearning(learningArray,globalTypeId,function(status){
-  		if(status){
-  			console.log("Learning submitted successfull.");
-  			//this is where we wil send notifications
-  			var notiType= "Learning";
-			var notiTitle= "Learning Agenda submitted by "+empObject.name;
-			var notiBody= "Please review the learning agenda.";
-			var notiLink= "approvals";
-			var notiReceipent= empObject.supervisorId;
-			sendNoti(empId,notiType,notiTitle,notiBody,notiLink,notiReceipent);
-			//alert with custom message
-  			swal({
-				  title: "Your Learning Agenda was posted for review.",
-				  text: "Please wait for your Supervisor approval.",
-				  type: "success",
-				  showCancelButton: false,
-				  confirmButtonClass: "btn-success",
-				  confirmButtonText: "Ok",
-				  closeOnConfirm: false
-				},
-				function(){
-					console.log("Came in Swal to redirect");
-					window.location.href= "learning.html?typeId="+globalTypeId;
-				});
-			$("#sample_3 :input").attr("disabled", true);//disables the table after submitting LEarning
-			$("#submits").hide();
-			$("#status").html('Learning submitted sucessfully for your Supervisor\'s review');
+	if(learningArray[0].complete){
+		setLearning(learningArray,globalTypeId,function(status){
+	  		if(status){
+	  			console.log("Learning submitted successfull.");
+	  			//this is where we wil send notifications
+	  			var notiType= "Learning";
+				var notiTitle= "Learning Agenda submitted by "+empObject.name;
+				var notiBody= "Please review the learning agenda.";
+				var notiLink= "approvals";
+				var notiReceipent= empObject.supervisorId;
+				//sending notifications from the module
+				//sendNoti(empId,notiType,notiTitle,notiBody,notiLink,notiReceipent);
+				//alert with custom message
+	  			swal({
+					  title: "Your Learning Agenda was posted for review.",
+					  text: "Please wait for your Supervisor approval.",
+					  type: "success",
+					  showCancelButton: false,
+					  confirmButtonClass: "btn-success",
+					  confirmButtonText: "Ok",
+					  closeOnConfirm: false
+					},
+					function(){
+						console.log("Came in Swal to redirect");
+						window.location.href= "learning.html?typeId="+globalTypeId;
+					});
+				$("#sample_3 :input").attr("disabled", true);//disables the table after submitting LEarning
+				$("#submits").hide();
+				$("#status").html('Learning submitted sucessfully for your Supervisor\'s review');
 
-  		}else{
-  			swal("Error!", "Your Learning was not submitted.", "warning");
-  		}
-  	});
+	  		}else{
+	  			swal("Error!", "Your Learning was not submitted.", "warning");
+	  		}
+	  	});
+	}else{
+		swal("Please fill content and then submit.");
+	}
+
 	//Condition to check
 }

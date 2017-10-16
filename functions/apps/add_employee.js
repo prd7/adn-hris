@@ -8,6 +8,10 @@ $(document).ready(function(){
 	} 
 */
 
+$("#printFunction").click(function(){
+    window.print();
+});
+
 	$("#submitForm").click(function(){
 		var name = $("#name").val();
 		var empId = $("#empId").val();

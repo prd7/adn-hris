@@ -110,40 +110,13 @@
                                                 <input type="radio" name="options" class="toggle" id="option2">Settings</label>
                                         </div-->
                                         <div class="btn-group">
-                                            <a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
-                                                <i class="fa fa-share"></i>
-                                                <span class="hidden-xs"> Tools </span>
-                                                <i class="fa fa-angle-down"></i>
-                                            </a>
-                                            <ul class="dropdown-menu pull-right" id="sample_3_tools">
-                                                <li>
-                                                    <a href="javascript:;" data-action="0" class="tool-action">
-                                                        <i class="icon-printer"></i> Print</a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:;" data-action="1" class="tool-action">
-                                                        <i class="icon-check"></i> Copy</a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:;" data-action="2" class="tool-action">
-                                                        <i class="icon-doc"></i> PDF</a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:;" data-action="3" class="tool-action">
-                                                        <i class="icon-paper-clip"></i> Excel</a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:;" data-action="4" class="tool-action">
-                                                        <i class="icon-cloud-upload"></i> CSV</a>
-                                                </li>
-                                                <li class="divider"> </li>
-                                                <!--li>
-                                                    <a href="javascript:;" data-action="5" class="tool-action">
-                                                        <i class="icon-refresh"></i> Reload</a>
-                                                </li-->
-                                                </li>
-                                            </ul>
+                                            <a class="btn red btn-outline btn-circle" id="printFunction" href="javascript:;" data-toggle="dropdown">
+                                                <span class="hidden-xs"> Print </span>
+                                                <i class="fa fa-print"></i>
+                                            </a>                                            
                                         </div>
+
+                                        
                                     </div>
                                 <div class="portlet-body">
                                     <div class="table-scrollable table-container">
@@ -163,16 +136,16 @@
                                                     <!--td rowspan="2"> 1 </td-->
                                                     <td> 1 </td>
                                                     <td>
-                                                        <select class="form-control" name="selDevArea1" id="selDevArea1">
+                                                        <select class="form-control" name="selDevArea1" id="selDevArea1"  required="true">
                                                             <option value="">Select Development Area</option>
                                                             <option value="Strategic Initiative">Functional Development</option>
                                                             <option value="Functional Deliverables">Individual Development</option>
                                                         </select>
                                                     </td>
-                                                    <td><textarea style="resize:none" name="txtDevPlan1" id="txtDevPlan1" class="form-control" rows="1"></textarea></td>
-                                                    <td><textarea style="resize:none" name="txtMos1" id="txtMos1" class="form-control" rows="1"></textarea></td>
-                                                    <td><textarea style="resize:none" name="txtTimeline1" id="txtTimeline1" class="form-control" rows="1"></textarea></td>
-                                                    <td><textarea style="resize:none" name="txtSupportReq1" id="txtSupportReq1" class="form-control" rows="1"></textarea></td>
+                                                    <td><textarea style="resize:none" name="txtDevPlan1" id="txtDevPlan1" class="form-control" rows="1" required="true"></textarea></td>
+                                                    <td><textarea style="resize:none" name="txtMos1" id="txtMos1" class="form-control" rows="1" required="true"></textarea ></td>
+                                                    <td><textarea style="resize:none" name="txtTimeline1" id="txtTimeline1" class="form-control" rows="1" required="true"></textarea></td>
+                                                    <td><textarea style="resize:none" name="txtSupportReq1" id="txtSupportReq1" class="form-control" rows="1" required="true"></textarea></td>
                                                 </tr>
                                                 <tr class="row1">
                                                     <!--td rowspan="2"> 1 </td-->
@@ -276,7 +249,7 @@
 
                                     <div class="row" id="submits">
                                         <div class="col-md-12">
-                                            <button type="submit" class="btn green submitForm" id="submitFormLearning">Sumbit</button>
+                                            <button type="submit" class="btn green submitForm" id="submitFormLearning">Submit</button>
                                             <button type="submit" class="btn default" id="saveDraftLearning">Save as Draft</button>
                                             <button type="submit" class="btn green approve hidden" id="approveLearning">Approve</button>
                                             <button type="submit" class="btn red sendBack hidden" id="sendBackLearning">Send Back</button>
@@ -288,7 +261,7 @@
                             <!-- END BORDERED TABLE PORTLET-->
                             <!-- TIIMELINE PORTLET START-->
                             <div class="portlet-body">
-                                <div class="timeline" id="timeline" hidden="true">
+                                <div class="timeline" id="timeline">
                                      <!-- TIMELINE ITEM -->
                                     <!--div class="timeline-item">
                                         <div class="timeline-badge">
@@ -313,7 +286,7 @@
                                     <!-- END TIMELINE ITEM -->
                                 </div>
                             </div>
-                        <!-- TIIMELINE PORTLET START-->
+                        <!-- TIIMELINE PORTLET END-->
                         </div>
                     </div>
                     <!-- END PAGE BASE CONTENT -->

@@ -1,5 +1,8 @@
 $(document).ready(function(){
 	console.log("Jquery loaded for report_table");
+	$("#printFunction").click(function(){
+	    window.print();
+	});
 	populateList();
 });
 

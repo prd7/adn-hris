@@ -1,5 +1,8 @@
 $(document).ready(function(){
 	console.log("Jquery approval requests Loaded");
+	$("#printFunction").click(function(){
+	    window.print();
+	});
 	var empId = localStorage.empId;
 	
 	checkParticipated(empId,function(status,data){

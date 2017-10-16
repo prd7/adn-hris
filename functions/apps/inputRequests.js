@@ -1,5 +1,8 @@
 $(document).ready(function(){
 	console.log("Jquery Input requests Loaded");
+	$("#printFunction").click(function(){
+	    window.print();
+	});
 	var empId = localStorage.empId;
 	checkInputTable(empId,function(status,data){
 		if(status){

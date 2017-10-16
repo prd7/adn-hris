@@ -1,4 +1,7 @@
 $(document).ready(function(){
+	$("#printFunction").click(function(){
+	    window.print();
+	});
 	var dept=localStorage.searchDept;
 	var grade=JSON.parse(localStorage.searchGrade);
 	console.log("The searched dept is: "+dept);

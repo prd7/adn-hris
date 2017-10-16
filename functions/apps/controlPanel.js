@@ -2,8 +2,12 @@ $(document).ready(function(){
 
 	//this is how we will populate datas
 	console.log(EmployeeDataJSON);
+	$("#printFunction").click(function(){
+	    window.print();
+	});
 	var start = 1;
 	var end = 10;
+	
 	for(i=start;i<end;i++){
 		console.log(EmployeeDataJSON[i].A);
 		console.log(EmployeeDataJSON[i].B);
@@ -19,7 +23,7 @@ $(document).ready(function(){
 	/*
 	$('#bulkUpload').click(function (){
 		uploadData(function(status){
-			alert("Data uploaded");
+			console.log("Data uploaded");
 		});
 	});*/
 

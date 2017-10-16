@@ -1,4 +1,7 @@
 $(document).ready(function(){
+	$("#printFunction").click(function(){
+	    window.print();
+	});
 	
 	var t = $('#sample_3').DataTable();
 	getEmployeeData(function(data){

@@ -495,46 +495,57 @@ function submitPositionDetails(empId, dataArray, callback) {
                 var newEmp = results[0];
                 console.log(newEmp);
                 console.log(dataArray);
+                console.log(dataArray[7].value);
+                var supervisorId = dataArray[7].value;
+                var sQuery = new Parse.Query(Employee);
+                sQuery.equalTo('empId',supervisorId);
+                sQuery.find({
+                    success:function(sResults){
+                        if(results.length){
+                            newEmp.set('supervisor',sResults[0]);
+                            newEmp.set('supervisorId',sResults[0].get("empId"));
+                            newEmp.set('supervisorName',sResults[0].get("name"));
+                            newEmp.set('designation', dataArray[0].value);
+                            newEmp.set('employeeGrade', dataArray[2].value);
+                            newEmp.set('buisnessDivision', dataArray[3].value);
+                            newEmp.set('department', dataArray[4].value);
+                            newEmp.set('vertical', dataArray[5].value);
+                            newEmp.set('subVertical', dataArray[6].value);
+                            var statusArray = results[0].get("statusOffice"); //array to set the flags of completion
+                            var officePosArray = results[0].get("officePositionDetails");
+                            if (officePosArray) {
+                                officePosArray[0].designation = dataArray[0].value;
+                                officePosArray[0].employeeCategory = dataArray[1].value;
+                                officePosArray[0].employeeGrade = dataArray[2].value;
+                                officePosArray[0].buisnessDivision = dataArray[3].value;
+                                officePosArray[0].department = dataArray[4].value;
+                                officePosArray[0].vertical = dataArray[5].value;
+                                officePosArray[0].subVertical = dataArray[6].value;
+                                officePosArray[0].reportingManagerId = dataArray[7].value;
+                                officePosArray[0].reviewerId = dataArray[8].value;
+                                officePosArray[0].buisnessHrSpocId = dataArray[9].value;
+                                officePosArray[0].buisnessHrHeadId = dataArray[10].value;
+                                officePosArray[0].groupHrHeadId = dataArray[11].value;
+                                statusArray[0].positionHistoryStatus = true
+                            }
 
-                newEmp.set('designation', dataArray[0].value);
-                newEmp.set('employeeGrade', dataArray[2].value);
-                newEmp.set('buisnessDivision', dataArray[3].value);
-                newEmp.set('department', dataArray[4].value);
-                newEmp.set('vertical', dataArray[5].value);
-                newEmp.set('subVertical', dataArray[6].value);
-                var statusArray = results[0].get("statusOffice"); //array to set the flags of completion
-                var officePosArray = results[0].get("officePositionDetails");
-                if (officePosArray) {
-                    officePosArray[0].designation = dataArray[0].value;
-                    officePosArray[0].employeeCategory = dataArray[1].value;
-                    officePosArray[0].employeeGrade = dataArray[2].value;
-                    officePosArray[0].buisnessDivision = dataArray[3].value;
-                    officePosArray[0].department = dataArray[4].value;
-                    officePosArray[0].vertical = dataArray[5].value;
-                    officePosArray[0].subVertical = dataArray[6].value;
-                    officePosArray[0].reportingManagerId = dataArray[7].value;
-                    officePosArray[0].reviewerId = dataArray[8].value;
-                    officePosArray[0].buisnessHrSpocId = dataArray[9].value;
-                    officePosArray[0].buisnessHrHeadId = dataArray[10].value;
-                    officePosArray[0].groupHrHeadId = dataArray[11].value;
-                    statusArray[0].positionHistoryStatus = true
-                }
-
-                newEmp.set('statusOffice', statusArray);
-                newEmp.set('officePositionDetails', officePosArray);
-                newEmp.save(null, {
-                    success: function(Employee) {
-                        console.log('New office Position object created with objectId: ' + Employee.id);
-                        callback(true);
-                    },
-                    error: function(Employee, error) {
-                        alert('Failed to create new object, with error code: ' + error.message);
-                    } // error is a Parse.Error with an error code and message.
+                            newEmp.set('statusOffice', statusArray);
+                            newEmp.set('officePositionDetails', officePosArray);
+                            newEmp.save(null, {
+                                success: function(Employee) {
+                                    console.log('New office Position object created with objectId: ' + Employee.id);
+                                    callback(true);
+                                },
+                                error: function(Employee, error) {
+                                    alert('Failed to create new object, with error code: ' + error.message);
+                                } // error is a Parse.Error with an error code and message.
+                            });            
+                        }
+                    }
                 });
-                callback(true);
-            } else {
-                callback(false);
-            }
+                
+                
+            } 
         },
         error: function(error) {
             alert("Error: " + error.code + " " + error.message);
@@ -1178,12 +1189,12 @@ function setLearningDraft(learningArray, typeId, callback) {
                 for (i = 0; i < learningArray.length; i++) {
 
                     var dummyObj = new Object(); //create object to push into array
-                    dummyObj.developmentArea = learningArray[i].developmentArea;
-                    dummyObj.developmentPlan = learningArray[i].developmentPlan;
-                    dummyObj.learningMos = learningArray[i].learningMos;
-                    dummyObj.timeline = learningArray[i].timeline;
-                    dummyObj.supportRequired = learningArray[i].supportRequired;
-                    dummyArray.push(dummyObj); //push object into array
+                    dummyObj.developmentArea = learningArray[i].learningDevArea;
+                    dummyObj.developmentPlan = learningArray[i].learningDevPlan;
+                    dummyObj.learningMos = learningArray[i].learningMeasureofSuccess;
+                    dummyObj.timeline = learningArray[i].learningTimeline;
+                    dummyObj.supportRequired = learningArray[i].learningSupportRequired;
+                    dummyArray.push(dummyObj); //push object into arra
 
                 }
                 newLearning.set('learningValue', dummyArray); //LearningValue is the name of the array
@@ -1459,6 +1470,7 @@ function checkInputTable(empId, callback) {
     var query = new Parse.Query(Inputs);
     query.equalTo("empId", empId); //match kraId to table
     query.equalTo("status", "live"); //only the live entries of the table
+    query.descending("createdAt");
     query.find({
         success: function(results) {
             if (results.length) { //try in future for more results
@@ -1505,6 +1517,7 @@ function checkApprovalTable(empId, callback) {
     var query = new Parse.Query(Approvals);
     query.equalTo("empId", empId); //match kraId to table
     query.equalTo("status", "live"); //match kraId to table
+    query.descending("createdAt");
     query.find({
         success: function(results) {
             if (results.length) { //try in future for more results
@@ -1530,6 +1543,7 @@ function checkParticipated(empId, callback) {
     query.notEqualTo("status", "live");
     //query.equalTo("status", "accepted");
     //query.equalTo("status", "rejected");
+    query.descending("createdAt");
     query.find({
         success: function(results) {
             if (results.length) {
@@ -1553,6 +1567,7 @@ function checkClarificationTable(empId, callback) {
     var query = new Parse.Query(Clarification);
     query.equalTo("empId", empId);
     query.equalTo("status", "live");
+    query.descending("createdAt");
     query.find({
         success: function(results) {
             if (results.length) { //try in future for more results
@@ -1576,6 +1591,7 @@ function checkInProgress(empId, callback) {
     var query = new Parse.Query(Inputs);
     query.equalTo("empId", empId); //match kraId to table
     query.equalTo("status", "inProgress"); //only the live entries of the table
+    query.descending("createdAt");
     query.find({
         success: function(results) {
             if (results.length) { //try in future for more results
@@ -1601,6 +1617,7 @@ function checkApproved(empId, callback) {
     var query = new Parse.Query(Inputs);
     query.equalTo("empId", empId); //match kraId to table
     query.equalTo("status", "accepted"); //only the live entries of the table
+    query.descending("createdAt");
     query.find({
         success: function(results) {
             if (results.length) { //try in future for more results
@@ -1624,6 +1641,7 @@ function checkRejected(empId, callback) {
     var query = new Parse.Query(Inputs);
     query.equalTo("empId", empId); //match kraId to table
     query.equalTo("status", "rejected"); //only the live entries of the table
+    query.descending("createdAt");
     query.find({
         success: function(results) {
             if (results.length) { //try in future for more results

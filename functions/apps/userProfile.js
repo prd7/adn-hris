@@ -1,5 +1,8 @@
 $(document).ready(function(){
 	console.log("userProfile Jquery Loaded");
+	$("#printFunction").click(function(){
+	    window.print();
+	});
 	//console.log(getUrlVars()["typeId"]);
 	if(getUrlVars()["typeId"]){
 		var globalTypeId = getUrlVars()["typeId"];
@@ -23,9 +26,9 @@ $(document).ready(function(){
 		
 		if(statusArray[0].personalStatus){
 			var personalArray= result.get("personal");
-			//console.log("came in values setting");
+			
 			//$("#form_sample_1 :input").attr("disabled", true);
-			//console.log(personalArray);
+			
 			$('#fname').html(result.get("name"));
 			$('#fatherName').val(personalArray[0].fatherName);
 			$('#motherName').val(personalArray[0].motherName);
@@ -62,10 +65,11 @@ $(document).ready(function(){
 		}
 		if(statusArray.addressStatus){
 			var personalArray =result.get("personal");
-			$("#form_sample_2 :input").attr("disabled", true);
+			//$("#form_sample_2 :input").attr("disabled", true);
 		}
 
 		if(statusArray[0].academicStatus){
+			//$("#academicDetails :input").attr("disabled", true);
 			var academicDetailsArray = result.get("academicDetails");
 			var length = academicDetailsArray.length;			
 			for(i=1; i<length; i++){
@@ -83,9 +87,9 @@ $(document).ready(function(){
 				$('[name="group-a['+i+'][duration]"]').val(academicDetailsArray[i].duration);
 				$('[name="group-a['+i+'][achievements]"]').val(academicDetailsArray[i].achievements);
 			}
-			//$("#academicDetails :input").attr("disabled", true);
 		}
 		if(statusArray[0].familyStatus){
+			//$("#familyDetails :input").attr("disabled", true);
 			console.log("came in values setting");
 			var familyDetailsArray = result.get("familyDetails");
 			console.log(familyDetailsArray);
@@ -152,22 +156,29 @@ $(document).ready(function(){
 		var personalArray = $("#form_sample_1").serializeArray();
 		console.log(personalArray);
 		var type= "personal";
-		submitPersonal(empId,personalArray,type,function(status){
-			swal({
-				  title: "Employee Personal updated successfully!",
-				  text: " Your Information has been saved.",
-				  type: "success",
-				  showCancelButton: false,
-				  confirmButtoynClass: "btn-success",
-				  confirmButtonText: "Ok",
-				  closeOnConfirm: true
-				},
-				function(){
-					console.log("Came in Swal now updating status flag");
-					checkStatus(empId,"personal",function(){}); //used to update input table of HR
+		if($("#birthdate").val() && $("#mobileNo").val() && $("#personalEmail").val() && $("#bloodGroup").val() && $("#religion").val() && $("#maritalStatus").val() && $("#nationality").val() && $("#emergencyContactName").val() && $("#emergencyContactNo").val()){
+			 
+			submitPersonal(empId,personalArray,type,function(status){
+				swal({
+					  title: "Employee Personal updated successfully!",
+					  text: " Your Information has been saved.",
+					  type: "success",
+					  showCancelButton: false,
+					  confirmButtoynClass: "btn-success",
+					  confirmButtonText: "Ok",
+					  closeOnConfirm: true
+					},
+					function(){
+						console.log("Came in Swal now updating status flag");
+						checkStatus(empId,"personal",function(){}); //used to update input table of HR
+				});
 			});
-		});
-		$("#form_sample_1 :input").attr("disabled", true);
+			//$("#form_sample_1 :input").attr("disabled", true);
+
+		}else{
+			swal("Please fill all the compulsory fields.");
+		}
+
 	});
 
 	$("#submitAddress").click(function(){
@@ -175,25 +186,29 @@ $(document).ready(function(){
 		var addressArray = $("#form_sample_2").serializeArray();
 		console.log(addressArray);
 		var type= "address";
-		submitPersonal(empId,addressArray,type,function(status){
-			console.log("Updated address valuess");
-			swal({
-				  title: "Employee Address updated successfully!",
-				  text: " Your Information has been saved.",
-				  type: "success",
-				  showCancelButton: false,
-				  confirmButtonClass: "btn-success",
-				  confirmButtonText: "Ok",
-				  closeOnConfirm: true
-				},
-				function(){
-					console.log("Came in Swal");
-					checkStatus(empId,"personal",function(){}); //used to update input table of HR //used to update input table of HR
-				  	//function to update status flag in the statusPersonal Array
-						
+		if($("#curAddLine1").val() && $("#curAddThana").val() && $("#curAddDistrict").val() && $("#curAddDivision").val() && $("#curAddPostCode").val() && $("#permAddLine1").val() && $("#permAddThana").val() && $("#permAddDistrict").val() && $("#permAddDivision").val() && $("#permAddPostCode").val()){
+			submitPersonal(empId,addressArray,type,function(status){
+				console.log("Updated address valuess");
+				swal({
+					  title: "Employee Address updated successfully!",
+					  text: " Your Information has been saved.",
+					  type: "success",
+					  showCancelButton: false,
+					  confirmButtonClass: "btn-success",
+					  confirmButtonText: "Ok",
+					  closeOnConfirm: true
+					},
+					function(){
+						console.log("Came in Swal");
+						checkStatus(empId,"personal",function(){}); //used to update input table of HR //used to update input table of HR
+					  	//function to update status flag in the statusPersonal Array
+							
+				});
 			});
-		});
-		$("#form_sample_2 :input").attr("disabled", true);
+			//$("#form_sample_2 :input").attr("disabled", true);
+		}else{
+			swal("Please fill all the compulsory fields.");	
+		}
 	});
 
 	$("#submitAcademic").click(function(){
@@ -219,7 +234,7 @@ $(document).ready(function(){
 					checkStatus(empId,"personal",function(){}); //used to update input table of HR //used to update input table of HR
 			});
 		});
-		$("#academicDetails :input").attr("disabled", true);
+		//$("#academicDetails :input").attr("disabled", true);
 	});
 
 	$("#submitFamily").click(function(){
@@ -245,7 +260,7 @@ $(document).ready(function(){
 					checkStatus(empId,"personal",function(){}); //used to update input table of HR //used to update input table of HR	
 			});
 		});
-		$("#familyDetails :input").attr("disabled", true);
+		//$("#familyDetails :input").attr("disabled", true);
 	});
 	
 	$("#uploadNationalIdSmartCard").click(function(){ //button to upload id
@@ -284,7 +299,7 @@ $(document).ready(function(){
 	$("#sendToHR").click(function(){
 		console.log("Sending for HR Approval");
 		checkStatus(globalEmpId,"personal",function(result){
-			var statusArray = results[0].get("statusPersonal");
+			var statusArray = result.get("statusPersonal");
 			console.log("Came back here");
 			if (statusArray[0].personalStatus && statusArray[0].addressStatus && statusArray[0].academicStatus && statusArray[0].familyStatus && statusArray[0].documentStatus) {
                 addToApprovalTable('employeeProfile', 'p_'+globalEmpId, empObject.hrId,globalEmpId,empObject.name, 'live', new Date()); 		

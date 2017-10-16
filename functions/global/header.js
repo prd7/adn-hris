@@ -26,31 +26,34 @@ if(empObject.empId=="3010269"){
     var sideName = "User Profile";
 }
 
-if (location.pathname == "/pages/approvals.html") {
+if ((location.pathname).indexOf("approvals.html") != -1) {
     var approvals = 'start active open';   
 }
-else if (location.pathname == "/pages/inputRequests.html") {
+else if ((location.pathname).indexOf("inputRequests.html") != -1) {
     var inputRequests = 'start active open';
 }
-else if (location.pathname == "/pages/clarifications.html") {
+else if ((location.pathname).indexOf("clarifications.html") != -1) {
     var clarifications = 'start active open';
 }
-else if (location.pathname == "/pages/drafts.html") {
+else if ((location.pathname).indexOf("drafts.html") != -1) {
     var drafts = 'start active open';
 }
-else if (location.pathname == "/pages/inProgress.html") {
+else if ((location.pathname).indexOf("inProgress.html") != -1) {
     var inProgress = 'start active open';
 }
-else if (location.pathname == "/pages/participated.html") {
+else if ((location.pathname).indexOf("participated.html") != -1) {
     var participated = 'start active open';
 }
-else if (location.pathname == "/pages/approved.html") {
+else if ((location.pathname).indexOf("approved.html") != -1) {
     var approved = 'start active open';
 }
-else if (location.pathname == "/pages/rejected.html") {
+else if ((location.pathname).indexOf("rejected.html") != -1) {
     var rejected = 'start active open';
 }
-else if (location.pathname == "/pages/controlPanel.html") {
+else if ((location.pathname).indexOf("controlPanel.html") != -1) {
+    var admin = 'start active open';
+}
+else if ((location.pathname).indexOf("userProfile.html") != -1) {
     var admin = 'start active open';
 }
 
@@ -154,7 +157,7 @@ var header = '<div class="page-header navbar navbar-fixed-top">'+
 '            <div class="page-header-inner ">'+
 '                <!-- BEGIN LOGO -->'+
 '                <div class="page-logo">'+
-'                    <a href="../home.html">'+
+'                    <a href="home.html">'+
 '                        <img src="../assets/layouts/layout4/img/logo-light.png" alt="logo" class="logo-default" /> </a>'+
 '                    <div class="menu-toggler sidebar-toggler">'+
 '                        <!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->'+
@@ -260,10 +263,10 @@ var header = '<div class="page-header navbar navbar-fixed-top">'+
 '                                            <i class="icon-user"></i> My Profile </a>'+
 '                                    </li>'+
 '                                    <li>'+
-'                                        <a href="controlPanel.html">'+
+'                                        <!--a href="controlPanel.html">'+
 '                                            <i class="icon-rocket"></i> My Tasks'+
 '                                            <!--span class="badge badge-success"></span-->'+
-'                                        </a>'+
+'                                        </a-->'+
 '                                    </li>'+
 '                                    <li class="divider"> </li>'+
 '                                    <li>'+
@@ -383,7 +386,7 @@ function populateNoti(){
                 //console.log(data[i].objectId);href="'+data[i].get('link')+'.html" 
                 var notificationListObject = '<li>'+
                 '                                     <a onClick="checkRead(\'' + data[i].id +'+'+data[i].get('link')+ '\')">'+
-                '                                        <span class="time">3 mins</span>'+
+                '                                        <span class="time">'+dateTimeString(data[i].get('startDate'))+'</span>'+
                 '                                          <span class="details">'+
                 '                                            <span class="label label-sm label-icon label-danger">'+
                 '                                              <i class="fa fa-bolt"></i>'+

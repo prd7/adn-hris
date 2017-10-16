@@ -1,5 +1,8 @@
 $(document).ready(function(){
 	console.log("Jquery Loaded");
+	$("#printFunction").click(function(){
+	    window.print();
+	});
 
 	//password matching while typing
 	$('#password_strength, #confirm_password').on('keyup', function () {

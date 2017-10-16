@@ -1,5 +1,6 @@
 $(document).ready(function(){
 	console.log("Jquery notifications requests Loaded");
+
 	var empId = localStorage.empId;
 	
 	fetchNotifications(empId,'isRead',function(status,data){

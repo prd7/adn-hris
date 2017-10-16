@@ -110,39 +110,10 @@
                                                 <input type="radio" name="options" class="toggle" id="option2">Settings</label>
                                         </div-->
                                         <div class="btn-group">
-                                            <a class="btn red btn-outline btn-circle" href="javascript:;" data-toggle="dropdown">
-                                                <i class="fa fa-share"></i>
-                                                <span class="hidden-xs"> Trigger Tools </span>
-                                                <i class="fa fa-angle-down"></i>
-                                            </a>
-                                            <ul class="dropdown-menu pull-right" id="sample_3_tools">
-                                                <li>
-                                                    <a href="javascript:;" data-action="0" class="tool-action">
-                                                        <i class="icon-printer"></i> Print</a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:;" data-action="1" class="tool-action">
-                                                        <i class="icon-check"></i> Copy</a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:;" data-action="2" class="tool-action">
-                                                        <i class="icon-doc"></i> PDF</a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:;" data-action="3" class="tool-action">
-                                                        <i class="icon-paper-clip"></i> Excel</a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:;" data-action="4" class="tool-action">
-                                                        <i class="icon-cloud-upload"></i> CSV</a>
-                                                </li>
-                                                <li class="divider"> </li>
-                                                <!--li>
-                                                    <a href="javascript:;" data-action="5" class="tool-action">
-                                                        <i class="icon-refresh"></i> Reload</a>
-                                                </li-->
-                                                </li>
-                                            </ul>
+                                            <a class="btn red btn-outline btn-circle" id="printFunction" href="javascript:;" data-toggle="dropdown">
+                                                <span class="hidden-xs"> Print </span>
+                                                <i class="fa fa-print"></i>
+                                            </a>                                            
                                         </div>
                                     </div>
                                 <div class="portlet-body">
@@ -369,7 +340,7 @@
 
                                     <div class="row" id="submits">
                                         <div class="col-md-12">
-                                            <button type="submit" class="btn green submitForm" id="submitForm">Sumbit</button>
+                                            <button type="submit" class="btn green submitForm" id="submitForm">Submit</button>
                                             <button type="submit" class="btn default" id="saveDraft">Save as Draft</button>
                                             <button type="submit" class="btn green approve hidden" id="approve">Approve</button>
                                             <button type="submit" class="btn red sendBack hidden" id="sendBack">Send Back</button>

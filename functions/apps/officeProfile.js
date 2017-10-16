@@ -1,5 +1,8 @@
 $(document).ready(function(){
 	console.log("Jquery officeProfile Loaded");
+	$("#printFunction").click(function(){
+	    window.print();
+	});
 	var globalTypeId = getUrlVars()["typeId"];
 	
 	if(getUrlVars()["typeId"]){
@@ -13,17 +16,26 @@ $(document).ready(function(){
 	}
 	console.log(globalEmpId);
 	//fetch default values
-    var empObject = JSON.parse(localStorage.empObject);
-    var name = empObject.name;
-	
-	$('#employeeName').val(name);
-	$('#employeeId').val(globalEmpId);
+    
+	//$('#employeeName').val(name);
+	//$('#employeeId').val(globalEmpId);
 
-	
+
+	getEmployeeData(function(data){
+		if(data.length){
+			for(var i=0;i<data.length;i++){
+				//console.log("came inside for loop");
+				var reportingManagerObjects = '<option value="'+data[i].get("empId")+'">'+data[i].get("name")+'('+data[i].get("empId")+')</option>';
+				$('#reportingManagerIdName').append(reportingManagerObjects);
+			}
+		}
+		$('#reportingManagerIdName').val("1010012");
+	});
+		
 	checkStatus(globalEmpId,"office",function(results){
 		console.log("Came back from module to office profile");
 		var statusArray = results.get("statusOffice");
-
+		console.log(results.get("supervisorId"));
 		var officeArray = results.get("officeDetails");
 		var officePositionArray = results.get("officePositionDetails");
 		var previousWorkArray = results.get("previousWorkDetails");
@@ -34,6 +46,11 @@ $(document).ready(function(){
 		var personalCarArray = results.get("personalCarDetails");
 		
 		//fetch and populate stuff here
+		$('#employeeName').val(results.get("name"));
+		$('#employeeId').val(results.get("empId"));
+		$('#officePhoneNumber').val(results.get("officePhone"));
+		$('#officeEmailId ').val(results.get("officeEmail"));
+
 		if(statusArray[0].officeInfoStatus){
 			$("#officeInfo :input").attr("disabled", true);
 			
@@ -66,13 +83,14 @@ $(document).ready(function(){
 			$('#department').val(officePositionArray[0].department);
 			$('#verticalUnit').val(officePositionArray[0].vertical);
 			$('#subVerticalUnit').val(officePositionArray[0].subVertical);
-			//$('#reportingManagerSupervisor').val(officePositionArray[0].Group HR Head);
+			$('#reportingManagerIdName').val(results.get("supervisorId"));
+			
 			$('#reviewer').val(officePositionArray[0].reviewer);
 			$('#hrSpoc').val(officePositionArray[0].buisnessHrSpoc);
 			$('#businessHrHead').val(officePositionArray[0].buisnessHrHead);
 			$('#groupHrHead').val(officePositionArray[0].groupHrHead);
 
-			$("#positionDetails :input").attr("disabled", true);
+			//$("#positionDetails :input").attr("disabled", true);
 		}
 		if(statusArray[0].performanceStatus){
 			$('#performanceRatingFy1516').val(officeArray[0].pfRating1516);
@@ -161,23 +179,27 @@ $(document).ready(function(){
 		//var empId= 'E1001';
 		var empId = globalEmpId; //this is the empId from URL
 		console.log(globalEmpId);
-
-		submitOfficeInfo(empId,officeInfo,'basicOffice',function(status){
-			swal({
-				  title: "Employee Office details updated successfully!",
-				  text: " Your Information has been saved.",
-				  type: "success",
-				  showCancelButton: false,
-				  confirmButtonClass: "btn-success",
-				  confirmButtonText: "Ok",
-				  closeOnConfirm: true
-				},
-				function(){
-					console.log("Came in Swal");
-				  	checkStatus(empId,"office"); //used to update input table of HR	
-			});
-			$("#officeInfo :input").attr("disabled", true);
-		});
+		if($('#employeeName').val() && $('#employeeId').val() && $('#idCardNumber').val() && $('#companyName').val()){
+			swal("submitted");
+			/*submitOfficeInfo(empId,officeInfo,'basicOffice',function(status){
+				swal({
+					  title: "Employee Office details updated successfully!",
+					  text: " Your Information has been saved.",
+					  type: "success",
+					  showCancelButton: false,
+					  confirmButtonClass: "btn-success",
+					  confirmButtonText: "Ok",
+					  closeOnConfirm: true
+					},
+					function(){
+						console.log("Came in Swal");
+					  	checkStatus(empId,"office"); //used to update input table of HR	
+				});
+				$("#officeInfo :input").attr("disabled", true);
+			});*/
+		}else{
+			swal("Please fill the compulsory fields..");
+		}
 	});
 
 	$("#submitJoiningDetails").click(function(){
@@ -186,23 +208,26 @@ $(document).ready(function(){
 		//var globalEmpId = getUrlVars()["empId"]; //gives empid needed to search a perticular employee
 		var empId = globalEmpId; //this is the empId from URL
 		//var empId= 'E1001';
-
-		submitOfficeInfo(empId,joiningDetails,'joiningDetails',function(status){
-			swal({
-				  title: "Employee Joining details updated successfully!",
-				  text: " Your Information has been saved.",
-				  type: "success",
-				  showCancelButton: false,
-				  confirmButtonClass: "btn-success",
-				  confirmButtonText: "Ok",
-				  closeOnConfirm: true
-				},
-				function(){
-					console.log("Came in Swal");
-				  	checkStatus(empId,"office"); //used to update input table of HR	
-			});
-			$("#joiningDetails :input").attr("disabled", true);
-		});
+		if($("#dateOfJoining").val()){
+			submitOfficeInfo(empId,joiningDetails,'joiningDetails',function(status){
+				swal({
+					  title: "Employee Joining details updated successfully!",
+					  text: " Your Information has been saved.",
+					  type: "success",
+					  showCancelButton: false,
+					  confirmButtonClass: "btn-success",
+					  confirmButtonText: "Ok",
+					  closeOnConfirm: true
+					},
+					function(){
+						console.log("Came in Swal");
+					  	checkStatus(empId,"office"); //used to update input table of HR	
+				});
+				$("#joiningDetails :input").attr("disabled", true);
+			});			
+		}else{
+			swal("Please fill the compulsory fields.");
+		}
 
 	});
 
@@ -211,23 +236,26 @@ $(document).ready(function(){
 		console.log(positionDetails);
 		//var globalEmpId = getUrlVars()["empId"]; //gives empid needed to search a perticular employee
 		var empId = globalEmpId; //this is the empId from URL
-
-		submitPositionDetails(empId,positionDetails,function(status){
-			swal({
-				  title: "Employee Position details updated successfully!",
-				  text: " Your Information has been saved.",
-				  type: "success",
-				  showCancelButton: false,
-				  confirmButtonClass: "btn-success",
-				  confirmButtonText: "Ok",
-				  closeOnConfirm: true
-				},
-				function(){
-					console.log("Came in Swal");
-				  	checkStatus(empId,"office"); //used to update input table of HR	
+		if($('#employeeCategory').val() && $('#employeeGrade').val() && $('#division').val() && $('#department').val() && $('#verticalUnit').val() && $('#subVerticalUnit').val() && $('#reportingManagerIdName').val()){
+			submitPositionDetails(empId,positionDetails,function(status){
+				swal({
+					  title: "Employee Position details updated successfully!",
+					  text: " Your Information has been saved.",
+					  type: "success",
+					  showCancelButton: false,
+					  confirmButtonClass: "btn-success",
+					  confirmButtonText: "Ok",
+					  closeOnConfirm: true
+					},
+					function(){
+						console.log("Came in Swal");
+					  	checkStatus(empId,"office"); //used to update input table of HR	
+				});
+				$("#positionDetails :input").attr("disabled", true);
 			});
-			$("#positionDetails :input").attr("disabled", true);
-		});
+		}else{
+			swal("Please fill the compulsory fields.");
+		}
 	});
 
 	$("#submitPerformanceDetails").click(function(){
@@ -259,17 +287,13 @@ $(document).ready(function(){
 		//here we will use the empId for the file
 		//var empId= 'E1001';
 		var empId = globalEmpId;
-		var companyName = $("#companyName1").val();
-		if(companyName=""){
-			console.log("Not filled the mandatory  fields");
-			swal("Error!", "Please enter the mandatory fields.", "warning");
-		}else{
+		
+		if($('#companyName1').val() && $('#designationPrev').val() && $('#departmentPrev').val() && $('#responsibility').val() && $('#companyLocation').val() && $('#employmentPeriod').val() && $('#areaOfExperience').val()){
 			var previousEmploymentDetail = $("#previousEmploymentDetail").serializeArray();
 			console.log(previousEmploymentDetail);
 			event.preventDefault(); //to prevent form from auto submitting
 			//var globalEmpId = getUrlVars()["empId"]; //gives empid needed to search a perticular employee
 			var empId = globalEmpId; //this is the empId from URL
-			
 			
 			submitpreviousEmployment(empId,previousEmploymentDetail,function(status){
 				swal({
@@ -287,6 +311,8 @@ $(document).ready(function(){
 				});
 				$("#previousEmploymentDetail :input").attr("disabled", true);
 			});
+		}else{
+			swal("Please fill the compulsory fields.");
 		}
 	});
 
@@ -299,24 +325,26 @@ $(document).ready(function(){
 		//var globalEmpId = getUrlVars()["empId"]; //gives empid needed to search a perticular employee
 		//var empId= 'E1001';
 		var empId = globalEmpId; //this is the empId from URL
-		
-		submitPayrollInformation(empId,bankDetails,'bankDetails',function(status){
-			swal({
-				  title: "Employee Bank details updated successfully!",
-				  text: " Your Information has been saved.",
-				  type: "success",
-				  showCancelButton: false,
-				  confirmButtonClass: "btn-success",
-				  confirmButtonText: "Ok",
-				  closeOnConfirm: true
-				},
-				function(){
-					console.log("Came in Swal");	
+		if($('#bankName').val() && $('#accountName').val()){
+			submitPayrollInformation(empId,bankDetails,'bankDetails',function(status){
+				swal({
+					  title: "Employee Bank details updated successfully!",
+					  text: " Your Information has been saved.",
+					  type: "success",
+					  showCancelButton: false,
+					  confirmButtonClass: "btn-success",
+					  confirmButtonText: "Ok",
+					  closeOnConfirm: true
+					},
+					function(){
+						console.log("Came in Swal");	
+				});
+				$("#bankDetails :input").attr("disabled", true);
+				// /$('.btn').hide();
 			});
-			$("#bankDetails :input").attr("disabled", true);
-			// /$('.btn').hide();
-
-		});
+		}else{
+			swal("Please fill the compulsory fields.");
+		}
 	});
 
 	$("#submitSalaryDetails").click(function(){
@@ -327,22 +355,25 @@ $(document).ready(function(){
 		//var globalEmpId = getUrlVars()["empId"]; //gives empid needed to search a perticular employee
 		//var empId= 'E1001';
 		var empId = globalEmpId; //this is the empId from URL
-		
-		submitPayrollInformation(empId,salaryDetails,'salaryDetails',function(status){
-			swal({
-				  title: "Employee Salary details updated successfully!",
-				  text: " Your Information has been saved.",
-				  type: "success",
-				  showCancelButton: false,
-				  confirmButtonClass: "btn-success",
-				  confirmButtonText: "Ok",
-				  closeOnConfirm: true
-				},
-				function(){
-					console.log("Came in Swal");	
+		if($('#basic').val() && $('#hra').val() && $('#specialAllowance').val() && $('#grossSalary').val() && $('#totalEarnings').val()){
+			submitPayrollInformation(empId,salaryDetails,'salaryDetails',function(status){
+				swal({
+					  title: "Employee Salary details updated successfully!",
+					  text: " Your Information has been saved.",
+					  type: "success",
+					  showCancelButton: false,
+					  confirmButtonClass: "btn-success",
+					  confirmButtonText: "Ok",
+					  closeOnConfirm: true
+					},
+					function(){
+						console.log("Came in Swal");	
+				});
+				$("#salaryDetails :input").attr("disabled", true);
 			});
-			$("#salaryDetails :input").attr("disabled", true);
-		});
+		}else{
+			swal("Please fill the compulsory fields.");
+		}
 	});
 
 	$("#submitOtherBenefitDetails").click(function(){
@@ -353,22 +384,25 @@ $(document).ready(function(){
 		//var globalEmpId = getUrlVars()["empId"]; //gives empid needed to search a perticular employee
 		//var empId= 'E1001';
 		var empId = globalEmpId; //this is the empId from URL
-		
-		submitPayrollInformation(empId,otherBenefitDetails,'otherBenefitDetails',function(status){
-			swal({
-				  title: "Employee other benefit details updated successfully!",
-				  text: " Your Information has been saved.",
-				  type: "success",
-				  showCancelButton: false,
-				  confirmButtonClass: "btn-success",
-				  confirmButtonText: "Ok",
-				  closeOnConfirm: true
-				},
-				function(){
-					console.log("Came in Swal");
+		if($('#festivalAllowance').val() && $('#pfMembership').val()){
+			submitPayrollInformation(empId,otherBenefitDetails,'otherBenefitDetails',function(status){
+				swal({
+					  title: "Employee other benefit details updated successfully!",
+					  text: " Your Information has been saved.",
+					  type: "success",
+					  showCancelButton: false,
+					  confirmButtonClass: "btn-success",
+					  confirmButtonText: "Ok",
+					  closeOnConfirm: true
+					},
+					function(){
+						console.log("Came in Swal");
+				});
+				$("#otherBenefitDetails :input").attr("disabled", true);
 			});
-			$("#otherBenefitDetails :input").attr("disabled", true);
-		});
+		}else{
+			swal("Please fill the compulsory fields.");
+		}
 	});
 
 	$("#submitCompanyCarDetails").click(function(){

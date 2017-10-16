@@ -1,5 +1,9 @@
 $(document).ready(function(){
 	console.log("Jquery Drafts requests Loaded");
+
+	$("#printFunction").click(function(){
+	    window.print();
+	});
 	var empId = localStorage.empId;
 	checkDraftsTable(empId,function(status,data){
 		if(status){

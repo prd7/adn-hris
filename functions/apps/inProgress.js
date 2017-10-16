@@ -1,5 +1,8 @@
 $(document).ready(function(){
 	console.log("Jquery inProgress requests Loaded");
+	$("#printFunction").click(function(){
+	    window.print();
+	});
 	var empId = localStorage.empId;
 	
 	checkInProgress(empId,function(status,data){

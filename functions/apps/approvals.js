@@ -1,5 +1,8 @@
 $(document).ready(function(){
 	console.log("Jquery approval requests Loaded");
+	$("#printFunction").click(function(){
+    	window.print();
+	});
 	var empId = localStorage.empId;
 	
 	checkApprovalTable(empId,function(status,data){
@@ -17,7 +20,7 @@ $(document).ready(function(){
 				for( var i = 0; i < data.length; i++ )
 		        {
 		        	var approvalListObject = '<li class="todo-projects-item">'+
-					'    <a href="'+data[i].get('type')+'_approval.html?typeId='+data[i].get('typeId')+'&empId='+data[i].get('cameFrom')+'">'+
+					'    <a href="'+data[i].get('type')+'_approval.html?typeId='+data[i].get('typeId')+'&empId='+data[i].get('cameFromId')+'">'+
 					'        <div class="row">'+
 					'            <div class="col-sm-6 col-xs-12">'+
 					'                <img class="img-circle pull-left" style="margin-top: 5px; margin-right: 10px" src="../assets/pages/media/users/avatar1.jpg" width="54px" height="54px">'+

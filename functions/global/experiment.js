@@ -1,7 +1,7 @@
-//upload data function
+
 function uploadData(callback){
-    var start = 1;
-    var end = 10;
+    var start = 0;
+    var end = 461;
     for(i=start;i<end;i++){
 
         var Employee = Parse.Object.extend("Employee");
@@ -20,7 +20,7 @@ function uploadData(callback){
         newEmployee.set('employeeGrade',EmployeeDataJSON[i].B);
         newEmployee.set('vertical',EmployeeDataJSON[i].G);
         newEmployee.set('subVertical',EmployeeDataJSON[i].H);
-        newEmployee.set('supervisor',new Employee());
+        //newEmployee.set('supervisor',new Employee());
         newEmployee.set('supervisorId',EmployeeDataJSON[i].J);
         newEmployee.set('supervisorName',EmployeeDataJSON[i].K);
         newEmployee.set('companyName','ADN Telecom');
@@ -120,15 +120,15 @@ function uploadData(callback){
         dummyObj.employeeGrade = EmployeeDataJSON[i].B;
         dummyObj.vertical = EmployeeDataJSON[i].G;
         dummyObj.subVertical = EmployeeDataJSON[i].H;
-        dummyObj.reportingManager = new Employee();
+        //dummyObj.reportingManager = new Employee();
         dummyObj.reportingManagerId = "";
-        dummyObj.reviewer = new Employee();
+        //dummyObj.reviewer = new Employee();
         dummyObj.reviewerId = "";
-        dummyObj.buisnessHrSpoc = new Employee();
+        //dummyObj.buisnessHrSpoc = new Employee();
         dummyObj.buisnessHrSpocId = "";
-        dummyObj.buisnessHrHead = new Employee();
+        //dummyObj.buisnessHrHead = new Employee();
         dummyObj.buisnessHrHeadId = "";
-        dummyObj.groupHrHead = new Employee();
+        //dummyObj.groupHrHead = new Employee();
         dummyObj.groupHrHeadId = "";
 
         dummyArray.push(dummyObj);//push object into officeDetails array
@@ -247,10 +247,7 @@ function uploadData(callback){
           }
         });   
     }
-
-
 }
-
 
 /*
 

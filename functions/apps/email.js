@@ -1,5 +1,8 @@
 $(document).ready(function(){
 	console.log("Jquery Loaded");
+	$("#printFunction").click(function(){
+	    window.print();
+	});
 
 	if(localStorage.sendBulkMail){
 		console.log("Email ids present in localStorage");

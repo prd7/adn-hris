@@ -1,5 +1,8 @@
 $(document).ready(function(){
 	console.log("Jquery Loaded for login page.");
+	$("#printFunction").click(function(){
+	    window.print();
+	});
     
 $('.forget-password').click(function(){
 	$('.login-form').hide();
@@ -12,6 +15,8 @@ $('.forget-password').click(function(){
 		var empObject = JSON.parse(localStorage.empObject);
 		console.log(empObject.password);
 	}
+
+	
 
 	$("#submitForm").click(function(){
 
@@ -40,12 +45,12 @@ $('.forget-password').click(function(){
 					}
 				}
 				else{
-					alert("Wrong username or password.");
+					swal("Wrong username or password.");
 				}
 			});	
 		}
 		else{
-			alert("Please enter username and password");
+			swal("Please enter username and password");
 		}
 	});
 
